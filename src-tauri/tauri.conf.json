@@ -17,11 +17,11 @@
         "title": "SpireGuide",
         "width": 520,
         "height": 860,
-        "decorations": false,
+        "decorations": true,
         "transparent": true,
         "alwaysOnTop": true,
         "resizable": true,
-        "skipTaskbar": true,
+        "skipTaskbar": false,
         "visible": true,
         "focus": false
       }

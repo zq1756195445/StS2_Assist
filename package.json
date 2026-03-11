@@ -10,8 +10,11 @@
     "start": "tauri dev",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
+    "extract:sts2-localization": "node tools/extract_sts2_localization.mjs",
     "replay:probe": "python3 tools/replay_probe.py",
-    "test": "zsh -lc '. \"$HOME/.cargo/env\" && cargo test --manifest-path src-tauri/Cargo.toml'"
+    "hook:build": "dotnet build tools/Sts2EventHook",
+    "game:launch-log": "powershell -ExecutionPolicy Bypass -File .\\tools\\launch_sts2_with_log_bridge.ps1",
+    "test": "cargo test --manifest-path src-tauri/Cargo.toml"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.4.0"

@@ -1,0 +1,80 @@
+{
+  "generatedAt": "2026-03-11T14:42:09.482Z",
+  "pckPath": "G:\\SteamLibrary\\steamapps\\common\\Slay the Spire 2\\SlayTheSpire2.pck",
+  "toolPath": "D:\\StS2_Assist\\repo\\tools\\godotpcktool\\godotpcktool.exe",
+  "languages": {
+    "eng": {
+      "cards": 1236,
+      "relics": 955,
+      "monsters": 483,
+      "bestiary": 10,
+      "intents": 32
+    },
+    "zhs": {
+      "cards": 1216,
+      "relics": 952,
+      "monsters": 483,
+      "bestiary": 10,
+      "intents": 31
+    }
+  },
+  "coverage": {
+    "cards": {
+      "eng": 1236,
+      "zhs": 1216,
+      "missingInZhs": [
+        "ASCENDERS_BANE.description",
+        "CLUMSY.description",
+        "CURSE_OF_THE_BELL.description",
+        "DAZED.description",
+        "DEBRIS.description",
+        "FERAL.description",
+        "FOLLY.description",
+        "GREED.description",
+        "INJURY.description",
+        "MOCK_ATTACK_CARD.description",
+        "MOCK_CURSE_CARD.description",
+        "MOCK_POWER_CARD.description",
+        "MOCK_QUEST_CARD.description",
+        "MOCK_SKILL_CARD.description",
+        "MOCK_STATUS_CARD.description",
+        "POOR_SLEEP.description",
+        "SOOT.description",
+        "SPORE_MIND.description",
+        "WOUND.description",
+        "WRITHE.description"
+      ],
+      "missingInEng": []
+    },
+    "relics": {
+      "eng": 955,
+      "zhs": 952,
+      "missingInZhs": [
+        "EMPTY_CAGE.description",
+        "EMPTY_CAGE.eventDescription",
+        "NINJA_SCROLL.description"
+      ],
+      "missingInEng": []
+    },
+    "monsters": {
+      "eng": 483,
+      "zhs": 483,
+      "missingInZhs": [],
+      "missingInEng": []
+    },
+    "bestiary": {
+      "eng": 10,
+      "zhs": 10,
+      "missingInZhs": [],
+      "missingInEng": []
+    },
+    "intents": {
+      "eng": 32,
+      "zhs": 31,
+      "missingInZhs": [
+        "FORMAT_EMPTY"
+      ],
+      "missingInEng": []
+    }
+  }
+}
