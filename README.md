@@ -1,33 +1,117 @@
 # SpireGuide
 
-SpireGuide is now structured as a Rust + Tauri desktop app for a Slay the Spire 2 guidance overlay.
+SpireGuide is a Tauri + Vite HUD overlay for Slay the Spire 2.
 
-Current scope:
+Current status:
 
-- Rust backend for mock game-state generation and rule-based recommendations
-- Tauri transparent overlay window
-- Vite frontend for HUD rendering
-- local JSON database for cards, relics, and archetypes
-- macOS game-window tracking via AppleScript fallback logic
+- Battle HUD is event-driven
+- Battle refresh is triggered from `godot.log`, not snapshot polling
+- Live battle state is read from CLR memory via `tools/Sts2ClrProbe`
+- Monster name, intent, gold, player current HP, player max HP, and current energy are now wired through the live pipeline
+- Replay/history is intentionally de-emphasized right now so battle data stays clean
 
 ## Run
 
-1. `npm install`
-2. `npm start`
+Install dependencies:
+
+```powershell
+npm install
+```
+
+Start the HUD:
+
+```powershell
+npm start
+```
+
+Start the game with the log-event bridge in another terminal:
+
+```powershell
+cd D:\StS2_Assist\repo
+powershell -ExecutionPolicy Bypass -File .\tools\launch_sts2_with_log_bridge.ps1 -GameExe "G:\SteamLibrary\steamapps\common\Slay the Spire 2\SlayTheSpire2.exe"
+```
+
+There is also an npm shortcut:
+
+```powershell
+npm run game:launch-log -- -GameExe "G:\SteamLibrary\steamapps\common\Slay the Spire 2\SlayTheSpire2.exe"
+```
+
+Notes:
+
+- Keep the HUD running in one terminal and launch the game from a second terminal.
+- If Steam requires it, keep `steam_appid.txt` with app id `2868840` in the game folder when launching outside Steam.
+- `tools/launch_sts2_with_hook.ps1` is now only a compatibility wrapper and forwards to the log bridge launcher.
+
+## How It Works
+
+Battle refresh chain:
+
+1. Slay the Spire 2 appends combat lines to `%APPDATA%\SlayTheSpire2\logs\godot.log`
+2. `tools/launch_sts2_with_log_bridge.ps1` tails that file
+3. Matching lines send a local TCP `refresh` event to `127.0.0.1:43125`
+4. Tauri refreshes live memory cache
+5. Tauri emits `snapshot-updated`
+6. Frontend re-renders without polling
+
+Current battle refresh triggers include:
+
+- `Player 1 playing card ...`
+- `Player 1 chose cards ...`
+- `Monster ... performing move ...`
+- combat room entry
+
+## Validation
+
+When the bridge is working, the launcher terminal should show lines like:
+
+```text
+[INFO] Player 1 playing card ARMAMENTS (no target)
+HUD refresh -> play-card
+```
+
+Expected behavior:
+
+- HUD updates immediately after playing a card
+- HUD updates after enemy moves
+- Battle enemy names and intents match the game
+- Player HP and energy update from live memory
 
 ## Test
 
-- `npm test`
+```powershell
+npm test
+```
 
-## Current assumptions
+Optional frontend build:
 
-- Real game-state reading is still mocked.
-- Overlay attachment to the game window depends on macOS accessibility permissions.
-- Recommendations are deterministic heuristics meant to validate the architecture.
+```powershell
+npm run build
+```
 
-## Main paths
+## Known Limits
 
-- frontend entry: [index.html](/Users/cheemtain/StS2_Assist/index.html)
-- frontend logic: [src/main.js](/Users/cheemtain/StS2_Assist/src/main.js)
-- frontend styles: [src/styles.css](/Users/cheemtain/StS2_Assist/src/styles.css)
-- Rust backend: [src-tauri/src/main.rs](/Users/cheemtain/StS2_Assist/src-tauri/src/main.rs)
+- Overlay attachment is still a preview-style fullscreen overlay, not the final stable attachment mode.
+- Log-driven refresh can still receive duplicate game lines in some cases; this is mostly cosmetic right now.
+- Battle is the only strongly validated real-time path at the moment.
+- CLR type and field names are version-sensitive, so future game updates may require probe adjustments.
+
+## Machine And Version Notes
+
+This setup is not strongly tied to one Windows machine, but it does depend on:
+
+- a valid `SlayTheSpire2.exe` path
+- Windows `%APPDATA%` log/save layout
+- .NET being installed
+- the current game version still using the same CLR type/field names and log formats
+
+In practice, machine portability is much better than version portability.
+
+## Main Paths
+
+- frontend entry: [index.html](/D:/StS2_Assist/repo/index.html)
+- frontend logic: [src/main.js](/D:/StS2_Assist/repo/src/main.js)
+- frontend styles: [src/styles.css](/D:/StS2_Assist/repo/src/styles.css)
+- Rust backend: [src-tauri/src/main.rs](/D:/StS2_Assist/repo/src-tauri/src/main.rs)
+- log bridge launcher: [tools/launch_sts2_with_log_bridge.ps1](/D:/StS2_Assist/repo/tools/launch_sts2_with_log_bridge.ps1)
+- CLR probe: [tools/Sts2ClrProbe/Program.cs](/D:/StS2_Assist/repo/tools/Sts2ClrProbe/Program.cs)
