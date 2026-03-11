@@ -2,3 +2,9 @@ dist
 src-tauri/target
 node_modules
 .DS_Store
+probe_hand.txt
+*.tmp
+*.log
+**/bin/
+**/obj/
+src-tauri/memory-reader.json
