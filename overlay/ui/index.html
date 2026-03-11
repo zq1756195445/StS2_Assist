@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SpireGuide HUD</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="overlay-root">
+      <aside id="sidebar" class="sidebar">
+        <section class="panel panel-header">
+          <p class="eyebrow">SpireGuide</p>
+          <h1 id="encounter">Waiting for state...</h1>
+          <p id="player-summary" class="muted"></p>
+          <p id="window-mode" class="status-line">Detached</p>
+        </section>
+
+        <section class="panel compact-panel">
+          <div class="section-title">
+            <h2>Card Reward</h2>
+            <span id="deck-score" class="pill">Power 0</span>
+          </div>
+          <ol id="card-rewards" class="ranked-list"></ol>
+        </section>
+
+        <section class="panel compact-panel">
+          <div class="section-title">
+            <h2>Archetype</h2>
+          </div>
+          <ul id="archetypes" class="chip-list"></ul>
+        </section>
+
+        <section class="panel compact-panel">
+          <div class="section-title">
+            <h2>Path</h2>
+          </div>
+          <p id="path-route" class="route"></p>
+          <p id="path-reason" class="muted"></p>
+        </section>
+
+        <section class="panel compact-panel">
+          <div class="section-title">
+            <h2>Relic</h2>
+          </div>
+          <ul id="relic-suggestions" class="detail-list"></ul>
+        </section>
+      </aside>
+
+      <section id="anchor-layer" class="anchor-layer"></section>
+    </div>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>

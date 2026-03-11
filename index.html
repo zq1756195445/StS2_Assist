@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SpireGuide HUD</title>
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <div class="overlay-root">
+      <aside id="sidebar" class="sidebar">
+        <section class="panel panel-header" data-panel="header">
+          <div class="section-title">
+            <p class="eyebrow">SpireGuide</p>
+            <button id="history-toggle" class="history-toggle" type="button">History</button>
+          </div>
+          <h1 id="encounter">Waiting for state...</h1>
+          <p id="player-summary" class="muted"></p>
+          <p id="run-summary" class="muted"></p>
+          <p id="window-mode" class="status-line">Detached</p>
+        </section>
+
+        <section class="panel compact-panel" data-panel="rewards">
+          <div class="section-title">
+            <h2>Card Reward</h2>
+            <span id="deck-score" class="pill">Power 0</span>
+          </div>
+          <ol id="card-rewards" class="ranked-list"></ol>
+        </section>
+
+        <section class="panel compact-panel" data-panel="archetypes">
+          <div class="section-title">
+            <h2>Archetype</h2>
+          </div>
+          <ul id="archetypes" class="chip-list"></ul>
+        </section>
+
+        <section class="panel compact-panel" data-panel="path">
+          <div class="section-title">
+            <h2>Path</h2>
+          </div>
+          <p id="path-route" class="route"></p>
+          <p id="path-reason" class="muted"></p>
+        </section>
+
+        <section class="panel compact-panel" data-panel="relics">
+          <div class="section-title">
+            <h2>Relic</h2>
+          </div>
+          <ul id="relic-suggestions" class="detail-list"></ul>
+        </section>
+      </aside>
+
+      <section id="anchor-layer" class="anchor-layer"></section>
+
+      <section id="history-panel" class="history-panel" hidden>
+        <div id="history-backdrop" class="history-backdrop"></div>
+        <aside class="history-sheet">
+          <section class="panel history-card">
+            <div class="section-title">
+              <h2>Run History</h2>
+              <button id="history-close" class="history-toggle" type="button">Close</button>
+            </div>
+            <div class="section-title">
+              <h2>Replay Feed</h2>
+              <span id="replay-source" class="pill">Source</span>
+            </div>
+            <p id="replay-meta" class="muted"></p>
+            <div class="replay-group">
+              <p class="replay-label">Recent Cards</p>
+              <ul id="replay-cards" class="chip-list"></ul>
+            </div>
+            <div class="replay-group">
+              <p class="replay-label">Contexts</p>
+              <ul id="replay-contexts" class="chip-list"></ul>
+            </div>
+            <div class="replay-group">
+              <p class="replay-label">Current Page</p>
+              <p id="replay-page-title"></p>
+              <p id="replay-page-context" class="muted"></p>
+              <p id="replay-page-model" class="muted"></p>
+              <ul id="replay-page-options" class="chip-list"></ul>
+            </div>
+            <div class="replay-group">
+              <p class="replay-label">Resolved Outcome</p>
+              <p id="replay-outcome-title"></p>
+              <p id="replay-outcome-meta" class="muted"></p>
+              <p class="replay-label">Offered Choices</p>
+              <ul id="replay-outcome-choices" class="chip-list"></ul>
+              <p class="replay-label">Cards Gained</p>
+              <ul id="replay-outcome-gains" class="chip-list"></ul>
+              <ul id="replay-outcome-transforms" class="detail-list"></ul>
+            </div>
+            <div class="replay-group">
+              <p class="replay-label">Choices</p>
+              <ul id="replay-choices" class="chip-list"></ul>
+            </div>
+            <div class="replay-group">
+              <p class="replay-label">Events</p>
+              <ul id="replay-events" class="chip-list"></ul>
+            </div>
+            <div class="replay-group">
+              <p class="replay-label">Action Feed</p>
+              <ul id="replay-actions" class="detail-list replay-actions"></ul>
+            </div>
+          </section>
+        </aside>
+      </section>
+    </div>
+  </body>
+</html>

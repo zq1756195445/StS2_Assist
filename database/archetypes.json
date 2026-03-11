@@ -1,0 +1,26 @@
+[
+  {
+    "id": "silent_poison",
+    "character": "Silent",
+    "name": "Poison",
+    "coreCards": ["Deadly Poison", "Bouncing Flask", "Catalyst"],
+    "keyRelics": ["Bag of Preparation"],
+    "supportCards": ["Backflip", "Footwork"]
+  },
+  {
+    "id": "silent_shiv",
+    "character": "Silent",
+    "name": "Shiv",
+    "coreCards": ["Blade Dance", "Cloak And Dagger", "Slice"],
+    "keyRelics": ["Kunai"],
+    "supportCards": ["Backflip", "Footwork"]
+  },
+  {
+    "id": "silent_block",
+    "character": "Silent",
+    "name": "Block Scaling",
+    "coreCards": ["Footwork", "Backflip"],
+    "keyRelics": ["Oddly Smooth Stone"],
+    "supportCards": ["Cloak And Dagger"]
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "kunai",
+    "name": "Kunai",
+    "suggestion": "Increase attack card density to trigger Dexterity consistently.",
+    "synergyTags": ["shiv", "attack"]
+  },
+  {
+    "id": "bag_of_preparation",
+    "name": "Bag of Preparation",
+    "suggestion": "Lean into setup turns and stronger opening hands.",
+    "synergyTags": ["draw", "setup"]
+  },
+  {
+    "id": "oddly_smooth_stone",
+    "name": "Oddly Smooth Stone",
+    "suggestion": "You can take slightly greedier elite paths with better baseline defense.",
+    "synergyTags": ["block"]
+  }
+]

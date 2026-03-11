@@ -1,0 +1,23 @@
+{
+  "name": "spire-guide",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Rust + Tauri MVP assistant overlay for Slay the Spire 2",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "start": "tauri dev",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "replay:probe": "python3 tools/replay_probe.py",
+    "test": "zsh -lc '. \"$HOME/.cargo/env\" && cargo test --manifest-path src-tauri/Cargo.toml'"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.4.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.4.0",
+    "vite": "^7.1.0"
+  }
+}

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "catalyst",
+    "name": "Catalyst",
+    "character": "Silent",
+    "tags": ["skill", "poison", "scaling"],
+    "baseScore": 4,
+    "synergy": {
+      "poison": 4,
+      "shiv": -1,
+      "block": 0
+    }
+  },
+  {
+    "id": "backflip",
+    "name": "Backflip",
+    "character": "Silent",
+    "tags": ["skill", "block", "draw"],
+    "baseScore": 3,
+    "synergy": {
+      "poison": 1,
+      "shiv": 1,
+      "block": 2
+    }
+  },
+  {
+    "id": "slice",
+    "name": "Slice",
+    "character": "Silent",
+    "tags": ["attack", "shiv", "tempo"],
+    "baseScore": 2,
+    "synergy": {
+      "poison": -1,
+      "shiv": 2,
+      "block": 0
+    }
+  },
+  {
+    "id": "deadly_poison",
+    "name": "Deadly Poison",
+    "character": "Silent",
+    "tags": ["skill", "poison"],
+    "baseScore": 3,
+    "synergy": {
+      "poison": 3,
+      "shiv": -1,
+      "block": 0
+    }
+  },
+  {
+    "id": "bouncing_flask",
+    "name": "Bouncing Flask",
+    "character": "Silent",
+    "tags": ["skill", "poison"],
+    "baseScore": 3,
+    "synergy": {
+      "poison": 3,
+      "shiv": -1,
+      "block": 0
+    }
+  },
+  {
+    "id": "footwork",
+    "name": "Footwork",
+    "character": "Silent",
+    "tags": ["power", "block", "scaling"],
+    "baseScore": 4,
+    "synergy": {
+      "poison": 1,
+      "shiv": 1,
+      "block": 3
+    }
+  },
+  {
+    "id": "blade_dance",
+    "name": "Blade Dance",
+    "character": "Silent",
+    "tags": ["skill", "shiv"],
+    "baseScore": 3,
+    "synergy": {
+      "poison": -1,
+      "shiv": 3,
+      "block": 0
+    }
+  },
+  {
+    "id": "cloak_and_dagger",
+    "name": "Cloak And Dagger",
+    "character": "Silent",
+    "tags": ["skill", "shiv", "block"],
+    "baseScore": 3,
+    "synergy": {
+      "poison": 0,
+      "shiv": 2,
+      "block": 2
+    }
+  }
+]
