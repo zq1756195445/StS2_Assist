@@ -1,0 +1,13 @@
+D:\StS2_Assist\repo\tools\Sts2EventHook\bin\Debug\net8.0\Sts2EventHook.deps.json
+D:\StS2_Assist\repo\tools\Sts2EventHook\bin\Debug\net8.0\Sts2EventHook.dll
+D:\StS2_Assist\repo\tools\Sts2EventHook\bin\Debug\net8.0\Sts2EventHook.pdb
+D:\StS2_Assist\repo\tools\Sts2EventHook\obj\Debug\net8.0\Sts2EventHook.csproj.AssemblyReference.cache
+D:\StS2_Assist\repo\tools\Sts2EventHook\obj\Debug\net8.0\Sts2EventHook.GeneratedMSBuildEditorConfig.editorconfig
+D:\StS2_Assist\repo\tools\Sts2EventHook\obj\Debug\net8.0\Sts2EventHook.AssemblyInfoInputs.cache
+D:\StS2_Assist\repo\tools\Sts2EventHook\obj\Debug\net8.0\Sts2EventHook.AssemblyInfo.cs
+D:\StS2_Assist\repo\tools\Sts2EventHook\obj\Debug\net8.0\Sts2EventHook.csproj.CoreCompileInputs.cache
+D:\StS2_Assist\repo\tools\Sts2EventHook\obj\Debug\net8.0\Sts2EventHook.sourcelink.json
+D:\StS2_Assist\repo\tools\Sts2EventHook\obj\Debug\net8.0\Sts2EventHook.dll
+D:\StS2_Assist\repo\tools\Sts2EventHook\obj\Debug\net8.0\refint\Sts2EventHook.dll
+D:\StS2_Assist\repo\tools\Sts2EventHook\obj\Debug\net8.0\Sts2EventHook.pdb
+D:\StS2_Assist\repo\tools\Sts2EventHook\obj\Debug\net8.0\ref\Sts2EventHook.dll

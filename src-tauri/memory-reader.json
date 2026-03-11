@@ -1,0 +1,18 @@
+{
+  "processNames": [
+    "SlayTheSpire2.exe",
+    "SlayTheSpire2"
+  ],
+  "hand": {
+    "moduleName": "SlayTheSpire2.exe",
+    "baseOffset": 0,
+    "pointerOffsets": [
+      0,
+      0
+    ],
+    "readLen": 256,
+    "encoding": "utf8",
+    "separator": "|",
+    "maxCards": 12
+  }
+}

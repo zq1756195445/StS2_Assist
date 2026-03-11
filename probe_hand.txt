@@ -1,0 +1,1819 @@
+Attached to PID 42348 (SlayTheSpire2)
+CLR: 9.0.725.31616
+
+Interesting managed types
+     605  System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Cards.TemporaryCardCost>
+     312  MegaCrit.Sts2.Core.Saves.CardStats
+     107  MegaCrit.Sts2.Core.Nodes.Combat.NSelectionReticle
+      96  System.RuntimeMethodHandle
+      41  MegaCrit.Sts2.Core.Saves.Runs.SerializableCard
+      35  MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox
+      32  System.RuntimeTypeHandle
+      30  MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder
+      30  MegaCrit.Sts2.Core.Nodes.Cards.NCard
+      30  MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight
+      22  System.Collections.Generic.HashSet<MegaCrit.Sts2.Core.Entities.Cards.CardKeyword>
+      21  System.Action<MegaCrit.Sts2.Core.Combat.CombatState>
+      18  MegaCrit.Sts2.Core.Models.CardModel[]
+      17  MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer+AnonymizedMessageHandlerDelegate
+      17  MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer+MessageHandler[]
+      16  System.Collections.Generic.List<MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer+MessageHandler>
+      15  System.Diagnostics.Tracing.TraceLoggingEventHandleTable
+      14  System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>
+      12  System.Text.Json.Serialization.Converters.EnumConverter<MegaCrit.Sts2.Core.Runs.CardRarityOddsType>+EnumFieldInfo
+      10  System.Action<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolder>
+      10  System.Action<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder>
+       9  MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad
+       9  System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>
+       9  System.Collections.Generic.List<MegaCrit.Sts2.Core.Saves.Runs.SerializableCard>
+       8  Microsoft.Win32.SafeHandles.SafeWaitHandle
+       8  System.Text.Json.Serialization.Converters.EnumConverter<MegaCrit.Sts2.Core.Runs.CardCreationSource>+EnumFieldInfo
+       7  MegaCrit.Sts2.Core.Models.Cards.DefendIronclad
+       7  Microsoft.Win32.SafeHandles.SafeRegistryHandle
+       7  Sentry.Internal.DiscardReason
+       7  System.Text.Json.Serialization.Metadata.JsonPropertyInfo<MegaCrit.Sts2.Core.Saves.Runs.SerializableCard>
+       6  MegaCrit.Sts2.Core.Entities.Cards.CardPile
+       6  System.Action<System.Object, MegaCrit.Sts2.Core.Saves.Runs.SerializableCard>
+       6  System.Func<System.Object, MegaCrit.Sts2.Core.Saves.Runs.SerializableCard>
+       6  System.Text.Json.Serialization.Converters.EnumConverter<MegaCrit.Sts2.Core.Runs.CardCreationSource>+EnumFieldInfo[]
+       6  System.Text.Json.Serialization.Metadata.JsonPropertyInfo<MegaCrit.Sts2.Core.Saves.Runs.SerializableCard>+<>c__DisplayClass10_0
+       5  MegaCrit.Sts2.Core.Combat.History.Entries.CardDrawnEntry
+       5  MegaCrit.Sts2.Core.Entities.Cards.CardEnergyCost
+       5  MegaCrit.Sts2.Core.GameActions.Multiplayer.NetCombatCardDb+<>c__DisplayClass8_0
+       5  MegaCrit.Sts2.Core.MonsterMoves.Intents.AbstractIntent[]
+       5  MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder
+       5  System.Action<MegaCrit.Sts2.Core.Models.CardModel>
+       5  System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Cards.LocalCostModifier>
+       5  System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Multiplayer.NetFullCombatState+CardState>
+       5  System.Text.Json.Serialization.Converters.EnumConverter<MegaCrit.Sts2.Core.Runs.CardRarityOddsType>+EnumFieldInfo[]
+       4  MegaCrit.Sts2.Core.Saves.Runs.SerializableCard[]
+       4  Steamworks.InputHandle_t[]
+       4  Steamworks.InteropHelp+UTF8StringHandle
+       4  System.Collections.Generic.List<System.Text.Json.Serialization.Converters.EnumConverter<MegaCrit.Sts2.Core.Runs.CardCreationSource>+EnumFieldInfo>
+       4  System.Text.Json.Serialization.Metadata.JsonPropertyInfo<System.Collections.Generic.List<MegaCrit.Sts2.Core.Saves.Runs.SerializableCard>>
+       3  MegaCrit.Sts2.Core.Entities.Cards.CardKeyword[]
+       3  MegaCrit.Sts2.Core.Entities.Multiplayer.NetFullCombatState+CardState[]
+       3  MegaCrit.Sts2.Core.Models.Cards.Anger
+       3  MegaCrit.Sts2.Core.Models.Cards.Armaments
+       3  MegaCrit.Sts2.Core.Models.Cards.Bash
+       3  MegaCrit.Sts2.Core.Models.Cards.Stomp
+       3  MegaCrit.Sts2.Core.Multiplayer.Game.MessageHandlerDelegate<MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Sync.OptionIndexChosenMessage>
+       3  System.Action<System.Object, System.Collections.Generic.List<MegaCrit.Sts2.Core.Saves.Runs.SerializableCard>>
+       3  System.Collections.Generic.List<MegaCrit.Sts2.Core.Runs.History.CardChoiceHistoryEntry>
+       3  System.Collections.Generic.List<MegaCrit.Sts2.Core.Runs.History.CardEnchantmentHistoryEntry>
+       3  System.Collections.Generic.List<MegaCrit.Sts2.Core.Runs.History.CardTransformationHistoryEntry>
+       3  System.Collections.Generic.List<System.Text.Json.Serialization.Converters.EnumConverter<MegaCrit.Sts2.Core.Runs.CardRarityOddsType>+EnumFieldInfo>
+       3  System.Func<MegaCrit.Sts2.Core.Models.CardModel, System.Boolean>
+       3  System.Func<MegaCrit.Sts2.Core.Nodes.Combat.NCreature, System.Single>
+       3  System.Func<System.Object, System.Collections.Generic.List<MegaCrit.Sts2.Core.Saves.Runs.SerializableCard>>
+       3  System.Text.Json.Serialization.Metadata.JsonPropertyInfo<System.Collections.Generic.List<MegaCrit.Sts2.Core.Saves.Runs.SerializableCard>>+<>c__DisplayClass10_0
+       3  System.Threading.RegisteredWaitHandle
+       2  Internal.Win32.SafeHandles.SafeRegistryHandle
+       2  MegaCrit.Sts2.Core.Combat.History.CombatHistoryEntry[]
+       2  MegaCrit.Sts2.Core.Entities.Cards.CardPile[]
+       2  MegaCrit.Sts2.Core.Entities.Multiplayer.NetFullCombatState+CombatPileState[]
+       2  MegaCrit.Sts2.Core.Entities.Multiplayer.NetFullCombatState+CreatureState[]
+       2  MegaCrit.Sts2.Core.Entities.Multiplayer.NetFullCombatState+PlayerState[]
+       2  MegaCrit.Sts2.Core.Entities.Multiplayer.NetFullCombatState+RelicState[]
+       2  MegaCrit.Sts2.Core.GameActions.Multiplayer.NetCombatCardDb+Subscription[]
+       2  MegaCrit.Sts2.Core.MonsterMoves.Intents.SingleAttackIntent
+       2  MegaCrit.Sts2.Core.MonsterMoves.Intents.SingleAttackIntent+<>c__DisplayClass4_0
+       2  MegaCrit.Sts2.Core.Multiplayer.Game.MessageHandlerDelegate<MegaCrit.Sts2.Core.Multiplayer.Messages.Game.ActionEnqueuedMessage>
+       2  MegaCrit.Sts2.Core.Multiplayer.Game.MessageHandlerDelegate<MegaCrit.Sts2.Core.Multiplayer.Messages.Game.CardRemovedMessage>
+       2  MegaCrit.Sts2.Core.Multiplayer.Game.MessageHandlerDelegate<MegaCrit.Sts2.Core.Multiplayer.Messages.Game.Flavor.RestSiteOptionHoveredMessage>
+       2  MegaCrit.Sts2.Core.Multiplayer.Game.MessageHandlerDelegate<MegaCrit.Sts2.Core.Multiplayer.Messages.Game.HookActionEnqueuedMessage>
+
+Managed strings containing 'ANGER'
+0x21EC855DF88  Anger
+0x21EC892B800  ANGER
+0x21EC84C7E20  ANGER.description
+0x21EC84C7ED8  ANGER.title
+0x21ECBB2B600  card_atlas/ironclad/anger
+0x21EC8A8FA80  ironclad/anger
+0x21EC8A6C930  ironclad/anger.png
+0x21EC85F7668  It's dangerous to go alone! ...Just sayin'.
+0x21EC8618318  PLACEHOLDER: {character} learned never to talk to strangers.
+0x21EC85F01B0  Reveal your future by revealing the tiles!
+
+Select [gold]Small Divination[/gold] or [gold]Big Divination[/gold] and reveal the tiles within the Crystal Sphere.
+
+Once an item is revealed, you will receive it at the end of the session...
+
+But beware, revealing some items may be [red]dangerous[/red]!
+0x21E800CD598  TextChangeRejected
+0x21EC8618AB8  The stranger looks at you menacingly. It seems like only one of you is making it out of here with the key.
+0x21EC8618438  The stranger thanks you for your help, and rewards you handsomely.
+0x21EC8612C80  You [jitter]wrest[/jitter] the [blue]sword[/blue] out of the statue's hands and the whole thing crumbles apart!
+
+It's too dangerous to pick up whatever was [gold][jitter]glittering[/jitter][/gold] at the bottom of the pond now...
+
+Inspecting the [blue]sword[/blue], you sense an incredible [green]dormant power[/green] within.
+0x21EC854EC58  You cannot change the past with anger.
+0x21EC861C518  You spend a decent amount of time wading through the [red][sine]dangerous garbage[/sine][/red] and find a [gold]relic of the past[/gold]!
+
+Why was this thrown out?
+0x21EC8613E10  You've never seen so much [gold]gold[/gold] in one place!
+
+[sine]All of the [/sine][blue]Merchant's[/blue][sine] wares can be bought...[/sine]
+{Monologue}
+[sine]Dangerous thugs can be paid off...[/sine]
+
+The [red][sine]feverishly greedy[/sine][/red] thoughts stay with you forever...
+
+Sample objects referencing card strings
+0x21EC8552478  System.Collections.Generic.Dictionary<System.String, System.String>+Entry[]
+0x21EC8587398  System.Collections.Generic.Dictionary<System.String, System.String>+Entry[]
+0x21EC8607998  System.Collections.Generic.Dictionary<System.String, System.String>+Entry[]
+0x21EC871C638  System.Collections.Generic.Dictionary<System.String, System.String>+Entry[]
+0x21EC892B7E0  MegaCrit.Sts2.Core.Models.ModelId
+0x21EC892B980  MegaCrit.Sts2.Core.Models.ModelId
+0x21EC89EBC28  System.Collections.Generic.Dictionary<System.String, System.Int32>+Entry[]
+0x21EC89FA570  System.String[]
+0x21EC8A31708  MegaCrit.Sts2.Core.Models.ModelId
+0x21EC8A6C908  MegaCrit.Sts2.Core.Assets.TpSheetSprite
+0x21EC8A939B8  System.Collections.Generic.Dictionary<System.String, MegaCrit.Sts2.Core.Assets.AtlasManager+SpriteInfo>+Entry[]
+0x21EC8AADF28  MegaCrit.Sts2.Core.Models.ModelId
+0x21EC8C734D0  MegaCrit.Sts2.Core.Models.ModelId
+0x21EC8C750A8  MegaCrit.Sts2.Core.Models.ModelId
+0x21ECBB2B6B0  System.Collections.Concurrent.ConcurrentDictionary<System.String, Godot.AtlasTexture>+Node
+0x21ECBB2B6E0  MegaCrit.Sts2.Core.Localization.LocString
+
+Detailed target type dumps
+
+MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder
+  0x21ECBB269F0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330676124832
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB26AB0 (System.WeakReference<Godot.GodotObject>)
+    _hitbox [MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl] -> 0x21ECBB26AF0 (MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330676135152
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB26B58 (System.WeakReference<Godot.GodotObject>)
+      _ignoreDragThreshold [System.Single] = -1
+      <IsFocused>k__BackingField [System.Boolean] = False
+      _isEnabled [System.Boolean] = True
+      _isHovered [System.Boolean] = False
+      _isControllerFocused [System.Boolean] = False
+      _isControllerNavigable [System.Boolean] = False
+      _isPressed [System.Boolean] = False
+    <CardNode>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCard] -> 0x21EC84FADD8 (MegaCrit.Sts2.Core.Nodes.Cards.NCard)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330241186320
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FB188 (System.WeakReference<Godot.GodotObject>)
+      _model [MegaCrit.Sts2.Core.Models.CardModel] -> 0x21ECBB1D258 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+      _titleLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FB248 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _descriptionLabel [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21EC84FB1F0 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _ancientPortrait [Godot.TextureRect] -> 0x21ECBB25958 (Godot.TextureRect)
+      _portrait [Godot.TextureRect] -> 0x21ECBB258F0 (Godot.TextureRect)
+      _frame [Godot.TextureRect] -> 0x21ECBB256E8 (Godot.TextureRect)
+      _ancientBorder [Godot.TextureRect] -> 0x21ECBB25750 (Godot.TextureRect)
+      _ancientBanner [Godot.Control] -> 0x21ECBB25820 (Godot.TextureRect)
+      _ancientTextBg [Godot.TextureRect] -> 0x21ECBB257B8 (Godot.TextureRect)
+      _ancientHighlight [Godot.TextureRect] -> 0x21ECBB25888 (Godot.TextureRect)
+      _portraitBorder [Godot.TextureRect] -> 0x21ECBB259C0 (Godot.TextureRect)
+      _banner [Godot.TextureRect] -> 0x21ECBB25E00 (Godot.TextureRect)
+      _lock [Godot.TextureRect] -> 0x21ECBB25E68 (Godot.TextureRect)
+      _typePlaque [Godot.NinePatchRect] -> 0x21ECBB25ED0 (Godot.NinePatchRect)
+      _typeLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FB298 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _portraitCanvasGroup [Godot.CanvasGroup] -> 0x21ECBB25A28 (Godot.CanvasGroup)
+      _sparkles [Godot.GpuParticles2D] -> 0x21ECBB26070 (Godot.GpuParticles2D)
+      _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84FAF88 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+      _energyIcon [Godot.TextureRect] -> 0x21ECBB25D30 (Godot.TextureRect)
+      _energyLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FB2E8 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableEnergyIcon [Godot.TextureRect] -> 0x21ECBB25F38 (Godot.TextureRect)
+      _starIcon [Godot.TextureRect] -> 0x21ECBB25D98 (Godot.TextureRect)
+      _starLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FB338 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableStarIcon [Godot.TextureRect] -> 0x21ECBB25FA0 (Godot.TextureRect)
+      _overlayContainer [Godot.Node] -> 0x21ECBB26210 (Godot.Control)
+      _enchantmentTab [Godot.Control] -> 0x21ECBB260D8 (Godot.TextureRect)
+      _enchantmentVfxOverride [Godot.TextureRect] -> 0x21ECBB26140 (Godot.TextureRect)
+      _enchantmentIcon [Godot.TextureRect] -> 0x21ECBB26008 (Godot.TextureRect)
+      _enchantmentLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FB388 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      <CardHighlight>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight] -> 0x21EC84FB1A0 (MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight)
+      <Body>k__BackingField [Godot.Control] -> 0x21ECBB261A8 (Godot.Control)
+      _pretendCardCanBePlayed [System.Boolean] = False
+      _forceUnpoweredPreview [System.Boolean] = False
+      _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+      _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FAFA8 (MegaCrit.Sts2.Core.Localization.LocString)
+      _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FB020 (MegaCrit.Sts2.Core.Localization.LocString)
+      _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FB098 (MegaCrit.Sts2.Core.Localization.LocString)
+      _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FB110 (MegaCrit.Sts2.Core.Localization.LocString)
+      <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+      ModelChanged [System.Action<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB26C10 (System.Action<MegaCrit.Sts2.Core.Models.CardModel>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _flash [Godot.Control] -> 0x21ECBB271E0 (Godot.TextureRect)
+    _handIndexLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21ECBB26B98 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+    _targetAngle [System.Single] = -8
+    _angleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DD48 (System.Threading.CancellationTokenSource)
+    _positionCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DCE8 (System.Threading.CancellationTokenSource)
+    _scaleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DD18 (System.Threading.CancellationTokenSource)
+    _hand [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand] -> 0x21ECBB13280 (MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330671586304
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB13470 (System.WeakReference<Godot.GodotObject>)
+      _selectCardShortcuts [Godot.StringName[]] -> 0x21ECBB13380 (Godot.StringName[])
+        <array length=10>
+          [0] 0x21EC8B68E80 (Godot.StringName)
+          [1] 0x21EC8B68EB8 (Godot.StringName)
+          [2] 0x21EC8B68EF0 (Godot.StringName)
+          [3] 0x21EC8B68F28 (Godot.StringName)
+          [4] 0x21EC8B68F60 (Godot.StringName)
+          [5] 0x21EC8B68F98 (Godot.StringName)
+          [6] 0x21EC8B68FD0 (Godot.StringName)
+          [7] 0x21EC8B69008 (Godot.StringName)
+      <CardHolderContainer>k__BackingField [Godot.Control] -> 0x21ECBB17B90 (Godot.Control)
+      <PeekButton>k__BackingField [MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton] -> 0x21ECBB137B8 (MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton)
+      _selectModeBackstop [Godot.Control] -> 0x21ECBB17B28 (Godot.ColorRect)
+      _selectedCards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB133E8 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _upgradePreviewContainer [Godot.Control] -> 0x21ECBB17BF8 (Godot.Control)
+      _selectedHandCardContainer [MegaCrit.Sts2.Core.Nodes.Combat.NSelectedHandCardContainer] -> 0x21ECBB134B0 (MegaCrit.Sts2.Core.Nodes.Combat.NSelectedHandCardContainer)
+      _upgradePreview [MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview] -> 0x21ECBB13520 (MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview)
+      _selectModeConfirmButton [MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton] -> 0x21ECBB135A8 (MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton)
+      _selectionHeader [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21ECBB13738 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _combatState [MegaCrit.Sts2.Core.Combat.CombatState] -> 0x21ECBB09990 (MegaCrit.Sts2.Core.Combat.CombatState)
+      _currentMode [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+Mode] = 1
+      _draggedHolderIndex [System.Int32] = -1
+      _lastFocusedHolderIdx [System.Int32] = -1
+      _holdersAwaitingQueue [System.Collections.Generic.Dictionary<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, System.Int32>] -> 0x21ECBB13408 (System.Collections.Generic.Dictionary<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, System.Int32>)
+      _isDisabled [System.Boolean] = False
+      _animInTween [Godot.Tween] -> 0x21ECBB23B78 (Godot.Tween)
+    <InSelectMode>k__BackingField [System.Boolean] = False
+  0x21ECBB28AC0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330655077824
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB28B80 (System.WeakReference<Godot.GodotObject>)
+    _hitbox [MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl] -> 0x21ECBB28BC0 (MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330655075760
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB28C28 (System.WeakReference<Godot.GodotObject>)
+      _ignoreDragThreshold [System.Single] = -1
+      <IsFocused>k__BackingField [System.Boolean] = False
+      _isEnabled [System.Boolean] = True
+      _isHovered [System.Boolean] = False
+      _isControllerFocused [System.Boolean] = False
+      _isControllerNavigable [System.Boolean] = False
+      _isPressed [System.Boolean] = False
+    <CardNode>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCard] -> 0x21EC84FA7D8 (MegaCrit.Sts2.Core.Nodes.Cards.NCard)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330241153296
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FAB88 (System.WeakReference<Godot.GodotObject>)
+      _model [MegaCrit.Sts2.Core.Models.CardModel] -> 0x21ECBB1E0E0 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+      _titleLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FAC48 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _descriptionLabel [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21EC84FABF0 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _ancientPortrait [Godot.TextureRect] -> 0x21ECBB27E08 (Godot.TextureRect)
+      _portrait [Godot.TextureRect] -> 0x21ECBB27DA0 (Godot.TextureRect)
+      _frame [Godot.TextureRect] -> 0x21ECBB27B98 (Godot.TextureRect)
+      _ancientBorder [Godot.TextureRect] -> 0x21ECBB27C00 (Godot.TextureRect)
+      _ancientBanner [Godot.Control] -> 0x21ECBB27CD0 (Godot.TextureRect)
+      _ancientTextBg [Godot.TextureRect] -> 0x21ECBB27C68 (Godot.TextureRect)
+      _ancientHighlight [Godot.TextureRect] -> 0x21ECBB27D38 (Godot.TextureRect)
+      _portraitBorder [Godot.TextureRect] -> 0x21ECBB27E70 (Godot.TextureRect)
+      _banner [Godot.TextureRect] -> 0x21ECBB28010 (Godot.TextureRect)
+      _lock [Godot.TextureRect] -> 0x21ECBB28078 (Godot.TextureRect)
+      _typePlaque [Godot.NinePatchRect] -> 0x21ECBB280E0 (Godot.NinePatchRect)
+      _typeLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FAC98 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _portraitCanvasGroup [Godot.CanvasGroup] -> 0x21ECBB27ED8 (Godot.CanvasGroup)
+      _sparkles [Godot.GpuParticles2D] -> 0x21ECBB28280 (Godot.GpuParticles2D)
+      _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84FA988 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+      _energyIcon [Godot.TextureRect] -> 0x21ECBB27F40 (Godot.TextureRect)
+      _energyLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FACE8 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableEnergyIcon [Godot.TextureRect] -> 0x21ECBB28148 (Godot.TextureRect)
+      _starIcon [Godot.TextureRect] -> 0x21ECBB27FA8 (Godot.TextureRect)
+      _starLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FAD38 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableStarIcon [Godot.TextureRect] -> 0x21ECBB281B0 (Godot.TextureRect)
+      _overlayContainer [Godot.Node] -> 0x21ECBB28420 (Godot.Control)
+      _enchantmentTab [Godot.Control] -> 0x21ECBB282E8 (Godot.TextureRect)
+      _enchantmentVfxOverride [Godot.TextureRect] -> 0x21ECBB28350 (Godot.TextureRect)
+      _enchantmentIcon [Godot.TextureRect] -> 0x21ECBB28218 (Godot.TextureRect)
+      _enchantmentLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FAD88 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      <CardHighlight>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight] -> 0x21EC84FABA0 (MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight)
+      <Body>k__BackingField [Godot.Control] -> 0x21ECBB283B8 (Godot.Control)
+      _pretendCardCanBePlayed [System.Boolean] = False
+      _forceUnpoweredPreview [System.Boolean] = False
+      _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+      _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FA9A8 (MegaCrit.Sts2.Core.Localization.LocString)
+      _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FAA20 (MegaCrit.Sts2.Core.Localization.LocString)
+      _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FAA98 (MegaCrit.Sts2.Core.Localization.LocString)
+      _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FAB10 (MegaCrit.Sts2.Core.Localization.LocString)
+      <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+      ModelChanged [System.Action<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB28CE0 (System.Action<MegaCrit.Sts2.Core.Models.CardModel>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _flash [Godot.Control] -> 0x21ECBB292B0 (Godot.TextureRect)
+    _handIndexLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21ECBB28C68 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+    _targetAngle [System.Single] = -4
+    _angleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DDD8 (System.Threading.CancellationTokenSource)
+    _positionCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DD78 (System.Threading.CancellationTokenSource)
+    _scaleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DDA8 (System.Threading.CancellationTokenSource)
+    _hand [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand] -> 0x21ECBB13280 (MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330671586304
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB13470 (System.WeakReference<Godot.GodotObject>)
+      _selectCardShortcuts [Godot.StringName[]] -> 0x21ECBB13380 (Godot.StringName[])
+        <array length=10>
+          [0] 0x21EC8B68E80 (Godot.StringName)
+          [1] 0x21EC8B68EB8 (Godot.StringName)
+          [2] 0x21EC8B68EF0 (Godot.StringName)
+          [3] 0x21EC8B68F28 (Godot.StringName)
+          [4] 0x21EC8B68F60 (Godot.StringName)
+          [5] 0x21EC8B68F98 (Godot.StringName)
+          [6] 0x21EC8B68FD0 (Godot.StringName)
+          [7] 0x21EC8B69008 (Godot.StringName)
+      <CardHolderContainer>k__BackingField [Godot.Control] -> 0x21ECBB17B90 (Godot.Control)
+      <PeekButton>k__BackingField [MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton] -> 0x21ECBB137B8 (MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton)
+      _selectModeBackstop [Godot.Control] -> 0x21ECBB17B28 (Godot.ColorRect)
+      _selectedCards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB133E8 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _upgradePreviewContainer [Godot.Control] -> 0x21ECBB17BF8 (Godot.Control)
+      _selectedHandCardContainer [MegaCrit.Sts2.Core.Nodes.Combat.NSelectedHandCardContainer] -> 0x21ECBB134B0 (MegaCrit.Sts2.Core.Nodes.Combat.NSelectedHandCardContainer)
+      _upgradePreview [MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview] -> 0x21ECBB13520 (MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview)
+      _selectModeConfirmButton [MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton] -> 0x21ECBB135A8 (MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton)
+      _selectionHeader [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21ECBB13738 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _combatState [MegaCrit.Sts2.Core.Combat.CombatState] -> 0x21ECBB09990 (MegaCrit.Sts2.Core.Combat.CombatState)
+      _currentMode [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+Mode] = 1
+      _draggedHolderIndex [System.Int32] = -1
+      _lastFocusedHolderIdx [System.Int32] = -1
+      _holdersAwaitingQueue [System.Collections.Generic.Dictionary<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, System.Int32>] -> 0x21ECBB13408 (System.Collections.Generic.Dictionary<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, System.Int32>)
+      _isDisabled [System.Boolean] = False
+      _animInTween [Godot.Tween] -> 0x21ECBB23B78 (Godot.Tween)
+    <InSelectMode>k__BackingField [System.Boolean] = False
+  0x21ECBB2A1F8
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330655079888
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2A2B8 (System.WeakReference<Godot.GodotObject>)
+    _hitbox [MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl] -> 0x21ECBB2A2F8 (MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330655069568
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2A360 (System.WeakReference<Godot.GodotObject>)
+      _ignoreDragThreshold [System.Single] = -1
+      <IsFocused>k__BackingField [System.Boolean] = False
+      _isEnabled [System.Boolean] = True
+      _isHovered [System.Boolean] = False
+      _isControllerFocused [System.Boolean] = False
+      _isControllerNavigable [System.Boolean] = False
+      _isPressed [System.Boolean] = False
+    <CardNode>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCard] -> 0x21EC84FA1D8 (MegaCrit.Sts2.Core.Nodes.Cards.NCard)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330241101696
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FA588 (System.WeakReference<Godot.GodotObject>)
+      _model [MegaCrit.Sts2.Core.Models.CardModel] -> 0x21ECBB1CF50 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+      _titleLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA648 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _descriptionLabel [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21EC84FA5F0 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _ancientPortrait [Godot.TextureRect] -> 0x21ECBB29830 (Godot.TextureRect)
+      _portrait [Godot.TextureRect] -> 0x21ECBB297C8 (Godot.TextureRect)
+      _frame [Godot.TextureRect] -> 0x21ECBB295C0 (Godot.TextureRect)
+      _ancientBorder [Godot.TextureRect] -> 0x21ECBB29628 (Godot.TextureRect)
+      _ancientBanner [Godot.Control] -> 0x21ECBB296F8 (Godot.TextureRect)
+      _ancientTextBg [Godot.TextureRect] -> 0x21ECBB29690 (Godot.TextureRect)
+      _ancientHighlight [Godot.TextureRect] -> 0x21ECBB29760 (Godot.TextureRect)
+      _portraitBorder [Godot.TextureRect] -> 0x21ECBB29898 (Godot.TextureRect)
+      _banner [Godot.TextureRect] -> 0x21ECBB29A38 (Godot.TextureRect)
+      _lock [Godot.TextureRect] -> 0x21ECBB29AA0 (Godot.TextureRect)
+      _typePlaque [Godot.NinePatchRect] -> 0x21ECBB29B08 (Godot.NinePatchRect)
+      _typeLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA698 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _portraitCanvasGroup [Godot.CanvasGroup] -> 0x21ECBB29900 (Godot.CanvasGroup)
+      _sparkles [Godot.GpuParticles2D] -> 0x21ECBB29CA8 (Godot.GpuParticles2D)
+      _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84FA388 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+      _energyIcon [Godot.TextureRect] -> 0x21ECBB29968 (Godot.TextureRect)
+      _energyLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA6E8 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableEnergyIcon [Godot.TextureRect] -> 0x21ECBB29B70 (Godot.TextureRect)
+      _starIcon [Godot.TextureRect] -> 0x21ECBB299D0 (Godot.TextureRect)
+      _starLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA738 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableStarIcon [Godot.TextureRect] -> 0x21ECBB29BD8 (Godot.TextureRect)
+      _overlayContainer [Godot.Node] -> 0x21ECBB29E48 (Godot.Control)
+      _enchantmentTab [Godot.Control] -> 0x21ECBB29D10 (Godot.TextureRect)
+      _enchantmentVfxOverride [Godot.TextureRect] -> 0x21ECBB29D78 (Godot.TextureRect)
+      _enchantmentIcon [Godot.TextureRect] -> 0x21ECBB29C40 (Godot.TextureRect)
+      _enchantmentLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA788 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      <CardHighlight>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight] -> 0x21EC84FA5A0 (MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight)
+      <Body>k__BackingField [Godot.Control] -> 0x21ECBB29DE0 (Godot.Control)
+      _pretendCardCanBePlayed [System.Boolean] = False
+      _forceUnpoweredPreview [System.Boolean] = False
+      _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+      _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FA3A8 (MegaCrit.Sts2.Core.Localization.LocString)
+      _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FA420 (MegaCrit.Sts2.Core.Localization.LocString)
+      _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FA498 (MegaCrit.Sts2.Core.Localization.LocString)
+      _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FA510 (MegaCrit.Sts2.Core.Localization.LocString)
+      <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+      ModelChanged [System.Action<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB2A418 (System.Action<MegaCrit.Sts2.Core.Models.CardModel>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _flash [Godot.Control] -> 0x21ECBB2A9E8 (Godot.TextureRect)
+    _handIndexLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21ECBB2A3A0 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+    _targetAngle [System.Single] = 0
+    _angleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DE68 (System.Threading.CancellationTokenSource)
+    _positionCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DE08 (System.Threading.CancellationTokenSource)
+    _scaleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DE38 (System.Threading.CancellationTokenSource)
+    _hand [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand] -> 0x21ECBB13280 (MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330671586304
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB13470 (System.WeakReference<Godot.GodotObject>)
+      _selectCardShortcuts [Godot.StringName[]] -> 0x21ECBB13380 (Godot.StringName[])
+        <array length=10>
+          [0] 0x21EC8B68E80 (Godot.StringName)
+          [1] 0x21EC8B68EB8 (Godot.StringName)
+          [2] 0x21EC8B68EF0 (Godot.StringName)
+          [3] 0x21EC8B68F28 (Godot.StringName)
+          [4] 0x21EC8B68F60 (Godot.StringName)
+          [5] 0x21EC8B68F98 (Godot.StringName)
+          [6] 0x21EC8B68FD0 (Godot.StringName)
+          [7] 0x21EC8B69008 (Godot.StringName)
+      <CardHolderContainer>k__BackingField [Godot.Control] -> 0x21ECBB17B90 (Godot.Control)
+      <PeekButton>k__BackingField [MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton] -> 0x21ECBB137B8 (MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton)
+      _selectModeBackstop [Godot.Control] -> 0x21ECBB17B28 (Godot.ColorRect)
+      _selectedCards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB133E8 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _upgradePreviewContainer [Godot.Control] -> 0x21ECBB17BF8 (Godot.Control)
+      _selectedHandCardContainer [MegaCrit.Sts2.Core.Nodes.Combat.NSelectedHandCardContainer] -> 0x21ECBB134B0 (MegaCrit.Sts2.Core.Nodes.Combat.NSelectedHandCardContainer)
+      _upgradePreview [MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview] -> 0x21ECBB13520 (MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview)
+      _selectModeConfirmButton [MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton] -> 0x21ECBB135A8 (MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton)
+      _selectionHeader [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21ECBB13738 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _combatState [MegaCrit.Sts2.Core.Combat.CombatState] -> 0x21ECBB09990 (MegaCrit.Sts2.Core.Combat.CombatState)
+      _currentMode [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+Mode] = 1
+      _draggedHolderIndex [System.Int32] = -1
+      _lastFocusedHolderIdx [System.Int32] = -1
+      _holdersAwaitingQueue [System.Collections.Generic.Dictionary<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, System.Int32>] -> 0x21ECBB13408 (System.Collections.Generic.Dictionary<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, System.Int32>)
+      _isDisabled [System.Boolean] = False
+      _animInTween [Godot.Tween] -> 0x21ECBB23B78 (Godot.Tween)
+    <InSelectMode>k__BackingField [System.Boolean] = False
+  0x21ECBB2BA18
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330655086080
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2BAD8 (System.WeakReference<Godot.GodotObject>)
+    _hitbox [MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl] -> 0x21ECBB2BB18 (MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330655088144
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2BB80 (System.WeakReference<Godot.GodotObject>)
+      _ignoreDragThreshold [System.Single] = -1
+      <IsFocused>k__BackingField [System.Boolean] = False
+      _isEnabled [System.Boolean] = True
+      _isHovered [System.Boolean] = False
+      _isControllerFocused [System.Boolean] = False
+      _isControllerNavigable [System.Boolean] = False
+      _isPressed [System.Boolean] = False
+    <CardNode>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCard] -> 0x21EC84F9BD8 (MegaCrit.Sts2.Core.Nodes.Cards.NCard)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330241050096
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84F9F88 (System.WeakReference<Godot.GodotObject>)
+      _model [MegaCrit.Sts2.Core.Models.CardModel] -> 0x21ECBB1EB20 (MegaCrit.Sts2.Core.Models.Cards.Anger)
+      _titleLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA048 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _descriptionLabel [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21EC84F9FF0 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _ancientPortrait [Godot.TextureRect] -> 0x21ECBB2AF80 (Godot.TextureRect)
+      _portrait [Godot.TextureRect] -> 0x21ECBB2AF18 (Godot.TextureRect)
+      _frame [Godot.TextureRect] -> 0x21ECBB2AD10 (Godot.TextureRect)
+      _ancientBorder [Godot.TextureRect] -> 0x21ECBB2AD78 (Godot.TextureRect)
+      _ancientBanner [Godot.Control] -> 0x21ECBB2AE48 (Godot.TextureRect)
+      _ancientTextBg [Godot.TextureRect] -> 0x21ECBB2ADE0 (Godot.TextureRect)
+      _ancientHighlight [Godot.TextureRect] -> 0x21ECBB2AEB0 (Godot.TextureRect)
+      _portraitBorder [Godot.TextureRect] -> 0x21ECBB2AFE8 (Godot.TextureRect)
+      _banner [Godot.TextureRect] -> 0x21ECBB2B188 (Godot.TextureRect)
+      _lock [Godot.TextureRect] -> 0x21ECBB2B1F0 (Godot.TextureRect)
+      _typePlaque [Godot.NinePatchRect] -> 0x21ECBB2B258 (Godot.NinePatchRect)
+      _typeLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA098 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _portraitCanvasGroup [Godot.CanvasGroup] -> 0x21ECBB2B050 (Godot.CanvasGroup)
+      _sparkles [Godot.GpuParticles2D] -> 0x21ECBB2B3F8 (Godot.GpuParticles2D)
+      _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84F9D88 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+      _energyIcon [Godot.TextureRect] -> 0x21ECBB2B0B8 (Godot.TextureRect)
+      _energyLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA0E8 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableEnergyIcon [Godot.TextureRect] -> 0x21ECBB2B2C0 (Godot.TextureRect)
+      _starIcon [Godot.TextureRect] -> 0x21ECBB2B120 (Godot.TextureRect)
+      _starLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA138 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableStarIcon [Godot.TextureRect] -> 0x21ECBB2B328 (Godot.TextureRect)
+      _overlayContainer [Godot.Node] -> 0x21ECBB2B598 (Godot.Control)
+      _enchantmentTab [Godot.Control] -> 0x21ECBB2B460 (Godot.TextureRect)
+      _enchantmentVfxOverride [Godot.TextureRect] -> 0x21ECBB2B4C8 (Godot.TextureRect)
+      _enchantmentIcon [Godot.TextureRect] -> 0x21ECBB2B390 (Godot.TextureRect)
+      _enchantmentLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA188 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      <CardHighlight>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight] -> 0x21EC84F9FA0 (MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight)
+      <Body>k__BackingField [Godot.Control] -> 0x21ECBB2B530 (Godot.Control)
+      _pretendCardCanBePlayed [System.Boolean] = False
+      _forceUnpoweredPreview [System.Boolean] = False
+      _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+      _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9DA8 (MegaCrit.Sts2.Core.Localization.LocString)
+      _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9E20 (MegaCrit.Sts2.Core.Localization.LocString)
+      _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9E98 (MegaCrit.Sts2.Core.Localization.LocString)
+      _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9F10 (MegaCrit.Sts2.Core.Localization.LocString)
+      <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+      ModelChanged [System.Action<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB2BC38 (System.Action<MegaCrit.Sts2.Core.Models.CardModel>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _flash [Godot.Control] -> 0x21ECBB2C208 (Godot.TextureRect)
+    _handIndexLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21ECBB2BBC0 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+    _targetAngle [System.Single] = 4
+    _angleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DEF8 (System.Threading.CancellationTokenSource)
+    _positionCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DE98 (System.Threading.CancellationTokenSource)
+    _scaleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DEC8 (System.Threading.CancellationTokenSource)
+    _hand [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand] -> 0x21ECBB13280 (MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330671586304
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB13470 (System.WeakReference<Godot.GodotObject>)
+      _selectCardShortcuts [Godot.StringName[]] -> 0x21ECBB13380 (Godot.StringName[])
+        <array length=10>
+          [0] 0x21EC8B68E80 (Godot.StringName)
+          [1] 0x21EC8B68EB8 (Godot.StringName)
+          [2] 0x21EC8B68EF0 (Godot.StringName)
+          [3] 0x21EC8B68F28 (Godot.StringName)
+          [4] 0x21EC8B68F60 (Godot.StringName)
+          [5] 0x21EC8B68F98 (Godot.StringName)
+          [6] 0x21EC8B68FD0 (Godot.StringName)
+          [7] 0x21EC8B69008 (Godot.StringName)
+      <CardHolderContainer>k__BackingField [Godot.Control] -> 0x21ECBB17B90 (Godot.Control)
+      <PeekButton>k__BackingField [MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton] -> 0x21ECBB137B8 (MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton)
+      _selectModeBackstop [Godot.Control] -> 0x21ECBB17B28 (Godot.ColorRect)
+      _selectedCards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB133E8 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _upgradePreviewContainer [Godot.Control] -> 0x21ECBB17BF8 (Godot.Control)
+      _selectedHandCardContainer [MegaCrit.Sts2.Core.Nodes.Combat.NSelectedHandCardContainer] -> 0x21ECBB134B0 (MegaCrit.Sts2.Core.Nodes.Combat.NSelectedHandCardContainer)
+      _upgradePreview [MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview] -> 0x21ECBB13520 (MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview)
+      _selectModeConfirmButton [MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton] -> 0x21ECBB135A8 (MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton)
+      _selectionHeader [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21ECBB13738 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _combatState [MegaCrit.Sts2.Core.Combat.CombatState] -> 0x21ECBB09990 (MegaCrit.Sts2.Core.Combat.CombatState)
+      _currentMode [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+Mode] = 1
+      _draggedHolderIndex [System.Int32] = -1
+      _lastFocusedHolderIdx [System.Int32] = -1
+      _holdersAwaitingQueue [System.Collections.Generic.Dictionary<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, System.Int32>] -> 0x21ECBB13408 (System.Collections.Generic.Dictionary<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, System.Int32>)
+      _isDisabled [System.Boolean] = False
+      _animInTween [Godot.Tween] -> 0x21ECBB23B78 (Godot.Tween)
+    <InSelectMode>k__BackingField [System.Boolean] = False
+  0x21ECBB2D390
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330655094336
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2D450 (System.WeakReference<Godot.GodotObject>)
+    _hitbox [MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl] -> 0x21ECBB2D490 (MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330655092272
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2D4F8 (System.WeakReference<Godot.GodotObject>)
+      _ignoreDragThreshold [System.Single] = -1
+      <IsFocused>k__BackingField [System.Boolean] = False
+      _isEnabled [System.Boolean] = True
+      _isHovered [System.Boolean] = False
+      _isControllerFocused [System.Boolean] = False
+      _isControllerNavigable [System.Boolean] = False
+      _isPressed [System.Boolean] = False
+    <CardNode>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCard] -> 0x21EC84F95D8 (MegaCrit.Sts2.Core.Nodes.Cards.NCard)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330241002624
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84F9988 (System.WeakReference<Godot.GodotObject>)
+      _model [MegaCrit.Sts2.Core.Models.CardModel] -> 0x21ECBB1D828 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+      _titleLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84F9A48 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _descriptionLabel [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21EC84F99F0 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _ancientPortrait [Godot.TextureRect] -> 0x21ECBB2C880 (Godot.TextureRect)
+      _portrait [Godot.TextureRect] -> 0x21ECBB2C818 (Godot.TextureRect)
+      _frame [Godot.TextureRect] -> 0x21ECBB2C610 (Godot.TextureRect)
+      _ancientBorder [Godot.TextureRect] -> 0x21ECBB2C678 (Godot.TextureRect)
+      _ancientBanner [Godot.Control] -> 0x21ECBB2C748 (Godot.TextureRect)
+      _ancientTextBg [Godot.TextureRect] -> 0x21ECBB2C6E0 (Godot.TextureRect)
+      _ancientHighlight [Godot.TextureRect] -> 0x21ECBB2C7B0 (Godot.TextureRect)
+      _portraitBorder [Godot.TextureRect] -> 0x21ECBB2C8E8 (Godot.TextureRect)
+      _banner [Godot.TextureRect] -> 0x21ECBB2CA88 (Godot.TextureRect)
+      _lock [Godot.TextureRect] -> 0x21ECBB2CAF0 (Godot.TextureRect)
+      _typePlaque [Godot.NinePatchRect] -> 0x21ECBB2CB58 (Godot.NinePatchRect)
+      _typeLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84F9A98 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _portraitCanvasGroup [Godot.CanvasGroup] -> 0x21ECBB2C950 (Godot.CanvasGroup)
+      _sparkles [Godot.GpuParticles2D] -> 0x21ECBB2CCF8 (Godot.GpuParticles2D)
+      _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84F9788 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+      _energyIcon [Godot.TextureRect] -> 0x21ECBB2C9B8 (Godot.TextureRect)
+      _energyLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84F9AE8 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableEnergyIcon [Godot.TextureRect] -> 0x21ECBB2CBC0 (Godot.TextureRect)
+      _starIcon [Godot.TextureRect] -> 0x21ECBB2CA20 (Godot.TextureRect)
+      _starLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84F9B38 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableStarIcon [Godot.TextureRect] -> 0x21ECBB2CC28 (Godot.TextureRect)
+      _overlayContainer [Godot.Node] -> 0x21ECBB2CE98 (Godot.Control)
+      _enchantmentTab [Godot.Control] -> 0x21ECBB2CD60 (Godot.TextureRect)
+      _enchantmentVfxOverride [Godot.TextureRect] -> 0x21ECBB2CDC8 (Godot.TextureRect)
+      _enchantmentIcon [Godot.TextureRect] -> 0x21ECBB2CC90 (Godot.TextureRect)
+      _enchantmentLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84F9B88 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      <CardHighlight>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight] -> 0x21EC84F99A0 (MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight)
+      <Body>k__BackingField [Godot.Control] -> 0x21ECBB2CE30 (Godot.Control)
+      _pretendCardCanBePlayed [System.Boolean] = False
+      _forceUnpoweredPreview [System.Boolean] = False
+      _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+      _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F97A8 (MegaCrit.Sts2.Core.Localization.LocString)
+      _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9820 (MegaCrit.Sts2.Core.Localization.LocString)
+      _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9898 (MegaCrit.Sts2.Core.Localization.LocString)
+      _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9910 (MegaCrit.Sts2.Core.Localization.LocString)
+      <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+      ModelChanged [System.Action<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB2D5B0 (System.Action<MegaCrit.Sts2.Core.Models.CardModel>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _flash [Godot.Control] -> 0x21ECBB2DB80 (Godot.TextureRect)
+    _handIndexLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21ECBB2D538 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+    _targetAngle [System.Single] = 8
+    _angleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DF88 (System.Threading.CancellationTokenSource)
+    _positionCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DF28 (System.Threading.CancellationTokenSource)
+    _scaleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DF58 (System.Threading.CancellationTokenSource)
+    _hand [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand] -> 0x21ECBB13280 (MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand)
+      _disposed [System.Boolean] = False
+      NativePtr [System.IntPtr] = 2330671586304
+      _memoryOwn [System.Boolean] = False
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB13470 (System.WeakReference<Godot.GodotObject>)
+      _selectCardShortcuts [Godot.StringName[]] -> 0x21ECBB13380 (Godot.StringName[])
+        <array length=10>
+          [0] 0x21EC8B68E80 (Godot.StringName)
+          [1] 0x21EC8B68EB8 (Godot.StringName)
+          [2] 0x21EC8B68EF0 (Godot.StringName)
+          [3] 0x21EC8B68F28 (Godot.StringName)
+          [4] 0x21EC8B68F60 (Godot.StringName)
+          [5] 0x21EC8B68F98 (Godot.StringName)
+          [6] 0x21EC8B68FD0 (Godot.StringName)
+          [7] 0x21EC8B69008 (Godot.StringName)
+      <CardHolderContainer>k__BackingField [Godot.Control] -> 0x21ECBB17B90 (Godot.Control)
+      <PeekButton>k__BackingField [MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton] -> 0x21ECBB137B8 (MegaCrit.Sts2.Core.Nodes.Combat.NPeekButton)
+      _selectModeBackstop [Godot.Control] -> 0x21ECBB17B28 (Godot.ColorRect)
+      _selectedCards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB133E8 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _upgradePreviewContainer [Godot.Control] -> 0x21ECBB17BF8 (Godot.Control)
+      _selectedHandCardContainer [MegaCrit.Sts2.Core.Nodes.Combat.NSelectedHandCardContainer] -> 0x21ECBB134B0 (MegaCrit.Sts2.Core.Nodes.Combat.NSelectedHandCardContainer)
+      _upgradePreview [MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview] -> 0x21ECBB13520 (MegaCrit.Sts2.Core.Nodes.Cards.NUpgradePreview)
+      _selectModeConfirmButton [MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton] -> 0x21ECBB135A8 (MegaCrit.Sts2.Core.Nodes.CommonUi.NConfirmButton)
+      _selectionHeader [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21ECBB13738 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _combatState [MegaCrit.Sts2.Core.Combat.CombatState] -> 0x21ECBB09990 (MegaCrit.Sts2.Core.Combat.CombatState)
+      _currentMode [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand+Mode] = 1
+      _draggedHolderIndex [System.Int32] = -1
+      _lastFocusedHolderIdx [System.Int32] = -1
+      _holdersAwaitingQueue [System.Collections.Generic.Dictionary<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, System.Int32>] -> 0x21ECBB13408 (System.Collections.Generic.Dictionary<MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder, System.Int32>)
+      _isDisabled [System.Boolean] = False
+      _animInTween [Godot.Tween] -> 0x21ECBB23B78 (Godot.Tween)
+    <InSelectMode>k__BackingField [System.Boolean] = False
+
+MegaCrit.Sts2.Core.Nodes.Cards.NCard
+  0x21EC84EC5D8
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330076787632
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84EC9A0 (System.WeakReference<Godot.GodotObject>)
+    _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84EC788 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+    _pretendCardCanBePlayed [System.Boolean] = False
+    _forceUnpoweredPreview [System.Boolean] = False
+    _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+    _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EC7C0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EC7E8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EC838 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EC860 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EC8B0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EC8D8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EC928 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EC950 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 0
+  0x21EC84ECBF0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330079321392
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84ECFA0 (System.WeakReference<Godot.GodotObject>)
+    _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84ECDA0 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+    _pretendCardCanBePlayed [System.Boolean] = False
+    _forceUnpoweredPreview [System.Boolean] = False
+    _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+    _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84ECDC0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84ECDE8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84ECE38 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84ECE60 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84ECEB0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84ECED8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84ECF28 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84ECF50 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 0
+  0x21EC84ED1F0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330079364736
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84ED5A0 (System.WeakReference<Godot.GodotObject>)
+    _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84ED3A0 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+    _pretendCardCanBePlayed [System.Boolean] = False
+    _forceUnpoweredPreview [System.Boolean] = False
+    _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+    _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84ED3C0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84ED3E8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84ED438 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84ED460 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84ED4B0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84ED4D8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84ED528 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84ED550 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 0
+  0x21EC84ED7F0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330232924544
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84EDBA0 (System.WeakReference<Godot.GodotObject>)
+    _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84ED9A0 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+    _pretendCardCanBePlayed [System.Boolean] = False
+    _forceUnpoweredPreview [System.Boolean] = False
+    _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+    _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84ED9C0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84ED9E8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EDA38 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EDA60 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EDAB0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EDAD8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EDB28 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EDB50 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 0
+  0x21EC84EDDF0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330233486224
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84EE1A0 (System.WeakReference<Godot.GodotObject>)
+    _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84EDFA0 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+    _pretendCardCanBePlayed [System.Boolean] = False
+    _forceUnpoweredPreview [System.Boolean] = False
+    _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+    _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EDFC0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EDFE8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EE038 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EE060 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EE0B0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EE0D8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EE128 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EE150 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 0
+  0x21EC84EE3F0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330233523376
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84EE7A0 (System.WeakReference<Godot.GodotObject>)
+    _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84EE5A0 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+    _pretendCardCanBePlayed [System.Boolean] = False
+    _forceUnpoweredPreview [System.Boolean] = False
+    _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+    _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EE5C0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EE5E8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EE638 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EE660 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EE6B0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EE6D8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EE728 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EE750 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 0
+  0x21EC84EE9F0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330233581168
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84EEDA0 (System.WeakReference<Godot.GodotObject>)
+    _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84EEBA0 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+    _pretendCardCanBePlayed [System.Boolean] = False
+    _forceUnpoweredPreview [System.Boolean] = False
+    _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+    _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EEBC0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EEBE8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EEC38 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EEC60 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EECB0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EECD8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EED28 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EED50 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 0
+  0x21EC84EEFF0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330234734960
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84EF3A0 (System.WeakReference<Godot.GodotObject>)
+    _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84EF1A0 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+    _pretendCardCanBePlayed [System.Boolean] = False
+    _forceUnpoweredPreview [System.Boolean] = False
+    _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+    _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EF1C0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EF1E8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EF238 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = UNKNOWN.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EF260 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EF2B0 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.description
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EF2D8 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84EF328 (MegaCrit.Sts2.Core.Localization.LocString)
+      <locTable>P [System.String] = card_library
+      <locEntryKey>P [System.String] = LOCKED.title
+      _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84EF350 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+    <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 0
+
+MegaCrit.Sts2.Core.Entities.Cards.CardPile
+  0x21EC8D509B8
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21EC8D50A00 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21EC8D52C80 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=16>
+          [0] 0x21EC8D51150 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [1] 0x21EC8D514B0 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [2] 0x21EC8D51798 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [3] 0x21EC8D51A80 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [4] 0x21EC8D51D68 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [5] 0x21EC8D52050 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [6] 0x21EC8D52338 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [7] 0x21EC8D52620 (MegaCrit.Sts2.Core.Models.Cards.Bash)
+      _size [System.Int32] = 11
+      _version [System.Int32] = 11
+    CardAddFinished [System.Action] -> 0x21EC8D9F3F8 (System.Action)
+    CardRemoveFinished [System.Action] -> 0x21EC8D9F438 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 6
+  0x21ECBB1CAE8
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB1CB30 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21ECBB2D008 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=8>
+          [0] 0x21ECBB1D258 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [1] 0x21ECBB1E0E0 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [2] 0x21ECBB1CF50 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [3] 0x21ECBB1EB20 (MegaCrit.Sts2.Core.Models.Cards.Anger)
+          [4] 0x21ECBB1D828 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+      _size [System.Int32] = 5
+      _version [System.Int32] = 5
+    ContentsChanged [System.Action] -> 0x21ECBB1F728 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+  0x21ECBB1CB50
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB1CB98 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21ECBB1EA88 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=16>
+          [0] 0x21ECBB1E3C8 (MegaCrit.Sts2.Core.Models.Cards.Bash)
+          [1] 0x21ECBB1EE08 (MegaCrit.Sts2.Core.Models.Cards.Armaments)
+          [2] 0x21ECBB1E708 (MegaCrit.Sts2.Core.Models.Cards.Stomp)
+          [3] 0x21ECBB1DDF8 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [4] 0x21ECBB1D540 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [5] 0x21ECBB1DB10 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+      _size [System.Int32] = 6
+      _version [System.Int32] = 36
+    ContentsChanged [System.Action] -> 0x21ECBB1F7F8 (System.Action)
+    CardAddFinished [System.Action] -> 0x21ECBB20CD8 (System.Action)
+    CardRemoveFinished [System.Action] -> 0x21ECBB20D18 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 1
+  0x21ECBB1CBB8
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB1CC00 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21EC8D50A20 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=0>
+      _size [System.Int32] = 0
+      _version [System.Int32] = 0
+    ContentsChanged [System.Action] -> 0x21ECBB1F8C8 (System.Action)
+    CardAddFinished [System.Action] -> 0x21ECBB20F00 (System.Action)
+    CardRemoveFinished [System.Action] -> 0x21ECBB20F40 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 3
+  0x21ECBB1CC20
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB1CC68 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21EC8D50A20 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=0>
+      _size [System.Int32] = 0
+      _version [System.Int32] = 0
+    ContentsChanged [System.Action] -> 0x21ECBB1F998 (System.Action)
+    CardAddFinished [System.Action] -> 0x21ECBB21108 (System.Action)
+    CardRemoveFinished [System.Action] -> 0x21ECBB21148 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 4
+  0x21ECBB1CC88
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB1CCD0 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21EC8D50A20 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=0>
+      _size [System.Int32] = 0
+      _version [System.Int32] = 0
+    ContentsChanged [System.Action] -> 0x21ECBB1FB00 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 5
+
+MegaCrit.Sts2.Core.Saves.Runs.SerializableCard
+  0x21EC8C73228
+    <Id>k__BackingField [MegaCrit.Sts2.Core.Models.ModelId] -> 0x21EC8C732A0 (MegaCrit.Sts2.Core.Models.ModelId)
+      <Category>k__BackingField [System.String] = CARD
+      <Entry>k__BackingField [System.String] = STOMP
+    <CurrentUpgradeLevel>k__BackingField [System.Int32] = 0
+  0x21EC8C73308
+    <Id>k__BackingField [MegaCrit.Sts2.Core.Models.ModelId] -> 0x21EC8C73398 (MegaCrit.Sts2.Core.Models.ModelId)
+      <Category>k__BackingField [System.String] = CARD
+      <Entry>k__BackingField [System.String] = STRIKE_IRONCLAD
+    <CurrentUpgradeLevel>k__BackingField [System.Int32] = 0
+  0x21EC8C73458
+    <Id>k__BackingField [MegaCrit.Sts2.Core.Models.ModelId] -> 0x21EC8C734D0 (MegaCrit.Sts2.Core.Models.ModelId)
+      <Category>k__BackingField [System.String] = CARD
+      <Entry>k__BackingField [System.String] = ANGER
+    <CurrentUpgradeLevel>k__BackingField [System.Int32] = 0
+  0x21EC8C734F0
+    <Id>k__BackingField [MegaCrit.Sts2.Core.Models.ModelId] -> 0x21EC8C73580 (MegaCrit.Sts2.Core.Models.ModelId)
+      <Category>k__BackingField [System.String] = CARD
+      <Entry>k__BackingField [System.String] = DEFEND_IRONCLAD
+    <CurrentUpgradeLevel>k__BackingField [System.Int32] = 0
+  0x21EC8C73D98
+    <Id>k__BackingField [MegaCrit.Sts2.Core.Models.ModelId] -> 0x21EC8C73E18 (MegaCrit.Sts2.Core.Models.ModelId)
+      <Category>k__BackingField [System.String] = CARD
+      <Entry>k__BackingField [System.String] = ARMAMENTS
+    <CurrentUpgradeLevel>k__BackingField [System.Int32] = 0
+  0x21EC8C73ED8
+    <Id>k__BackingField [MegaCrit.Sts2.Core.Models.ModelId] -> 0x21EC8C73F60 (MegaCrit.Sts2.Core.Models.ModelId)
+      <Category>k__BackingField [System.String] = CARD
+      <Entry>k__BackingField [System.String] = BREAKTHROUGH
+    <CurrentUpgradeLevel>k__BackingField [System.Int32] = 0
+  0x21EC8C73F80
+    <Id>k__BackingField [MegaCrit.Sts2.Core.Models.ModelId] -> 0x21EC8C74008 (MegaCrit.Sts2.Core.Models.ModelId)
+      <Category>k__BackingField [System.String] = CARD
+      <Entry>k__BackingField [System.String] = TWIN_STRIKE
+    <CurrentUpgradeLevel>k__BackingField [System.Int32] = 0
+  0x21EC8C74048
+    <Id>k__BackingField [MegaCrit.Sts2.Core.Models.ModelId] -> 0x21EC8C740C8 (MegaCrit.Sts2.Core.Models.ModelId)
+      <Category>k__BackingField [System.String] = CARD
+      <Entry>k__BackingField [System.String] = ARMAMENTS
+    <CurrentUpgradeLevel>k__BackingField [System.Int32] = 0
+
+MegaCrit.Sts2.Core.Combat.CombatState
+  0x21ECBB09990
+    <RunState>k__BackingField [MegaCrit.Sts2.Core.Runs.IRunState] -> 0x21EC8D56038 (MegaCrit.Sts2.Core.Runs.RunState)
+    _allies [System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>] -> 0x21ECBB099F8 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>)
+    _enemies [System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>] -> 0x21ECBB09A30 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>)
+    _nextCreatureId [System.UInt32] = 2
+    <Modifiers>k__BackingField [System.Collections.Generic.IReadOnlyList<MegaCrit.Sts2.Core.Models.ModifierModel>] -> 0x21EC8D55670 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.ModifierModel>)
+    <MultiplayerScalingModel>k__BackingField [MegaCrit.Sts2.Core.Models.Singleton.MultiplayerScalingModel] -> 0x21EC8D571A0 (MegaCrit.Sts2.Core.Models.Singleton.MultiplayerScalingModel)
+    _encounter [MegaCrit.Sts2.Core.Models.EncounterModel] -> 0x21ECBB098C0 (MegaCrit.Sts2.Core.Models.Encounters.ShrinkerBeetleWeak)
+    <RoundNumber>k__BackingField [System.Int32] = 1
+    <CurrentSide>k__BackingField [MegaCrit.Sts2.Core.Combat.CombatSide] = 1
+    <EscapedCreatures>k__BackingField [System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>] -> 0x21ECBB09A50 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>)
+    _allCards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB09A70 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21ECBB1E9F0 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=16>
+          [0] 0x21ECBB1CF50 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [1] 0x21ECBB1D258 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [2] 0x21ECBB1D540 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [3] 0x21ECBB1D828 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [4] 0x21ECBB1DB10 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [5] 0x21ECBB1DDF8 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [6] 0x21ECBB1E0E0 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [7] 0x21ECBB1E3C8 (MegaCrit.Sts2.Core.Models.Cards.Bash)
+      _size [System.Int32] = 11
+      _version [System.Int32] = 11
+
+MegaCrit.Sts2.Core.Combat.CombatManager
+  0x21EC8B621A8
+    CombatSetUp [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21ECBB19798 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _target [System.Object] -> 0x21ECBB19798 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _methodPtr [System.IntPtr] = 140730689781696
+      _methodPtrAux [System.IntPtr] = 140730662993440
+      _invocationList [System.Object] -> 0x21ECBB19760 (System.Object[])
+        <array length=4>
+          [0] 0x21EC8D9BA68 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+          [1] 0x21ECBB13CE8 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+          [2] 0x21ECBB19720 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _invocationCount [System.IntPtr] = 3
+    CombatEnded [System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>] -> 0x21ECBB20BF0 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+      _target [System.Object] -> 0x21ECBB20BF0 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+      _methodPtr [System.IntPtr] = 140730689781696
+      _methodPtrAux [System.IntPtr] = 140730662993440
+      _invocationList [System.Object] -> 0x21ECBB20B58 (System.Object[])
+        <array length=16>
+          [0] 0x21EC8D59B58 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+          [1] 0x21EC8D9BFE0 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+          [2] 0x21ECBB13D28 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+          [3] 0x21ECBB14640 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+          [4] 0x21ECBB18DB8 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+          [5] 0x21ECBB1B1A8 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+          [6] 0x21ECBB1FB40 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+          [7] 0x21ECBB20AD8 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+      _invocationCount [System.IntPtr] = 9
+    CombatWon [System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>] -> 0x21ECBB20C98 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+      _target [System.Object] -> 0x21ECBB20C98 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+      _methodPtr [System.IntPtr] = 140730689781696
+      _methodPtrAux [System.IntPtr] = 140730662993440
+      _invocationList [System.Object] -> 0x21ECBB20C70 (System.Object[])
+        <array length=2>
+          [0] 0x21ECBB13D68 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+          [1] 0x21ECBB20C30 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+      _invocationCount [System.IntPtr] = 2
+    CreaturesChanged [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21EC8B62418 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _target [System.Object] -> 0x21EC8B623A8 (MegaCrit.Sts2.Core.Combat.CombatStateTracker)
+      _methodPtr [System.IntPtr] = 140730680387352
+      _methodPtrAux [System.IntPtr] = 0
+      _invocationCount [System.IntPtr] = 0
+    TurnStarted [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21ECBB14050 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _target [System.Object] -> 0x21ECBB14050 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _methodPtr [System.IntPtr] = 140730689781696
+      _methodPtrAux [System.IntPtr] = 140730662993440
+      _invocationList [System.Object] -> 0x21ECBB14028 (System.Object[])
+        <array length=2>
+          [0] 0x21EC8B62458 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+          [1] 0x21ECBB13FE8 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _invocationCount [System.IntPtr] = 2
+    TurnEnded [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21EC8B62498 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _target [System.Object] -> 0x21EC8B623A8 (MegaCrit.Sts2.Core.Combat.CombatStateTracker)
+      _methodPtr [System.IntPtr] = 140730680387400
+      _methodPtrAux [System.IntPtr] = 0
+      _invocationCount [System.IntPtr] = 0
+    PlayerEndedTurn [System.Action<MegaCrit.Sts2.Core.Entities.Players.Player, System.Boolean>] -> 0x21ECBB141A0 (System.Action<MegaCrit.Sts2.Core.Entities.Players.Player, System.Boolean>)
+    PlayerUnendedTurn [System.Action<MegaCrit.Sts2.Core.Entities.Players.Player>] -> 0x21ECBB145C0 (System.Action<MegaCrit.Sts2.Core.Entities.Players.Player>)
+    AboutToSwitchToEnemyTurn [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21ECBB140F8 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _target [System.Object] -> 0x21ECBB140F8 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _methodPtr [System.IntPtr] = 140730689781696
+      _methodPtrAux [System.IntPtr] = 140730662993440
+      _invocationList [System.Object] -> 0x21ECBB140D0 (System.Object[])
+        <array length=2>
+          [0] 0x21ECBB13E68 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+          [1] 0x21ECBB14090 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _invocationCount [System.IntPtr] = 2
+    PlayerActionsDisabledChanged [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21ECBB14508 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _target [System.Object] -> 0x21ECBB13280 (MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand)
+      _methodPtr [System.IntPtr] = 140730693360768
+      _methodPtrAux [System.IntPtr] = 0
+      _invocationCount [System.IntPtr] = 0
+    _playerReadyLock [System.Threading.Lock] -> 0x21EC8B62258 (System.Threading.Lock)
+    _playersReadyToEndTurn [System.Collections.Generic.HashSet<MegaCrit.Sts2.Core.Entities.Players.Player>] -> 0x21EC8B62280 (System.Collections.Generic.HashSet<MegaCrit.Sts2.Core.Entities.Players.Player>)
+    _playersReadyToBeginEnemyTurn [System.Collections.Generic.HashSet<MegaCrit.Sts2.Core.Entities.Players.Player>] -> 0x21EC8B622D8 (System.Collections.Generic.HashSet<MegaCrit.Sts2.Core.Entities.Players.Player>)
+    _playersTakingExtraTurn [System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Players.Player>] -> 0x21EC8B62318 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Players.Player>)
+    _state [MegaCrit.Sts2.Core.Combat.CombatState] -> 0x21ECBB09990 (MegaCrit.Sts2.Core.Combat.CombatState)
+      <RunState>k__BackingField [MegaCrit.Sts2.Core.Runs.IRunState] -> 0x21EC8D56038 (MegaCrit.Sts2.Core.Runs.RunState)
+      _allies [System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>] -> 0x21ECBB099F8 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>)
+      _enemies [System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>] -> 0x21ECBB09A30 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>)
+      _nextCreatureId [System.UInt32] = 2
+      <Modifiers>k__BackingField [System.Collections.Generic.IReadOnlyList<MegaCrit.Sts2.Core.Models.ModifierModel>] -> 0x21EC8D55670 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.ModifierModel>)
+      <MultiplayerScalingModel>k__BackingField [MegaCrit.Sts2.Core.Models.Singleton.MultiplayerScalingModel] -> 0x21EC8D571A0 (MegaCrit.Sts2.Core.Models.Singleton.MultiplayerScalingModel)
+      _encounter [MegaCrit.Sts2.Core.Models.EncounterModel] -> 0x21ECBB098C0 (MegaCrit.Sts2.Core.Models.Encounters.ShrinkerBeetleWeak)
+      <RoundNumber>k__BackingField [System.Int32] = 1
+      <CurrentSide>k__BackingField [MegaCrit.Sts2.Core.Combat.CombatSide] = 1
+      <EscapedCreatures>k__BackingField [System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>] -> 0x21ECBB09A50 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>)
+      _allCards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB09A70 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+    <IsPaused>k__BackingField [System.Boolean] = False
+    _playerActionsDisabled [System.Boolean] = False
+    <IsPlayPhase>k__BackingField [System.Boolean] = True
+    <IsEnemyTurnStarted>k__BackingField [System.Boolean] = False
+    <EndingPlayerTurnPhaseTwo>k__BackingField [System.Boolean] = False
+    <EndingPlayerTurnPhaseOne>k__BackingField [System.Boolean] = False
+    <StateTracker>k__BackingField [MegaCrit.Sts2.Core.Combat.CombatStateTracker] -> 0x21EC8B623A8 (MegaCrit.Sts2.Core.Combat.CombatStateTracker)
+      CombatStateChanged [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21ECBB25188 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _combatManager [MegaCrit.Sts2.Core.Combat.CombatManager] -> 0x21EC8B621A8 (MegaCrit.Sts2.Core.Combat.CombatManager)
+      _combatStateChangedDeferredTask [System.Threading.Tasks.Task] -> 0x21ECBB2E048 (System.Runtime.CompilerServices.AsyncTaskMethodBuilder<System.Threading.Tasks.VoidTaskResult>+AsyncStateMachineBox<MegaCrit.Sts2.Core.Helpers.TaskHelper+<LogTaskExceptions>d__1>)
+      _state [MegaCrit.Sts2.Core.Combat.CombatState] -> 0x21ECBB09990 (MegaCrit.Sts2.Core.Combat.CombatState)
+    <History>k__BackingField [MegaCrit.Sts2.Core.Combat.History.CombatHistory] -> 0x21EC8B62350 (MegaCrit.Sts2.Core.Combat.History.CombatHistory)
+      Changed [System.Action] -> 0x21EC8B623D8 (System.Action)
+      _entries [System.Collections.Generic.List<MegaCrit.Sts2.Core.Combat.History.CombatHistoryEntry>] -> 0x21EC8B62370 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Combat.History.CombatHistoryEntry>)
+    <IsInProgress>k__BackingField [System.Boolean] = True
+
+MegaCrit.Sts2.Core.Combat.CombatStateTracker
+  0x21EC8B623A8
+    CombatStateChanged [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21ECBB25188 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _target [System.Object] -> 0x21ECBB25188 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _methodPtr [System.IntPtr] = 140730689781696
+      _methodPtrAux [System.IntPtr] = 140730662993440
+      _invocationList [System.Object] -> 0x21ECBB1B2E8 (System.Object[])
+        <array length=8>
+          [0] 0x21ECBB14220 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+          [1] 0x21ECBB14600 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+          [2] 0x21ECBB18ED8 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+          [3] 0x21ECBB196E0 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+          [4] 0x21ECBB1B2A8 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+          [5] 0x21ECBB214B0 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+          [6] 0x21ECBB25148 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _invocationCount [System.IntPtr] = 7
+    _combatManager [MegaCrit.Sts2.Core.Combat.CombatManager] -> 0x21EC8B621A8 (MegaCrit.Sts2.Core.Combat.CombatManager)
+      CombatSetUp [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21ECBB19798 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      CombatEnded [System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>] -> 0x21ECBB20BF0 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+      CombatWon [System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>] -> 0x21ECBB20C98 (System.Action<MegaCrit.Sts2.Core.Rooms.CombatRoom>)
+      CreaturesChanged [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21EC8B62418 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      TurnStarted [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21ECBB14050 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      TurnEnded [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21EC8B62498 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      PlayerEndedTurn [System.Action<MegaCrit.Sts2.Core.Entities.Players.Player, System.Boolean>] -> 0x21ECBB141A0 (System.Action<MegaCrit.Sts2.Core.Entities.Players.Player, System.Boolean>)
+      PlayerUnendedTurn [System.Action<MegaCrit.Sts2.Core.Entities.Players.Player>] -> 0x21ECBB145C0 (System.Action<MegaCrit.Sts2.Core.Entities.Players.Player>)
+      AboutToSwitchToEnemyTurn [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21ECBB140F8 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      PlayerActionsDisabledChanged [System.Action<MegaCrit.Sts2.Core.Combat.CombatState>] -> 0x21ECBB14508 (System.Action<MegaCrit.Sts2.Core.Combat.CombatState>)
+      _playerReadyLock [System.Threading.Lock] -> 0x21EC8B62258 (System.Threading.Lock)
+      _playersReadyToEndTurn [System.Collections.Generic.HashSet<MegaCrit.Sts2.Core.Entities.Players.Player>] -> 0x21EC8B62280 (System.Collections.Generic.HashSet<MegaCrit.Sts2.Core.Entities.Players.Player>)
+      _playersReadyToBeginEnemyTurn [System.Collections.Generic.HashSet<MegaCrit.Sts2.Core.Entities.Players.Player>] -> 0x21EC8B622D8 (System.Collections.Generic.HashSet<MegaCrit.Sts2.Core.Entities.Players.Player>)
+      _playersTakingExtraTurn [System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Players.Player>] -> 0x21EC8B62318 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Players.Player>)
+      _state [MegaCrit.Sts2.Core.Combat.CombatState] -> 0x21ECBB09990 (MegaCrit.Sts2.Core.Combat.CombatState)
+      <IsPaused>k__BackingField [System.Boolean] = False
+      _playerActionsDisabled [System.Boolean] = False
+      <IsPlayPhase>k__BackingField [System.Boolean] = True
+      <IsEnemyTurnStarted>k__BackingField [System.Boolean] = False
+      <EndingPlayerTurnPhaseTwo>k__BackingField [System.Boolean] = False
+      <EndingPlayerTurnPhaseOne>k__BackingField [System.Boolean] = False
+      <StateTracker>k__BackingField [MegaCrit.Sts2.Core.Combat.CombatStateTracker] -> 0x21EC8B623A8 (MegaCrit.Sts2.Core.Combat.CombatStateTracker)
+      <History>k__BackingField [MegaCrit.Sts2.Core.Combat.History.CombatHistory] -> 0x21EC8B62350 (MegaCrit.Sts2.Core.Combat.History.CombatHistory)
+      <IsInProgress>k__BackingField [System.Boolean] = True
+    _combatStateChangedDeferredTask [System.Threading.Tasks.Task] -> 0x21ECBB2E048 (System.Runtime.CompilerServices.AsyncTaskMethodBuilder<System.Threading.Tasks.VoidTaskResult>+AsyncStateMachineBox<MegaCrit.Sts2.Core.Helpers.TaskHelper+<LogTaskExceptions>d__1>)
+      m_taskId [System.Int32] = 0
+      m_action [System.Delegate] -> 0x21ECBB2E0B0 (System.Action)
+      m_stateFlags [System.Int32] = 117443584
+      m_continuationObject [System.Object] -> 0x21EC84A64E8 (System.Object)
+    _state [MegaCrit.Sts2.Core.Combat.CombatState] -> 0x21ECBB09990 (MegaCrit.Sts2.Core.Combat.CombatState)
+      <RunState>k__BackingField [MegaCrit.Sts2.Core.Runs.IRunState] -> 0x21EC8D56038 (MegaCrit.Sts2.Core.Runs.RunState)
+      _allies [System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>] -> 0x21ECBB099F8 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>)
+      _enemies [System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>] -> 0x21ECBB09A30 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>)
+      _nextCreatureId [System.UInt32] = 2
+      <Modifiers>k__BackingField [System.Collections.Generic.IReadOnlyList<MegaCrit.Sts2.Core.Models.ModifierModel>] -> 0x21EC8D55670 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.ModifierModel>)
+      <MultiplayerScalingModel>k__BackingField [MegaCrit.Sts2.Core.Models.Singleton.MultiplayerScalingModel] -> 0x21EC8D571A0 (MegaCrit.Sts2.Core.Models.Singleton.MultiplayerScalingModel)
+      _encounter [MegaCrit.Sts2.Core.Models.EncounterModel] -> 0x21ECBB098C0 (MegaCrit.Sts2.Core.Models.Encounters.ShrinkerBeetleWeak)
+      <RoundNumber>k__BackingField [System.Int32] = 1
+      <CurrentSide>k__BackingField [MegaCrit.Sts2.Core.Combat.CombatSide] = 1
+      <EscapedCreatures>k__BackingField [System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>] -> 0x21ECBB09A50 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Entities.Creatures.Creature>)
+      _allCards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB09A70 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+
+MegaCrit.Sts2.Core.Nodes.Cards.Holders.NGridCardHolder
+  0x21EC84FC130
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243544272
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC1A8 (System.WeakReference<Godot.GodotObject>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _isPreviewingUpgrade [System.Boolean] = False
+  0x21EC84FC240
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243542208
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC2B8 (System.WeakReference<Godot.GodotObject>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _isPreviewingUpgrade [System.Boolean] = False
+  0x21EC84FC350
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243558720
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC3C8 (System.WeakReference<Godot.GodotObject>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _isPreviewingUpgrade [System.Boolean] = False
+  0x21EC84FC460
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243550464
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC4D8 (System.WeakReference<Godot.GodotObject>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _isPreviewingUpgrade [System.Boolean] = False
+  0x21EC84FC570
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243566976
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC5E8 (System.WeakReference<Godot.GodotObject>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _isPreviewingUpgrade [System.Boolean] = False
+  0x21EC84FC680
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243554592
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC6F8 (System.WeakReference<Godot.GodotObject>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _isPreviewingUpgrade [System.Boolean] = False
+  0x21EC84FC790
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243562848
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC808 (System.WeakReference<Godot.GodotObject>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _isPreviewingUpgrade [System.Boolean] = False
+  0x21EC84FC8A0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243556656
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC918 (System.WeakReference<Godot.GodotObject>)
+    _isHovered [System.Boolean] = False
+    _isFocused [System.Boolean] = False
+    _isClickable [System.Boolean] = True
+    _isPreviewingUpgrade [System.Boolean] = False
+
+MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox
+  0x21EC84FC1C0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243548400
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC228 (System.WeakReference<Godot.GodotObject>)
+    _ignoreDragThreshold [System.Single] = -1
+    <IsFocused>k__BackingField [System.Boolean] = False
+    _isEnabled [System.Boolean] = True
+    _isHovered [System.Boolean] = False
+    _isControllerFocused [System.Boolean] = False
+    _isControllerNavigable [System.Boolean] = False
+    _isPressed [System.Boolean] = False
+  0x21EC84FC2D0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243533952
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC338 (System.WeakReference<Godot.GodotObject>)
+    _ignoreDragThreshold [System.Single] = -1
+    <IsFocused>k__BackingField [System.Boolean] = False
+    _isEnabled [System.Boolean] = True
+    _isHovered [System.Boolean] = False
+    _isControllerFocused [System.Boolean] = False
+    _isControllerNavigable [System.Boolean] = False
+    _isPressed [System.Boolean] = False
+  0x21EC84FC3E0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243564912
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC448 (System.WeakReference<Godot.GodotObject>)
+    _ignoreDragThreshold [System.Single] = -1
+    <IsFocused>k__BackingField [System.Boolean] = False
+    _isEnabled [System.Boolean] = True
+    _isHovered [System.Boolean] = False
+    _isControllerFocused [System.Boolean] = False
+    _isControllerNavigable [System.Boolean] = False
+    _isPressed [System.Boolean] = False
+  0x21EC84FC4F0
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243560784
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC558 (System.WeakReference<Godot.GodotObject>)
+    _ignoreDragThreshold [System.Single] = -1
+    <IsFocused>k__BackingField [System.Boolean] = False
+    _isEnabled [System.Boolean] = True
+    _isHovered [System.Boolean] = False
+    _isControllerFocused [System.Boolean] = False
+    _isControllerNavigable [System.Boolean] = False
+    _isPressed [System.Boolean] = False
+  0x21EC84FC600
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243552528
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC668 (System.WeakReference<Godot.GodotObject>)
+    _ignoreDragThreshold [System.Single] = -1
+    <IsFocused>k__BackingField [System.Boolean] = False
+    _isEnabled [System.Boolean] = True
+    _isHovered [System.Boolean] = False
+    _isControllerFocused [System.Boolean] = False
+    _isControllerNavigable [System.Boolean] = False
+    _isPressed [System.Boolean] = False
+  0x21EC84FC710
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243569040
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC778 (System.WeakReference<Godot.GodotObject>)
+    _ignoreDragThreshold [System.Single] = -1
+    <IsFocused>k__BackingField [System.Boolean] = False
+    _isEnabled [System.Boolean] = True
+    _isHovered [System.Boolean] = False
+    _isControllerFocused [System.Boolean] = False
+    _isControllerNavigable [System.Boolean] = False
+    _isPressed [System.Boolean] = False
+  0x21EC84FC820
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243571104
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC888 (System.WeakReference<Godot.GodotObject>)
+    _ignoreDragThreshold [System.Single] = -1
+    <IsFocused>k__BackingField [System.Boolean] = False
+    _isEnabled [System.Boolean] = True
+    _isHovered [System.Boolean] = False
+    _isControllerFocused [System.Boolean] = False
+    _isControllerNavigable [System.Boolean] = False
+    _isPressed [System.Boolean] = False
+  0x21EC84FC930
+    _disposed [System.Boolean] = False
+    NativePtr [System.IntPtr] = 2330243575232
+    _memoryOwn [System.Boolean] = False
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FC998 (System.WeakReference<Godot.GodotObject>)
+    _ignoreDragThreshold [System.Single] = -1
+    <IsFocused>k__BackingField [System.Boolean] = False
+    _isEnabled [System.Boolean] = True
+    _isHovered [System.Boolean] = False
+    _isControllerFocused [System.Boolean] = False
+    _isControllerNavigable [System.Boolean] = False
+    _isPressed [System.Boolean] = False
+
+Focused hand holder scan
+
+MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder
+  0x21ECBB269F0
+    NativePtr [System.IntPtr] = 2330676124832
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB26AB0 (System.WeakReference<Godot.GodotObject>)
+    _hitbox [MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl] -> 0x21ECBB26AF0 (MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox)
+      NativePtr [System.IntPtr] = 2330676135152
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB26B58 (System.WeakReference<Godot.GodotObject>)
+      _ignoreDragThreshold [System.Single] = -1
+      _isEnabled [System.Boolean] = True
+    <CardNode>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCard] -> 0x21EC84FADD8 (MegaCrit.Sts2.Core.Nodes.Cards.NCard)
+      NativePtr [System.IntPtr] = 2330241186320
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FB188 (System.WeakReference<Godot.GodotObject>)
+      _model [MegaCrit.Sts2.Core.Models.CardModel] -> 0x21ECBB1D258 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+      _titleLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FB248 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _descriptionLabel [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21EC84FB1F0 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _ancientPortrait [Godot.TextureRect] -> 0x21ECBB25958 (Godot.TextureRect)
+      _portrait [Godot.TextureRect] -> 0x21ECBB258F0 (Godot.TextureRect)
+      _frame [Godot.TextureRect] -> 0x21ECBB256E8 (Godot.TextureRect)
+      _ancientBorder [Godot.TextureRect] -> 0x21ECBB25750 (Godot.TextureRect)
+      _ancientBanner [Godot.Control] -> 0x21ECBB25820 (Godot.TextureRect)
+      _ancientTextBg [Godot.TextureRect] -> 0x21ECBB257B8 (Godot.TextureRect)
+      _ancientHighlight [Godot.TextureRect] -> 0x21ECBB25888 (Godot.TextureRect)
+      _portraitBorder [Godot.TextureRect] -> 0x21ECBB259C0 (Godot.TextureRect)
+      _banner [Godot.TextureRect] -> 0x21ECBB25E00 (Godot.TextureRect)
+      _lock [Godot.TextureRect] -> 0x21ECBB25E68 (Godot.TextureRect)
+      _typePlaque [Godot.NinePatchRect] -> 0x21ECBB25ED0 (Godot.NinePatchRect)
+      _typeLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FB298 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _portraitCanvasGroup [Godot.CanvasGroup] -> 0x21ECBB25A28 (Godot.CanvasGroup)
+      _sparkles [Godot.GpuParticles2D] -> 0x21ECBB26070 (Godot.GpuParticles2D)
+      _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84FAF88 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+        _items [System.__Canon[]] -> 0x21EC84EC7A8 (MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx[])
+          <array length=0>
+      _energyIcon [Godot.TextureRect] -> 0x21ECBB25D30 (Godot.TextureRect)
+      _energyLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FB2E8 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableEnergyIcon [Godot.TextureRect] -> 0x21ECBB25F38 (Godot.TextureRect)
+      _starIcon [Godot.TextureRect] -> 0x21ECBB25D98 (Godot.TextureRect)
+      _starLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FB338 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableStarIcon [Godot.TextureRect] -> 0x21ECBB25FA0 (Godot.TextureRect)
+      _overlayContainer [Godot.Node] -> 0x21ECBB26210 (Godot.Control)
+      _enchantmentTab [Godot.Control] -> 0x21ECBB260D8 (Godot.TextureRect)
+      _enchantmentVfxOverride [Godot.TextureRect] -> 0x21ECBB26140 (Godot.TextureRect)
+      _enchantmentIcon [Godot.TextureRect] -> 0x21ECBB26008 (Godot.TextureRect)
+      _enchantmentLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FB388 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      <CardHighlight>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight] -> 0x21EC84FB1A0 (MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight)
+        NativePtr [System.IntPtr] = 2330241196640
+        _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FB1D8 (System.WeakReference<Godot.GodotObject>)
+        _curTween [Godot.Tween] -> 0x21ECBB30E40 (Godot.Tween)
+        _shaderMaterial [Godot.ShaderMaterial] -> 0x21ECBB25680 (Godot.ShaderMaterial)
+      <Body>k__BackingField [Godot.Control] -> 0x21ECBB261A8 (Godot.Control)
+      _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+      _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FAFA8 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = UNKNOWN.description
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FAFD0 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FB020 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = UNKNOWN.title
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FB048 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FB098 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = LOCKED.description
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FB0C0 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FB110 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = LOCKED.title
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FB138 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+      ModelChanged [System.Action<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB26C10 (System.Action<MegaCrit.Sts2.Core.Models.CardModel>)
+    _isClickable [System.Boolean] = True
+    _flash [Godot.Control] -> 0x21ECBB271E0 (Godot.TextureRect)
+    _handIndexLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21ECBB26B98 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+    _targetAngle [System.Single] = -8
+    _angleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DD48 (System.Threading.CancellationTokenSource)
+    _positionCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DCE8 (System.Threading.CancellationTokenSource)
+    _scaleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DD18 (System.Threading.CancellationTokenSource)
+    _hand [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand] -> 0x21ECBB13280 (MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand)
+  0x21ECBB28AC0
+    NativePtr [System.IntPtr] = 2330655077824
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB28B80 (System.WeakReference<Godot.GodotObject>)
+    _hitbox [MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl] -> 0x21ECBB28BC0 (MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox)
+      NativePtr [System.IntPtr] = 2330655075760
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB28C28 (System.WeakReference<Godot.GodotObject>)
+      _ignoreDragThreshold [System.Single] = -1
+      _isEnabled [System.Boolean] = True
+    <CardNode>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCard] -> 0x21EC84FA7D8 (MegaCrit.Sts2.Core.Nodes.Cards.NCard)
+      NativePtr [System.IntPtr] = 2330241153296
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FAB88 (System.WeakReference<Godot.GodotObject>)
+      _model [MegaCrit.Sts2.Core.Models.CardModel] -> 0x21ECBB1E0E0 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+      _titleLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FAC48 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _descriptionLabel [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21EC84FABF0 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _ancientPortrait [Godot.TextureRect] -> 0x21ECBB27E08 (Godot.TextureRect)
+      _portrait [Godot.TextureRect] -> 0x21ECBB27DA0 (Godot.TextureRect)
+      _frame [Godot.TextureRect] -> 0x21ECBB27B98 (Godot.TextureRect)
+      _ancientBorder [Godot.TextureRect] -> 0x21ECBB27C00 (Godot.TextureRect)
+      _ancientBanner [Godot.Control] -> 0x21ECBB27CD0 (Godot.TextureRect)
+      _ancientTextBg [Godot.TextureRect] -> 0x21ECBB27C68 (Godot.TextureRect)
+      _ancientHighlight [Godot.TextureRect] -> 0x21ECBB27D38 (Godot.TextureRect)
+      _portraitBorder [Godot.TextureRect] -> 0x21ECBB27E70 (Godot.TextureRect)
+      _banner [Godot.TextureRect] -> 0x21ECBB28010 (Godot.TextureRect)
+      _lock [Godot.TextureRect] -> 0x21ECBB28078 (Godot.TextureRect)
+      _typePlaque [Godot.NinePatchRect] -> 0x21ECBB280E0 (Godot.NinePatchRect)
+      _typeLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FAC98 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _portraitCanvasGroup [Godot.CanvasGroup] -> 0x21ECBB27ED8 (Godot.CanvasGroup)
+      _sparkles [Godot.GpuParticles2D] -> 0x21ECBB28280 (Godot.GpuParticles2D)
+      _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84FA988 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+        _items [System.__Canon[]] -> 0x21EC84EC7A8 (MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx[])
+          <array length=0>
+      _energyIcon [Godot.TextureRect] -> 0x21ECBB27F40 (Godot.TextureRect)
+      _energyLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FACE8 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableEnergyIcon [Godot.TextureRect] -> 0x21ECBB28148 (Godot.TextureRect)
+      _starIcon [Godot.TextureRect] -> 0x21ECBB27FA8 (Godot.TextureRect)
+      _starLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FAD38 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableStarIcon [Godot.TextureRect] -> 0x21ECBB281B0 (Godot.TextureRect)
+      _overlayContainer [Godot.Node] -> 0x21ECBB28420 (Godot.Control)
+      _enchantmentTab [Godot.Control] -> 0x21ECBB282E8 (Godot.TextureRect)
+      _enchantmentVfxOverride [Godot.TextureRect] -> 0x21ECBB28350 (Godot.TextureRect)
+      _enchantmentIcon [Godot.TextureRect] -> 0x21ECBB28218 (Godot.TextureRect)
+      _enchantmentLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FAD88 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      <CardHighlight>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight] -> 0x21EC84FABA0 (MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight)
+        NativePtr [System.IntPtr] = 2330241149168
+        _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FABD8 (System.WeakReference<Godot.GodotObject>)
+        _curTween [Godot.Tween] -> 0x21ECBB30EA8 (Godot.Tween)
+        _shaderMaterial [Godot.ShaderMaterial] -> 0x21ECBB27B30 (Godot.ShaderMaterial)
+      <Body>k__BackingField [Godot.Control] -> 0x21ECBB283B8 (Godot.Control)
+      _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+      _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FA9A8 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = UNKNOWN.description
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FA9D0 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FAA20 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = UNKNOWN.title
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FAA48 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FAA98 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = LOCKED.description
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FAAC0 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FAB10 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = LOCKED.title
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FAB38 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+      ModelChanged [System.Action<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB28CE0 (System.Action<MegaCrit.Sts2.Core.Models.CardModel>)
+    _isClickable [System.Boolean] = True
+    _flash [Godot.Control] -> 0x21ECBB292B0 (Godot.TextureRect)
+    _handIndexLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21ECBB28C68 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+    _targetAngle [System.Single] = -4
+    _angleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DDD8 (System.Threading.CancellationTokenSource)
+    _positionCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DD78 (System.Threading.CancellationTokenSource)
+    _scaleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DDA8 (System.Threading.CancellationTokenSource)
+    _hand [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand] -> 0x21ECBB13280 (MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand)
+  0x21ECBB2A1F8
+    NativePtr [System.IntPtr] = 2330655079888
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2A2B8 (System.WeakReference<Godot.GodotObject>)
+    _hitbox [MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl] -> 0x21ECBB2A2F8 (MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox)
+      NativePtr [System.IntPtr] = 2330655069568
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2A360 (System.WeakReference<Godot.GodotObject>)
+      _ignoreDragThreshold [System.Single] = -1
+      _isEnabled [System.Boolean] = True
+    <CardNode>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCard] -> 0x21EC84FA1D8 (MegaCrit.Sts2.Core.Nodes.Cards.NCard)
+      NativePtr [System.IntPtr] = 2330241101696
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FA588 (System.WeakReference<Godot.GodotObject>)
+      _model [MegaCrit.Sts2.Core.Models.CardModel] -> 0x21ECBB1CF50 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+      _titleLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA648 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _descriptionLabel [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21EC84FA5F0 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _ancientPortrait [Godot.TextureRect] -> 0x21ECBB29830 (Godot.TextureRect)
+      _portrait [Godot.TextureRect] -> 0x21ECBB297C8 (Godot.TextureRect)
+      _frame [Godot.TextureRect] -> 0x21ECBB295C0 (Godot.TextureRect)
+      _ancientBorder [Godot.TextureRect] -> 0x21ECBB29628 (Godot.TextureRect)
+      _ancientBanner [Godot.Control] -> 0x21ECBB296F8 (Godot.TextureRect)
+      _ancientTextBg [Godot.TextureRect] -> 0x21ECBB29690 (Godot.TextureRect)
+      _ancientHighlight [Godot.TextureRect] -> 0x21ECBB29760 (Godot.TextureRect)
+      _portraitBorder [Godot.TextureRect] -> 0x21ECBB29898 (Godot.TextureRect)
+      _banner [Godot.TextureRect] -> 0x21ECBB29A38 (Godot.TextureRect)
+      _lock [Godot.TextureRect] -> 0x21ECBB29AA0 (Godot.TextureRect)
+      _typePlaque [Godot.NinePatchRect] -> 0x21ECBB29B08 (Godot.NinePatchRect)
+      _typeLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA698 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _portraitCanvasGroup [Godot.CanvasGroup] -> 0x21ECBB29900 (Godot.CanvasGroup)
+      _sparkles [Godot.GpuParticles2D] -> 0x21ECBB29CA8 (Godot.GpuParticles2D)
+      _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84FA388 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+        _items [System.__Canon[]] -> 0x21EC84EC7A8 (MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx[])
+          <array length=0>
+      _energyIcon [Godot.TextureRect] -> 0x21ECBB29968 (Godot.TextureRect)
+      _energyLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA6E8 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableEnergyIcon [Godot.TextureRect] -> 0x21ECBB29B70 (Godot.TextureRect)
+      _starIcon [Godot.TextureRect] -> 0x21ECBB299D0 (Godot.TextureRect)
+      _starLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA738 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableStarIcon [Godot.TextureRect] -> 0x21ECBB29BD8 (Godot.TextureRect)
+      _overlayContainer [Godot.Node] -> 0x21ECBB29E48 (Godot.Control)
+      _enchantmentTab [Godot.Control] -> 0x21ECBB29D10 (Godot.TextureRect)
+      _enchantmentVfxOverride [Godot.TextureRect] -> 0x21ECBB29D78 (Godot.TextureRect)
+      _enchantmentIcon [Godot.TextureRect] -> 0x21ECBB29C40 (Godot.TextureRect)
+      _enchantmentLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA788 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      <CardHighlight>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight] -> 0x21EC84FA5A0 (MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight)
+        NativePtr [System.IntPtr] = 2330241112016
+        _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84FA5D8 (System.WeakReference<Godot.GodotObject>)
+        _curTween [Godot.Tween] -> 0x21ECBB30F10 (Godot.Tween)
+        _shaderMaterial [Godot.ShaderMaterial] -> 0x21ECBB29558 (Godot.ShaderMaterial)
+      <Body>k__BackingField [Godot.Control] -> 0x21ECBB29DE0 (Godot.Control)
+      _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+      _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FA3A8 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = UNKNOWN.description
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FA3D0 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FA420 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = UNKNOWN.title
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FA448 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FA498 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = LOCKED.description
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FA4C0 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84FA510 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = LOCKED.title
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84FA538 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+      ModelChanged [System.Action<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB2A418 (System.Action<MegaCrit.Sts2.Core.Models.CardModel>)
+    _isClickable [System.Boolean] = True
+    _flash [Godot.Control] -> 0x21ECBB2A9E8 (Godot.TextureRect)
+    _handIndexLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21ECBB2A3A0 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+    _angleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DE68 (System.Threading.CancellationTokenSource)
+    _positionCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DE08 (System.Threading.CancellationTokenSource)
+    _scaleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DE38 (System.Threading.CancellationTokenSource)
+    _hand [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand] -> 0x21ECBB13280 (MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand)
+  0x21ECBB2BA18
+    NativePtr [System.IntPtr] = 2330655086080
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2BAD8 (System.WeakReference<Godot.GodotObject>)
+    _hitbox [MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl] -> 0x21ECBB2BB18 (MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox)
+      NativePtr [System.IntPtr] = 2330655088144
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2BB80 (System.WeakReference<Godot.GodotObject>)
+      _ignoreDragThreshold [System.Single] = -1
+      _isEnabled [System.Boolean] = True
+    <CardNode>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCard] -> 0x21EC84F9BD8 (MegaCrit.Sts2.Core.Nodes.Cards.NCard)
+      NativePtr [System.IntPtr] = 2330241050096
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84F9F88 (System.WeakReference<Godot.GodotObject>)
+      _model [MegaCrit.Sts2.Core.Models.CardModel] -> 0x21ECBB1EB20 (MegaCrit.Sts2.Core.Models.Cards.Anger)
+      _titleLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA048 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _descriptionLabel [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21EC84F9FF0 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _ancientPortrait [Godot.TextureRect] -> 0x21ECBB2AF80 (Godot.TextureRect)
+      _portrait [Godot.TextureRect] -> 0x21ECBB2AF18 (Godot.TextureRect)
+      _frame [Godot.TextureRect] -> 0x21ECBB2AD10 (Godot.TextureRect)
+      _ancientBorder [Godot.TextureRect] -> 0x21ECBB2AD78 (Godot.TextureRect)
+      _ancientBanner [Godot.Control] -> 0x21ECBB2AE48 (Godot.TextureRect)
+      _ancientTextBg [Godot.TextureRect] -> 0x21ECBB2ADE0 (Godot.TextureRect)
+      _ancientHighlight [Godot.TextureRect] -> 0x21ECBB2AEB0 (Godot.TextureRect)
+      _portraitBorder [Godot.TextureRect] -> 0x21ECBB2AFE8 (Godot.TextureRect)
+      _banner [Godot.TextureRect] -> 0x21ECBB2B188 (Godot.TextureRect)
+      _lock [Godot.TextureRect] -> 0x21ECBB2B1F0 (Godot.TextureRect)
+      _typePlaque [Godot.NinePatchRect] -> 0x21ECBB2B258 (Godot.NinePatchRect)
+      _typeLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA098 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _portraitCanvasGroup [Godot.CanvasGroup] -> 0x21ECBB2B050 (Godot.CanvasGroup)
+      _sparkles [Godot.GpuParticles2D] -> 0x21ECBB2B3F8 (Godot.GpuParticles2D)
+      _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84F9D88 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+        _items [System.__Canon[]] -> 0x21EC84EC7A8 (MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx[])
+          <array length=0>
+      _energyIcon [Godot.TextureRect] -> 0x21ECBB2B0B8 (Godot.TextureRect)
+      _energyLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA0E8 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableEnergyIcon [Godot.TextureRect] -> 0x21ECBB2B2C0 (Godot.TextureRect)
+      _starIcon [Godot.TextureRect] -> 0x21ECBB2B120 (Godot.TextureRect)
+      _starLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA138 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableStarIcon [Godot.TextureRect] -> 0x21ECBB2B328 (Godot.TextureRect)
+      _overlayContainer [Godot.Node] -> 0x21ECBB2B598 (Godot.Control)
+      _enchantmentTab [Godot.Control] -> 0x21ECBB2B460 (Godot.TextureRect)
+      _enchantmentVfxOverride [Godot.TextureRect] -> 0x21ECBB2B4C8 (Godot.TextureRect)
+      _enchantmentIcon [Godot.TextureRect] -> 0x21ECBB2B390 (Godot.TextureRect)
+      _enchantmentLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84FA188 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      <CardHighlight>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight] -> 0x21EC84F9FA0 (MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight)
+        NativePtr [System.IntPtr] = 2330241072800
+        _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84F9FD8 (System.WeakReference<Godot.GodotObject>)
+        _curTween [Godot.Tween] -> 0x21ECBB30F78 (Godot.Tween)
+        _shaderMaterial [Godot.ShaderMaterial] -> 0x21ECBB2ACA8 (Godot.ShaderMaterial)
+      <Body>k__BackingField [Godot.Control] -> 0x21ECBB2B530 (Godot.Control)
+      _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+      _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9DA8 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = UNKNOWN.description
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84F9DD0 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9E20 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = UNKNOWN.title
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84F9E48 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9E98 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = LOCKED.description
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84F9EC0 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9F10 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = LOCKED.title
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84F9F38 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+      ModelChanged [System.Action<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB2BC38 (System.Action<MegaCrit.Sts2.Core.Models.CardModel>)
+    _isClickable [System.Boolean] = True
+    _flash [Godot.Control] -> 0x21ECBB2C208 (Godot.TextureRect)
+    _handIndexLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21ECBB2BBC0 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+    _targetAngle [System.Single] = 4
+    _angleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DEF8 (System.Threading.CancellationTokenSource)
+    _positionCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DE98 (System.Threading.CancellationTokenSource)
+    _scaleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DEC8 (System.Threading.CancellationTokenSource)
+    _hand [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand] -> 0x21ECBB13280 (MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand)
+  0x21ECBB2D390
+    NativePtr [System.IntPtr] = 2330655094336
+    _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2D450 (System.WeakReference<Godot.GodotObject>)
+    _hitbox [MegaCrit.Sts2.Core.Nodes.GodotExtensions.NClickableControl] -> 0x21ECBB2D490 (MegaCrit.Sts2.Core.Nodes.Cards.Holders.NCardHolderHitbox)
+      NativePtr [System.IntPtr] = 2330655092272
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21ECBB2D4F8 (System.WeakReference<Godot.GodotObject>)
+      _ignoreDragThreshold [System.Single] = -1
+      _isEnabled [System.Boolean] = True
+    <CardNode>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCard] -> 0x21EC84F95D8 (MegaCrit.Sts2.Core.Nodes.Cards.NCard)
+      NativePtr [System.IntPtr] = 2330241002624
+      _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84F9988 (System.WeakReference<Godot.GodotObject>)
+      _model [MegaCrit.Sts2.Core.Models.CardModel] -> 0x21ECBB1D828 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+      _titleLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84F9A48 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _descriptionLabel [MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel] -> 0x21EC84F99F0 (MegaCrit.Sts2.addons.mega_text.MegaRichTextLabel)
+      _ancientPortrait [Godot.TextureRect] -> 0x21ECBB2C880 (Godot.TextureRect)
+      _portrait [Godot.TextureRect] -> 0x21ECBB2C818 (Godot.TextureRect)
+      _frame [Godot.TextureRect] -> 0x21ECBB2C610 (Godot.TextureRect)
+      _ancientBorder [Godot.TextureRect] -> 0x21ECBB2C678 (Godot.TextureRect)
+      _ancientBanner [Godot.Control] -> 0x21ECBB2C748 (Godot.TextureRect)
+      _ancientTextBg [Godot.TextureRect] -> 0x21ECBB2C6E0 (Godot.TextureRect)
+      _ancientHighlight [Godot.TextureRect] -> 0x21ECBB2C7B0 (Godot.TextureRect)
+      _portraitBorder [Godot.TextureRect] -> 0x21ECBB2C8E8 (Godot.TextureRect)
+      _banner [Godot.TextureRect] -> 0x21ECBB2CA88 (Godot.TextureRect)
+      _lock [Godot.TextureRect] -> 0x21ECBB2CAF0 (Godot.TextureRect)
+      _typePlaque [Godot.NinePatchRect] -> 0x21ECBB2CB58 (Godot.NinePatchRect)
+      _typeLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84F9A98 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _portraitCanvasGroup [Godot.CanvasGroup] -> 0x21ECBB2C950 (Godot.CanvasGroup)
+      _sparkles [Godot.GpuParticles2D] -> 0x21ECBB2CCF8 (Godot.GpuParticles2D)
+      _flashVfx [System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>] -> 0x21EC84F9788 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx>)
+        _items [System.__Canon[]] -> 0x21EC84EC7A8 (MegaCrit.Sts2.Core.Nodes.Vfx.NRelicFlashVfx[])
+          <array length=0>
+      _energyIcon [Godot.TextureRect] -> 0x21ECBB2C9B8 (Godot.TextureRect)
+      _energyLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84F9AE8 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableEnergyIcon [Godot.TextureRect] -> 0x21ECBB2CBC0 (Godot.TextureRect)
+      _starIcon [Godot.TextureRect] -> 0x21ECBB2CA20 (Godot.TextureRect)
+      _starLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84F9B38 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      _unplayableStarIcon [Godot.TextureRect] -> 0x21ECBB2CC28 (Godot.TextureRect)
+      _overlayContainer [Godot.Node] -> 0x21ECBB2CE98 (Godot.Control)
+      _enchantmentTab [Godot.Control] -> 0x21ECBB2CD60 (Godot.TextureRect)
+      _enchantmentVfxOverride [Godot.TextureRect] -> 0x21ECBB2CDC8 (Godot.TextureRect)
+      _enchantmentIcon [Godot.TextureRect] -> 0x21ECBB2CC90 (Godot.TextureRect)
+      _enchantmentLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21EC84F9B88 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+      <CardHighlight>k__BackingField [MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight] -> 0x21EC84F99A0 (MegaCrit.Sts2.Core.Nodes.Cards.NCardHighlight)
+        NativePtr [System.IntPtr] = 2330241012944
+        _weakReferenceToSelf [System.WeakReference<Godot.GodotObject>] -> 0x21EC84F99D8 (System.WeakReference<Godot.GodotObject>)
+        _curTween [Godot.Tween] -> 0x21ECBB31000 (Godot.Tween)
+        _shaderMaterial [Godot.ShaderMaterial] -> 0x21ECBB2C5A8 (Godot.ShaderMaterial)
+      <Body>k__BackingField [Godot.Control] -> 0x21ECBB2CE30 (Godot.Control)
+      _visibility [MegaCrit.Sts2.Core.Entities.UI.ModelVisibility] = 1
+      _unknownDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F97A8 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = UNKNOWN.description
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84F97D0 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _unknownTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9820 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = UNKNOWN.title
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84F9848 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _lockedDescription [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9898 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = LOCKED.description
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84F98C0 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      _lockedTitle [MegaCrit.Sts2.Core.Localization.LocString] -> 0x21EC84F9910 (MegaCrit.Sts2.Core.Localization.LocString)
+        <locTable>P [System.String] = card_library
+        <locEntryKey>P [System.String] = LOCKED.title
+        _variables [System.Collections.Generic.Dictionary<System.String, System.Object>] -> 0x21EC84F9938 (System.Collections.Generic.Dictionary<System.String, System.Object>)
+      <DisplayingPile>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+      ModelChanged [System.Action<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB2D5B0 (System.Action<MegaCrit.Sts2.Core.Models.CardModel>)
+    _isClickable [System.Boolean] = True
+    _flash [Godot.Control] -> 0x21ECBB2DB80 (Godot.TextureRect)
+    _handIndexLabel [MegaCrit.Sts2.addons.mega_text.MegaLabel] -> 0x21ECBB2D538 (MegaCrit.Sts2.addons.mega_text.MegaLabel)
+    _targetAngle [System.Single] = 8
+    _angleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DF88 (System.Threading.CancellationTokenSource)
+    _positionCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DF28 (System.Threading.CancellationTokenSource)
+    _scaleCancelToken [System.Threading.CancellationTokenSource] -> 0x21ECBB2DF58 (System.Threading.CancellationTokenSource)
+    _hand [MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand] -> 0x21ECBB13280 (MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand)
+
+MegaCrit.Sts2.Core.Entities.Cards.CardPile
+  0x21EC8D509B8
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21EC8D50A00 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21EC8D52C80 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=16>
+          [0] 0x21EC8D51150 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [1] 0x21EC8D514B0 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [2] 0x21EC8D51798 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [3] 0x21EC8D51A80 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [4] 0x21EC8D51D68 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [5] 0x21EC8D52050 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [6] 0x21EC8D52338 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [7] 0x21EC8D52620 (MegaCrit.Sts2.Core.Models.Cards.Bash)
+        <array length=16>
+          [0] 0x21EC8D51150 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [1] 0x21EC8D514B0 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [2] 0x21EC8D51798 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [3] 0x21EC8D51A80 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [4] 0x21EC8D51D68 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [5] 0x21EC8D52050 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [6] 0x21EC8D52338 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [7] 0x21EC8D52620 (MegaCrit.Sts2.Core.Models.Cards.Bash)
+      _size [System.Int32] = 11
+      _version [System.Int32] = 11
+    CardAddFinished [System.Action] -> 0x21EC8D9F3F8 (System.Action)
+    CardRemoveFinished [System.Action] -> 0x21EC8D9F438 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 6
+  0x21ECBB1CAE8
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB1CB30 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21ECBB2D008 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=8>
+          [0] 0x21ECBB1D258 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [1] 0x21ECBB1E0E0 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [2] 0x21ECBB1CF50 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [3] 0x21ECBB1EB20 (MegaCrit.Sts2.Core.Models.Cards.Anger)
+          [4] 0x21ECBB1D828 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+        <array length=8>
+          [0] 0x21ECBB1D258 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [1] 0x21ECBB1E0E0 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [2] 0x21ECBB1CF50 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [3] 0x21ECBB1EB20 (MegaCrit.Sts2.Core.Models.Cards.Anger)
+          [4] 0x21ECBB1D828 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+      _size [System.Int32] = 5
+      _version [System.Int32] = 5
+    ContentsChanged [System.Action] -> 0x21ECBB1F728 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 2
+  0x21ECBB1CB50
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB1CB98 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21ECBB1EA88 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=16>
+          [0] 0x21ECBB1E3C8 (MegaCrit.Sts2.Core.Models.Cards.Bash)
+          [1] 0x21ECBB1EE08 (MegaCrit.Sts2.Core.Models.Cards.Armaments)
+          [2] 0x21ECBB1E708 (MegaCrit.Sts2.Core.Models.Cards.Stomp)
+          [3] 0x21ECBB1DDF8 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [4] 0x21ECBB1D540 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [5] 0x21ECBB1DB10 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+        <array length=16>
+          [0] 0x21ECBB1E3C8 (MegaCrit.Sts2.Core.Models.Cards.Bash)
+          [1] 0x21ECBB1EE08 (MegaCrit.Sts2.Core.Models.Cards.Armaments)
+          [2] 0x21ECBB1E708 (MegaCrit.Sts2.Core.Models.Cards.Stomp)
+          [3] 0x21ECBB1DDF8 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+          [4] 0x21ECBB1D540 (MegaCrit.Sts2.Core.Models.Cards.StrikeIronclad)
+          [5] 0x21ECBB1DB10 (MegaCrit.Sts2.Core.Models.Cards.DefendIronclad)
+      _size [System.Int32] = 6
+      _version [System.Int32] = 36
+    ContentsChanged [System.Action] -> 0x21ECBB1F7F8 (System.Action)
+    CardAddFinished [System.Action] -> 0x21ECBB20CD8 (System.Action)
+    CardRemoveFinished [System.Action] -> 0x21ECBB20D18 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 1
+  0x21ECBB1CBB8
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB1CC00 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21EC8D50A20 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=0>
+        <array length=0>
+    ContentsChanged [System.Action] -> 0x21ECBB1F8C8 (System.Action)
+    CardAddFinished [System.Action] -> 0x21ECBB20F00 (System.Action)
+    CardRemoveFinished [System.Action] -> 0x21ECBB20F40 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 3
+  0x21ECBB1CC20
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB1CC68 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21EC8D50A20 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=0>
+        <array length=0>
+    ContentsChanged [System.Action] -> 0x21ECBB1F998 (System.Action)
+    CardAddFinished [System.Action] -> 0x21ECBB21108 (System.Action)
+    CardRemoveFinished [System.Action] -> 0x21ECBB21148 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 4
+  0x21ECBB1CC88
+    _cards [System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>] -> 0x21ECBB1CCD0 (System.Collections.Generic.List<MegaCrit.Sts2.Core.Models.CardModel>)
+      _items [System.__Canon[]] -> 0x21EC8D50A20 (MegaCrit.Sts2.Core.Models.CardModel[])
+        <array length=0>
+        <array length=0>
+    ContentsChanged [System.Action] -> 0x21ECBB1FB00 (System.Action)
+    <Type>k__BackingField [MegaCrit.Sts2.Core.Entities.Cards.PileType] = 5
