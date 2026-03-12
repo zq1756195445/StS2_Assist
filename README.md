@@ -51,13 +51,28 @@ There is also an npm shortcut:
 npm run game:launch-log
 ```
 
+Start the game with the event hook plus the log bridge:
+
+```powershell
+cd D:\StS2_Assist\repo
+dotnet build .\tools\Sts2EventHook\Sts2EventHook.csproj
+powershell -ExecutionPolicy Bypass -File .\tools\launch_sts2_with_event_hook_bridge.ps1
+```
+
+There is also an npm shortcut:
+
+```powershell
+npm run game:launch-hook
+```
+
 Notes:
 
 - Keep the HUD running in one terminal and launch the game from a second terminal.
 - The launcher now auto-discovers `SlayTheSpire2.exe` from the Steam registry path and `libraryfolders.vdf`.
 - If auto-discovery still fails on a custom setup, you can still pass `-GameExe "..."` manually.
 - If Steam requires it, keep `steam_appid.txt` with app id `2868840` in the game folder when launching outside Steam.
-- `tools/launch_sts2_with_hook.ps1` is now only a compatibility wrapper and forwards to the log bridge launcher.
+- `tools/launch_sts2_with_hook.ps1` now forwards to the event hook launcher.
+- Event hook logs default to `%TEMP%\sts2_event_hook.log`.
 
 ## How It Works
 

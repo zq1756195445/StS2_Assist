@@ -15,6 +15,7 @@
     "replay:probe": "python3 tools/replay_probe.py",
     "hook:build": "dotnet build tools/Sts2EventHook",
     "game:launch-log": "powershell -ExecutionPolicy Bypass -File .\\tools\\launch_sts2_with_log_bridge.ps1",
+    "game:launch-hook": "powershell -ExecutionPolicy Bypass -File .\\tools\\launch_sts2_with_event_hook_bridge.ps1",
     "test": "cargo test --manifest-path src-tauri/Cargo.toml"
   },
   "dependencies": {

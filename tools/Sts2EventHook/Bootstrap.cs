@@ -42,7 +42,12 @@ internal static class Bootstrap
     private static void TryPatchAll(string reason)
     {
         Log($"patch scan: {reason}");
-        foreach (HookCandidate candidate in HookManifest.All)
+        foreach (HookCandidate candidate in CombatHookManifest.All)
+        {
+            PatchCandidate(candidate);
+        }
+
+        foreach (HookCandidate candidate in SceneHookManifest.All)
         {
             PatchCandidate(candidate);
         }
@@ -158,28 +163,3 @@ internal sealed record HookCandidate(string TypeName, string[] MethodNames, bool
     }
 }
 
-internal static class HookManifest
-{
-    internal static readonly HookCandidate[] All =
-    [
-        new(
-            "MegaCrit.Sts2.Core.Combat.CombatManager",
-            ["EndTurn", "TryEndTurn", "PlayCard", "TryPlayCard", "QueueAction", "EnqueueAction"]),
-        new(
-            "MegaCrit.Sts2.Core.Combat.CombatState",
-            ["Apply", "Resolve", "SetTurn", "Advance", "AdvanceTurn", "Draw", "Discard", "Damage"],
-            PartialMatch: true),
-        new(
-            "MegaCrit.Sts2.Core.Combat.CombatStateTracker",
-            ["Apply", "Update", "Sync", "Handle"],
-            PartialMatch: true),
-        new(
-            "MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder",
-            ["Add", "Remove", "Insert", "SetCards", "Refresh"],
-            PartialMatch: true),
-        new(
-            "MegaCrit.Sts2.Core.Multiplayer.Game.RunLocationTargetedMessageBuffer",
-            ["Handle", "Dispatch"],
-            PartialMatch: true),
-    ];
-}
