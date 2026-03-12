@@ -212,6 +212,9 @@ struct AppState {
     locale: Mutex<AppLocale>,
     cached_memory: Arc<Mutex<Option<MemorySnapshot>>>,
     cached_game_state: Arc<Mutex<Option<GameState>>>,
+    overlay_enabled: Arc<Mutex<bool>>,
+    overlay_interactive: Arc<Mutex<bool>>,
+    debug_state: Arc<Mutex<DebugState>>,
 }
 
 #[derive(Clone, Default)]
@@ -219,7 +222,38 @@ struct MemorySnapshot {
     hand: Vec<String>,
     enemies: Vec<EnemyState>,
     player: Option<MemoryPlayerState>,
+    reward_cards: Vec<String>,
+    scene_hint: Option<String>,
     status: Option<String>,
+}
+
+#[derive(Clone, Default, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct DebugState {
+    entries: Vec<DebugEntry>,
+    last_refresh_source: Option<String>,
+    last_memory_summary: Option<String>,
+    last_game_state_summary: Option<String>,
+    last_merge_summary: Option<String>,
+    last_probe_summary: Option<String>,
+    last_probe_stdout: Option<String>,
+    last_probe_stderr: Option<String>,
+}
+
+#[derive(Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+struct DebugEntry {
+    timestamp: String,
+    stage: String,
+    message: String,
+}
+
+#[derive(Clone, Default)]
+struct RefreshDebug {
+    probe_summary: Option<String>,
+    probe_stdout: Option<String>,
+    probe_stderr: Option<String>,
+    merge_summary: Option<String>,
 }
 
 #[derive(Clone, Default, Deserialize)]
@@ -273,6 +307,7 @@ struct Snapshot {
     overlay: OverlayLayout,
     replay: ReplaySummary,
     source: String,
+    debug: DebugState,
 }
 
 #[derive(Clone, Serialize)]
@@ -633,12 +668,23 @@ fn snapshot_from_state(state: &AppState) -> Result<Snapshot, String> {
         .lock()
         .map_err(|_| "game state cache lock poisoned")?
         .clone();
-    let replay = empty_replay_summary();
+    let replay = read_replay_summary().unwrap_or_else(empty_replay_summary);
+    let debug = state
+        .debug_state
+        .lock()
+        .map_err(|_| "debug state lock poisoned")?
+        .clone();
     let game_state =
         cached_game_state.unwrap_or_else(|| empty_live_game_state(cached_memory.as_ref()));
     let recommendations = generate_recommendations(&game_state, &state.database, locale);
     let recommendations = localize_recommendations(&recommendations, locale, &state.localization);
-    let overlay = build_overlay_layout_v2(&game_state, &recommendations, &replay, locale);
+    let overlay = build_overlay_layout_v2(
+        &game_state,
+        &recommendations,
+        &replay,
+        cached_memory.as_ref().and_then(|memory| memory.scene_hint.as_deref()),
+        locale,
+    );
     let game_state = localize_game_state(&game_state, locale, &state.localization);
     let replay = localize_replay_summary(&replay, locale, &state.localization);
     let source = localize_source(&game_state.source, locale, &state.localization);
@@ -650,6 +696,7 @@ fn snapshot_from_state(state: &AppState) -> Result<Snapshot, String> {
         overlay,
         replay,
         source,
+        debug,
     })
 }
 
@@ -663,9 +710,73 @@ fn emit_snapshot_update(app: &AppHandle) {
     }
 }
 
+fn emit_window_mode_update(app: &AppHandle, attached_to_game: bool) {
+    if let Some(window) = app.get_webview_window("main") {
+        let _ = window.emit(
+            "window-mode-updated",
+            &WindowMode { attached_to_game },
+        );
+    }
+}
+
+fn emit_locale_update(app: &AppHandle, locale: AppLocale) {
+    if let Some(window) = app.get_webview_window("main") {
+        let _ = window.emit("locale-changed", &locale);
+    }
+}
+
+fn push_debug_entry(debug_state: &Arc<Mutex<DebugState>>, stage: &str, message: impl Into<String>) {
+    let message = message.into();
+    eprintln!("[spire-guide][{stage}] {message}");
+    if let Ok(mut debug) = debug_state.lock() {
+        debug.entries.insert(
+            0,
+            DebugEntry {
+                timestamp: now_timestamp_string(),
+                stage: stage.to_string(),
+                message,
+            },
+        );
+        debug.entries.truncate(120);
+    }
+}
+
+fn format_refresh_source_label(source: Option<&str>) -> String {
+    match source.unwrap_or("startup") {
+        value if value.starts_with("game-log/") => value.replacen("game-log/", "action=", 1),
+        value if value.starts_with("event(") => format!("action={value}"),
+        value => format!("source={value}"),
+    }
+}
+
+fn print_debug_blob(stage: &str, label: &str, value: &Option<String>) {
+    if let Some(value) = value.as_ref().filter(|value| !value.is_empty()) {
+        let formatted = serde_json::from_str::<serde_json::Value>(value)
+            .ok()
+            .and_then(|json| serde_json::to_string_pretty(&json).ok())
+            .unwrap_or_else(|| value.to_string());
+        eprintln!("[spire-guide][{stage}][{label}]");
+        for line in formatted.lines() {
+            eprintln!("  {line}");
+        }
+    }
+}
+
 #[tauri::command]
-fn sync_overlay_window(window: WebviewWindow) -> Result<WindowMode, String> {
-    let attached = apply_window_bounds(&window)?;
+fn sync_overlay_window(window: WebviewWindow, state: State<AppState>) -> Result<WindowMode, String> {
+    let enabled = *state
+        .overlay_enabled
+        .lock()
+        .map_err(|_| "overlay enabled lock poisoned")?;
+    let interactive = *state
+        .overlay_interactive
+        .lock()
+        .map_err(|_| "overlay interactive lock poisoned")?;
+    let attached = sync_overlay_window_state(
+        &window,
+        enabled,
+        interactive,
+    )?;
     Ok(WindowMode {
         attached_to_game: attached,
     })
@@ -675,6 +786,28 @@ fn sync_overlay_window(window: WebviewWindow) -> Result<WindowMode, String> {
 fn set_locale(locale: AppLocale, state: State<AppState>) -> Result<(), String> {
     let mut current = state.locale.lock().map_err(|_| "locale lock poisoned")?;
     *current = locale;
+    Ok(())
+}
+
+#[tauri::command]
+fn set_overlay_interactive(
+    interactive: bool,
+    window: WebviewWindow,
+    state: State<AppState>,
+) -> Result<(), String> {
+    {
+        let mut current = state
+            .overlay_interactive
+            .lock()
+            .map_err(|_| "overlay interactive lock poisoned")?;
+        *current = interactive;
+    }
+
+    let enabled = *state
+        .overlay_enabled
+        .lock()
+        .map_err(|_| "overlay enabled lock poisoned")?;
+    let _ = sync_overlay_window_state(&window, enabled, interactive);
     Ok(())
 }
 
@@ -707,7 +840,6 @@ fn read_live_game_state(cached_memory: Option<&MemorySnapshot>) -> Option<GameSt
                 .collect::<Vec<_>>()
         })
         .unwrap_or_default();
-
     Some(GameState {
         timestamp: save
             .save_time
@@ -1212,41 +1344,202 @@ fn default_latest_replay_path() -> Option<PathBuf> {
     path.exists().then_some(path)
 }
 
-fn read_memory_snapshot() -> Option<MemorySnapshot> {
+fn read_memory_snapshot() -> (Option<MemorySnapshot>, RefreshDebug) {
     #[cfg(target_os = "windows")]
     {
-        let config = MemoryReaderConfig::load()?;
+        let Some(config) = MemoryReaderConfig::load() else {
+            return (
+                None,
+                RefreshDebug {
+                    probe_summary: Some("memory-reader config missing".into()),
+                    ..RefreshDebug::default()
+                },
+            );
+        };
         return windows_memory::read_memory_snapshot(&config);
     }
 
     #[cfg(not(target_os = "windows"))]
     {
-        None
+        (
+            None,
+            RefreshDebug {
+                probe_summary: Some("memory reader unsupported on this platform".into()),
+                ..RefreshDebug::default()
+            },
+        )
     }
+}
+
+fn memory_snapshot_has_live_payload(snapshot: &MemorySnapshot) -> bool {
+    !snapshot.hand.is_empty()
+        || !snapshot.enemies.is_empty()
+        || snapshot.player.is_some()
+        || snapshot.scene_hint.is_some()
+}
+
+fn merge_memory_snapshot(
+    previous: Option<&MemorySnapshot>,
+    next: Option<MemorySnapshot>,
+    source_override: Option<&str>,
+) -> Option<MemorySnapshot> {
+    let Some(mut next_snapshot) = next else {
+        return previous.cloned();
+    };
+
+    let preserve_previous = source_override
+        .map(|source| source.contains("game-log") || source.contains("event("))
+        .unwrap_or(false);
+
+    if preserve_previous && !memory_snapshot_has_live_payload(&next_snapshot) {
+        if let Some(previous_snapshot) = previous {
+            next_snapshot.hand = previous_snapshot.hand.clone();
+            next_snapshot.enemies = previous_snapshot.enemies.clone();
+            next_snapshot.player = previous_snapshot.player.clone();
+            next_snapshot.scene_hint = previous_snapshot.scene_hint.clone();
+            if next_snapshot.reward_cards.is_empty() {
+                next_snapshot.reward_cards = previous_snapshot.reward_cards.clone();
+            }
+        }
+    }
+
+    Some(next_snapshot)
+}
+
+fn game_state_has_live_battle_payload(state: &GameState) -> bool {
+    !state.hand.is_empty() || !state.battle.enemies.is_empty()
+}
+
+fn merge_game_state(
+    previous: Option<&GameState>,
+    next: Option<GameState>,
+    source_override: Option<&str>,
+) -> Option<GameState> {
+    let Some(mut next_state) = next else {
+        return previous.cloned();
+    };
+
+    let preserve_previous = source_override
+        .map(|source| source.contains("game-log") || source.contains("event("))
+        .unwrap_or(false);
+
+    if preserve_previous && !game_state_has_live_battle_payload(&next_state) {
+        if let Some(previous_state) = previous {
+            if game_state_has_live_battle_payload(previous_state) {
+                next_state.hand = previous_state.hand.clone();
+                next_state.player.hp = previous_state.player.hp;
+                next_state.player.max_hp = previous_state.player.max_hp;
+                next_state.player.energy = previous_state.player.energy;
+                next_state.battle = previous_state.battle.clone();
+                if next_state.map.current_node == "Map" {
+                    next_state.map = previous_state.map.clone();
+                }
+            }
+        }
+    }
+
+    Some(next_state)
 }
 
 fn refresh_live_state_into(
     app: Option<&AppHandle>,
     memory_cache: &Arc<Mutex<Option<MemorySnapshot>>>,
     game_state_cache: &Arc<Mutex<Option<GameState>>>,
+    debug_state: &Arc<Mutex<DebugState>>,
     source_override: Option<&str>,
 ) {
-    let memory = read_memory_snapshot().map(|mut snapshot| {
+    eprintln!("[spire-guide] ------------------------------------------------------------");
+    push_debug_entry(
+        debug_state,
+        "refresh",
+        format!("start {}", format_refresh_source_label(source_override)),
+    );
+    let previous_memory = memory_cache.lock().ok().and_then(|current| current.clone());
+    let previous_game_state = game_state_cache.lock().ok().and_then(|current| current.clone());
+    let (next_memory_raw, mut refresh_debug) = read_memory_snapshot();
+    let next_memory = next_memory_raw.clone().map(|mut snapshot| {
         if let Some(source) = source_override {
             snapshot.status = Some(source.to_string());
         }
         snapshot
     });
+    let memory = merge_memory_snapshot(previous_memory.as_ref(), next_memory, source_override);
+    refresh_debug.merge_summary = Some(format!(
+        "memory prev_hand={} prev_enemies={} next_hand={} next_enemies={} merged_hand={} merged_enemies={}",
+        previous_memory.as_ref().map(|m| m.hand.len()).unwrap_or(0),
+        previous_memory.as_ref().map(|m| m.enemies.len()).unwrap_or(0),
+        next_memory_raw.as_ref().map(|m| m.hand.len()).unwrap_or(0),
+        next_memory_raw.as_ref().map(|m| m.enemies.len()).unwrap_or(0),
+        memory.as_ref().map(|m| m.hand.len()).unwrap_or(0),
+        memory.as_ref().map(|m| m.enemies.len()).unwrap_or(0),
+    ));
 
     if let Ok(mut current) = memory_cache.lock() {
         *current = memory.clone();
     }
 
-    let next_game_state = read_live_game_state(memory.as_ref())
-        .or_else(|| Some(empty_live_game_state(memory.as_ref())));
+    let next_game_state = merge_game_state(
+        previous_game_state.as_ref(),
+        read_live_game_state(memory.as_ref()).or_else(|| Some(empty_live_game_state(memory.as_ref()))),
+        source_override,
+    );
 
     if let Ok(mut current) = game_state_cache.lock() {
-        *current = next_game_state;
+        *current = next_game_state.clone();
+    }
+
+    if let Ok(mut debug) = debug_state.lock() {
+        debug.last_refresh_source = Some(source_override.unwrap_or("startup").to_string());
+        debug.last_memory_summary = Some(format!(
+            "hand={} enemies={} player={} scene_hint={} status={}",
+            memory.as_ref().map(|m| m.hand.len()).unwrap_or(0),
+            memory.as_ref().map(|m| m.enemies.len()).unwrap_or(0),
+            memory
+                .as_ref()
+                .and_then(|m| m.player.as_ref())
+                .map(|_| "yes")
+                .unwrap_or("no"),
+            memory
+                .as_ref()
+                .and_then(|m| m.scene_hint.clone())
+                .unwrap_or_else(|| "none".into()),
+            memory
+                .as_ref()
+                .and_then(|m| m.status.clone())
+                .unwrap_or_else(|| "none".into())
+        ));
+        debug.last_game_state_summary = Some(format!(
+            "hand={} enemies={} rewards={} node={} source={}",
+            next_game_state.as_ref().map(|s| s.hand.len()).unwrap_or(0),
+            next_game_state
+                .as_ref()
+                .map(|s| s.battle.enemies.len())
+                .unwrap_or(0),
+            next_game_state
+                .as_ref()
+                .map(|s| s.rewards.cards.len())
+                .unwrap_or(0),
+            next_game_state
+                .as_ref()
+                .map(|s| s.map.current_node.clone())
+                .unwrap_or_else(|| "none".into()),
+            next_game_state
+                .as_ref()
+                .map(|s| s.source.clone())
+                .unwrap_or_else(|| "none".into())
+        ));
+        debug.last_merge_summary = refresh_debug.merge_summary.clone();
+        debug.last_probe_summary = refresh_debug.probe_summary.clone();
+        debug.last_probe_stdout = refresh_debug.probe_stdout.clone();
+        debug.last_probe_stderr = refresh_debug.probe_stderr.clone();
+    }
+    if let Some(summary) = refresh_debug.probe_summary {
+        push_debug_entry(debug_state, "probe", summary);
+    }
+    print_debug_blob("probe", "stdout", &refresh_debug.probe_stdout);
+    print_debug_blob("probe", "stderr", &refresh_debug.probe_stderr);
+    if let Some(summary) = refresh_debug.merge_summary {
+        push_debug_entry(debug_state, "merge", summary);
     }
 
     if let Some(app) = app {
@@ -1627,6 +1920,48 @@ fn localized_no_reward(locale: AppLocale) -> String {
     match locale {
         AppLocale::EnUs => "No reward yet".into(),
         AppLocale::ZhCn => "暂时没有奖励".into(),
+    }
+}
+
+fn localized_choice_title(locale: AppLocale) -> String {
+    match locale {
+        AppLocale::EnUs => "Recommended Choice".into(),
+        AppLocale::ZhCn => "推荐选项".into(),
+    }
+}
+
+fn localized_shop_title(locale: AppLocale) -> String {
+    match locale {
+        AppLocale::EnUs => "Recommended Purchase".into(),
+        AppLocale::ZhCn => "推荐购买".into(),
+    }
+}
+
+fn localized_waiting_choice(locale: AppLocale) -> String {
+    match locale {
+        AppLocale::EnUs => "Waiting for choice recommendation".into(),
+        AppLocale::ZhCn => "等待选项建议".into(),
+    }
+}
+
+fn localized_waiting_shop(locale: AppLocale) -> String {
+    match locale {
+        AppLocale::EnUs => "Waiting for shop recommendation".into(),
+        AppLocale::ZhCn => "等待商店建议".into(),
+    }
+}
+
+fn localized_map_overlay_title(locale: AppLocale) -> String {
+    match locale {
+        AppLocale::EnUs => "Map Open".into(),
+        AppLocale::ZhCn => "地图已打开".into(),
+    }
+}
+
+fn localized_map_overlay_body(locale: AppLocale) -> String {
+    match locale {
+        AppLocale::EnUs => "HUD minimized while the map overlay is open.".into(),
+        AppLocale::ZhCn => "地图覆盖层打开时，HUD 已切到极简模式。".into(),
     }
 }
 
@@ -2620,12 +2955,12 @@ fn push_first_present(plan: &mut Vec<String>, hand: &[String], candidates: &[&st
 fn build_overlay_layout(
     game_state: &GameState,
     recommendations: &Recommendations,
-    replay: &ReplaySummary,
+    _replay: &ReplaySummary,
     _locale: AppLocale,
 ) -> OverlayLayout {
     let enemy = game_state.battle.enemies.first();
     let top_reward = recommendations.card_rewards.first();
-    let scene = detect_scene(game_state, replay);
+    let scene = detect_hud_mode(game_state, None);
     let battle_title = enemy
         .map(|entry| format!("{} 意图", entry.name))
         .or_else(|| {
@@ -2702,15 +3037,24 @@ fn build_overlay_layout(
     }
 }
 
-fn detect_scene(game_state: &GameState, replay: &ReplaySummary) -> String {
-    if !game_state.rewards.cards.is_empty() {
-        return "reward".into();
+fn detect_hud_mode(game_state: &GameState, scene_hint: Option<&str>) -> String {
+    if matches!(scene_hint, Some("map-overlay")) {
+        return "map-overlay".into();
     }
-    if !game_state.battle.enemies.is_empty() {
-        return "battle".into();
+    if !game_state.battle.enemies.is_empty() || !game_state.hand.is_empty() {
+        return "battle-like".into();
     }
-    if replay.phase_hint == "event" {
-        return "event".into();
+    if matches!(scene_hint, Some("shop")) || game_state.map.current_node == "Shop" {
+        return "shop".into();
+    }
+    if matches!(scene_hint, Some("reward" | "event")) || !game_state.rewards.cards.is_empty() {
+        return "choice-like".into();
+    }
+    if matches!(
+        game_state.map.current_node.as_str(),
+        "Rest" | "Treasure" | "Start" | "Unknown" | "Event"
+    ) {
+        return "choice-like".into();
     }
     "map".into()
 }
@@ -2718,93 +3062,84 @@ fn detect_scene(game_state: &GameState, replay: &ReplaySummary) -> String {
 fn build_overlay_layout_v2(
     game_state: &GameState,
     recommendations: &Recommendations,
-    replay: &ReplaySummary,
+    _replay: &ReplaySummary,
+    scene_hint: Option<&str>,
     locale: AppLocale,
 ) -> OverlayLayout {
-    let enemy = game_state.battle.enemies.first();
     let top_reward = recommendations.card_rewards.first();
-    let scene = detect_scene(game_state, replay);
-    let battle_title = enemy
-        .map(|entry| localized_battle_title(locale, &entry.name))
+    let scene = detect_hud_mode(game_state, scene_hint);
+
+    let choice_body = top_reward
+        .map(|entry| format!("{} ({:.1})", entry.card_name, entry.score))
         .or_else(|| {
-            game_state
-                .battle
-                .encounter_name
-                .as_ref()
-                .map(|name| localized_encounter_title(locale, name))
-        })
-        .unwrap_or_else(|| localized_battle_info_title(locale));
-    let battle_body = if let Some(entry) = enemy {
-        localized_battle_body(
-            locale,
-            &entry.intent,
             recommendations
-                .turn_suggestion
+                .relic_suggestions
                 .first()
-                .map(String::as_str)
-                .unwrap_or_else(|| localized_current_hand(locale)),
-        )
-    } else if let Some(encounter) = &game_state.battle.encounter_name {
-        let phase = game_state
-            .battle
-            .current_phase
-            .clone()
-            .or_else(|| game_state.battle.last_card_played.clone())
-            .unwrap_or_else(|| localized_waiting_more_actions(locale));
-        localized_encounter_phase(locale, encounter, &phase)
-    } else {
-        localized_no_battle_target(locale)
+                .map(|entry| format!("{} - {}", entry.relic_name, entry.suggestion))
+        })
+        .unwrap_or_else(|| localized_waiting_choice(locale));
+
+    let shop_body = recommendations
+        .relic_suggestions
+        .first()
+        .map(|entry| format!("{} - {}", entry.relic_name, entry.suggestion))
+        .unwrap_or_else(|| localized_waiting_shop(locale));
+
+    let anchors = match scene.as_str() {
+        "battle-like" => vec![OverlayAnchor {
+            id: "hand-play".into(),
+            title: localized_play_order_title(locale),
+            body: if recommendations.turn_suggestion.is_empty() {
+                localized_waiting_more_actions(locale)
+            } else {
+                recommendations.turn_suggestion.join(" -> ")
+            },
+            x: 0.14,
+            y: 0.76,
+            tone: "info".into(),
+        }],
+        "choice-like" => vec![OverlayAnchor {
+            id: "choice".into(),
+            title: localized_choice_title(locale),
+            body: choice_body,
+            x: 0.64,
+            y: 0.68,
+            tone: "accent".into(),
+        }],
+        "shop" => vec![OverlayAnchor {
+            id: "shop".into(),
+            title: localized_shop_title(locale),
+            body: shop_body,
+            x: 0.64,
+            y: 0.68,
+            tone: "good".into(),
+        }],
+        "map-overlay" => vec![OverlayAnchor {
+            id: "map-overlay".into(),
+            title: localized_map_overlay_title(locale),
+            body: localized_map_overlay_body(locale),
+            x: 0.62,
+            y: 0.14,
+            tone: "info".into(),
+        }],
+        _ => Vec::new(),
     };
 
     OverlayLayout {
         scale: overlay_scale_for_scene(&scene),
-        condensed_sidebar: scene != "reward",
+        condensed_sidebar: true,
         visible_panels: visible_panels_for_scene(&scene),
         scene,
-        anchors: vec![
-            OverlayAnchor {
-                id: "enemy-intent".into(),
-                title: battle_title,
-                body: battle_body,
-                x: 0.08,
-                y: 0.12,
-                tone: "danger".into(),
-            },
-            OverlayAnchor {
-                id: "hand-play".into(),
-                title: localized_play_order_title(locale),
-                body: recommendations.turn_suggestion.join(" -> "),
-                x: 0.14,
-                y: 0.76,
-                tone: "info".into(),
-            },
-            OverlayAnchor {
-                id: "card-reward".into(),
-                title: localized_card_reward_title(locale),
-                body: top_reward
-                    .map(|entry| format!("{} ({:.1})", entry.card_name, entry.score))
-                    .unwrap_or_else(|| localized_no_reward(locale)),
-                x: 0.64,
-                y: 0.68,
-                tone: "accent".into(),
-            },
-            OverlayAnchor {
-                id: "map-route".into(),
-                title: localized_route_title(locale),
-                body: recommendations.path_recommendation.route.join(" -> "),
-                x: 0.62,
-                y: 0.2,
-                tone: "good".into(),
-            },
-        ],
+        anchors,
     }
 }
 
 fn overlay_scale_for_scene(scene: &str) -> f32 {
     match scene {
-        "reward" => 1.0,
-        "battle" => 0.94,
-        "event" => 0.96,
+        "choice-like" => 0.98,
+        "battle-like" => 0.94,
+        "shop" => 0.98,
+        "map-overlay" => 0.9,
         "map" => 0.9,
         _ => 1.0,
     }
@@ -2812,35 +3147,22 @@ fn overlay_scale_for_scene(scene: &str) -> f32 {
 
 fn visible_panels_for_scene(scene: &str) -> Vec<String> {
     match scene {
-        "reward" => vec!["header", "rewards", "archetypes"],
-        "battle" => vec!["header", "relics"],
-        "event" => vec!["header", "relics"],
-        "map" => vec!["header", "path", "relics"],
-        _ => vec!["header", "rewards", "path", "relics", "archetypes"],
+        "battle-like" | "choice-like" | "shop" | "map-overlay" | "map" => vec!["header"],
+        _ => vec!["header"],
     }
     .into_iter()
     .map(String::from)
     .collect()
 }
 
-fn apply_window_bounds(window: &WebviewWindow) -> Result<bool, String> {
-    let monitor = window
-        .current_monitor()
-        .map_err(|error| error.to_string())?
-        .ok_or_else(|| "No active monitor".to_string())?;
-    let work = monitor.work_area();
-    let width = work.size.width;
-    let height = work.size.height;
-    let x = work.position.x;
-    let y = work.position.y;
-
+fn apply_window_bounds(window: &WebviewWindow, bounds: &Bounds) -> Result<(), String> {
     window
-        .set_position(PhysicalPosition::new(x, y))
+        .set_position(PhysicalPosition::new(bounds.x, bounds.y))
         .map_err(|error| error.to_string())?;
     window
-        .set_size(PhysicalSize::new(width, height))
+        .set_size(PhysicalSize::new(bounds.width, bounds.height))
         .map_err(|error| error.to_string())?;
-    Ok(false)
+    Ok(())
 }
 
 fn get_target_window_bounds() -> Option<Bounds> {
@@ -2897,29 +3219,104 @@ end tell
     }
 }
 
+fn is_target_window_foreground() -> bool {
+    #[cfg(target_os = "windows")]
+    {
+        return windows_memory::is_target_window_foreground(TARGET_PROCESS_NAME);
+    }
+
+    #[cfg(not(target_os = "windows"))]
+    {
+        true
+    }
+}
+
+fn sync_overlay_window_state(
+    window: &WebviewWindow,
+    enabled: bool,
+    interactive: bool,
+) -> Result<bool, String> {
+    if !enabled {
+        let _ = window.hide();
+        return Ok(false);
+    }
+
+    let Some(bounds) = get_target_window_bounds() else {
+        let _ = window.hide();
+        return Ok(false);
+    };
+
+    if !is_target_window_foreground() {
+        let _ = window.hide();
+        return Ok(false);
+    }
+
+    apply_window_bounds(window, &bounds)?;
+    let _ = window.set_ignore_cursor_events(!interactive);
+    let _ = window.show();
+    Ok(true)
+}
+
 fn start_overlay_hotkey_manager(app: AppHandle) {
     #[cfg(target_os = "windows")]
     thread::spawn(move || {
+        let mut f6_was_down = false;
+        let mut f7_was_down = false;
         let mut f8_was_down = false;
         let mut f10_was_down = false;
 
         loop {
+            let f6_down = windows_memory::is_virtual_key_pressed(0x75);
+            let f7_down = windows_memory::is_virtual_key_pressed(0x76);
             let f8_down = windows_memory::is_virtual_key_pressed(0x77);
             let f10_down = windows_memory::is_virtual_key_pressed(0x79);
 
+            if f6_down && !f6_was_down {
+                if let Some(window) = app.get_webview_window("main") {
+                    let _ = window.emit("history-toggle-requested", ());
+                }
+            }
+
+            if f7_down && !f7_was_down {
+                let locale = {
+                    let state = app.state::<AppState>();
+                    let mut current = match state.locale.lock() {
+                        Ok(current) => current,
+                        Err(_) => continue,
+                    };
+                    *current = match *current {
+                        AppLocale::EnUs => AppLocale::ZhCn,
+                        AppLocale::ZhCn => AppLocale::EnUs,
+                    };
+                    *current
+                };
+
+                emit_locale_update(&app, locale);
+                emit_snapshot_update(&app);
+            }
+
             if f8_down && !f8_was_down {
                 if let Some(window) = app.get_webview_window("main") {
-                    match window.is_visible() {
-                        Ok(true) => {
-                            let _ = window.hide();
-                        }
-                        Ok(false) => {
-                            let _ = window.show();
-                            let _ = apply_window_bounds(&window);
-                            let _ = window.set_ignore_cursor_events(true);
-                        }
-                        Err(_) => {}
-                    }
+                    let enabled = {
+                        let state = app.state::<AppState>();
+                        let mut enabled = match state.overlay_enabled.lock() {
+                            Ok(enabled) => enabled,
+                            Err(_) => continue,
+                        };
+                        *enabled = !*enabled;
+                        *enabled
+                    };
+
+                    let interactive = app
+                        .state::<AppState>()
+                        .overlay_interactive
+                        .lock()
+                        .map(|value| *value)
+                        .unwrap_or(false);
+                    let attached =
+                        sync_overlay_window_state(&window, enabled, interactive)
+                        .unwrap_or(false);
+                    emit_window_mode_update(&app, attached);
                 }
             }
 
@@ -2928,9 +3325,49 @@ fn start_overlay_hotkey_manager(app: AppHandle) {
                 break;
             }
 
+            f6_was_down = f6_down;
+            f7_was_down = f7_down;
             f8_was_down = f8_down;
             f10_was_down = f10_down;
             thread::sleep(Duration::from_millis(60));
+        }
+    });
+}
+
+fn start_overlay_window_tracker(app: AppHandle) {
+    #[cfg(target_os = "windows")]
+    thread::spawn(move || {
+        let mut last_attached = None;
+
+        loop {
+            let attached = if let Some(window) = app.get_webview_window("main") {
+                let enabled = {
+                    let state = app.state::<AppState>();
+                    let enabled = match state.overlay_enabled.lock() {
+                        Ok(enabled) => *enabled,
+                        Err(_) => false,
+                    };
+                    enabled
+                };
+
+                let interactive = app
+                    .state::<AppState>()
+                    .overlay_interactive
+                    .lock()
+                    .map(|value| *value)
+                    .unwrap_or(false);
+                sync_overlay_window_state(&window, enabled, interactive)
+                    .unwrap_or(false)
+            } else {
+                false
+            };
+
+            if last_attached != Some(attached) {
+                emit_window_mode_update(&app, attached);
+                last_attached = Some(attached);
+            }
+
+            thread::sleep(Duration::from_millis(150));
         }
     });
 }
@@ -2939,6 +3376,7 @@ fn start_hud_event_bridge(
     app: AppHandle,
     memory_cache: Arc<Mutex<Option<MemorySnapshot>>>,
     game_state_cache: Arc<Mutex<Option<GameState>>>,
+    debug_state: Arc<Mutex<DebugState>>,
 ) {
     #[cfg(target_os = "windows")]
     thread::spawn(move || {
@@ -2959,33 +3397,115 @@ fn start_hud_event_bridge(
                     continue;
                 }
 
-                let source = event.source.clone().unwrap_or_else(|| {
-                    event
-                        .trigger
-                        .as_ref()
-                        .and_then(|trigger| match (&trigger.type_name, &trigger.method_name) {
-                            (Some(type_name), Some(method_name)) => {
-                                Some(format!("event({type_name}.{method_name})"))
-                            }
-                            _ => None,
-                        })
-                        .unwrap_or_else(|| "event(hook)".into())
-                });
+                let source = match (
+                    event.source.as_deref(),
+                    event.trigger.as_ref().and_then(|trigger| trigger.method_name.as_deref()),
+                    event.trigger.as_ref().and_then(|trigger| trigger.type_name.as_deref()),
+                ) {
+                    (Some("game-log"), Some(method_name), _) => format!("game-log/{method_name}"),
+                    (_, Some(method_name), Some(type_name)) => format!("event({type_name}.{method_name})"),
+                    (Some(source), _, _) => source.to_string(),
+                    _ => "event(hook)".into(),
+                };
 
                 refresh_live_state_into(
                     Some(&app),
                     &memory_cache,
                     &game_state_cache,
+                    &debug_state,
                     Some(&source),
                 );
+
+                let trigger_name = event
+                    .trigger
+                    .as_ref()
+                    .and_then(|trigger| trigger.method_name.as_deref())
+                    .unwrap_or_default();
+                if matches!(
+                    trigger_name,
+                    "play-card" | "monster-move" | "combat-room" | "choose-cards"
+                ) {
+                    for delay_ms in [250_u64, 900_u64] {
+                        let delayed_app = app.clone();
+                        let delayed_memory_cache = memory_cache.clone();
+                        let delayed_game_state_cache = game_state_cache.clone();
+                        let delayed_debug_state = debug_state.clone();
+                        let delayed_source = source.clone();
+                        thread::spawn(move || {
+                            thread::sleep(Duration::from_millis(delay_ms));
+                            refresh_live_state_into(
+                                Some(&delayed_app),
+                                &delayed_memory_cache,
+                                &delayed_game_state_cache,
+                                &delayed_debug_state,
+                                Some(&delayed_source),
+                            );
+                        });
+                    }
+                }
             }
+        }
+    });
+}
+
+fn start_save_file_watcher(
+    app: AppHandle,
+    memory_cache: Arc<Mutex<Option<MemorySnapshot>>>,
+    game_state_cache: Arc<Mutex<Option<GameState>>>,
+    debug_state: Arc<Mutex<DebugState>>,
+) {
+    thread::spawn(move || {
+        let mut last_stamp = None::<(u64, u64)>;
+
+        loop {
+            let current_path = resolve_current_run_save_path();
+            let current_stamp = current_path.as_ref().and_then(|path| {
+                let metadata = fs::metadata(path).ok()?;
+                let modified = metadata.modified().ok()?;
+                let seconds = modified.duration_since(UNIX_EPOCH).ok()?.as_secs();
+                Some((seconds, metadata.len()))
+            });
+
+            if let Some(stamp) = current_stamp {
+                let changed = last_stamp.map(|previous| previous != stamp).unwrap_or(false);
+                if changed {
+                    refresh_live_state_into(
+                        Some(&app),
+                        &memory_cache,
+                        &game_state_cache,
+                        &debug_state,
+                        Some("current_run.save"),
+                    );
+
+                    let delayed_app = app.clone();
+                    let delayed_memory_cache = memory_cache.clone();
+                    let delayed_game_state_cache = game_state_cache.clone();
+                    let delayed_debug_state = debug_state.clone();
+                    thread::spawn(move || {
+                        thread::sleep(Duration::from_millis(450));
+                        refresh_live_state_into(
+                            Some(&delayed_app),
+                            &delayed_memory_cache,
+                            &delayed_game_state_cache,
+                            &delayed_debug_state,
+                            Some("current_run.save"),
+                        );
+                    });
+                }
+                last_stamp = Some(stamp);
+            }
+
+            thread::sleep(Duration::from_millis(250));
         }
     });
 }
 
 #[cfg(target_os = "windows")]
 mod windows_memory {
-    use super::{parse_hand_blob, Bounds, MemoryBlobConfig, MemoryReaderConfig, MemorySnapshot};
+    use super::{
+        parse_hand_blob, Bounds, MemoryBlobConfig, MemoryReaderConfig, MemorySnapshot,
+        RefreshDebug,
+    };
     use serde::Deserialize;
     use std::{
         ffi::OsString,
@@ -3009,15 +3529,18 @@ mod windows_memory {
         },
         UI::{
             Input::KeyboardAndMouse::GetAsyncKeyState,
-            WindowsAndMessaging::{FindWindowW, GetWindowRect},
+            WindowsAndMessaging::{FindWindowW, GetForegroundWindow, GetWindowRect},
         },
     };
 
     #[derive(Deserialize)]
+    #[serde(rename_all = "camelCase")]
     struct ClrProbeSnapshot {
         hand: Vec<String>,
         enemies: Vec<ClrProbeEnemy>,
         player: Option<ClrProbePlayer>,
+        reward_cards: Vec<String>,
+        scene_hint: Option<String>,
         status: Option<String>,
     }
 
@@ -3039,10 +3562,28 @@ mod windows_memory {
         energy: Option<i32>,
     }
 
-    pub(super) fn read_memory_snapshot(config: &MemoryReaderConfig) -> Option<MemorySnapshot> {
-        let pid = find_process_id(&config.process_names())?;
-        let process = open_process(pid)?;
-        let clr_snapshot = read_clr_probe_snapshot(&config.process_names());
+    pub(super) fn read_memory_snapshot(
+        config: &MemoryReaderConfig,
+    ) -> (Option<MemorySnapshot>, RefreshDebug) {
+        let Some(pid) = find_process_id(&config.process_names()) else {
+            return (
+                None,
+                RefreshDebug {
+                    probe_summary: Some("target process not found".into()),
+                    ..RefreshDebug::default()
+                },
+            );
+        };
+        let Some(process) = open_process(pid) else {
+            return (
+                None,
+                RefreshDebug {
+                    probe_summary: Some(format!("failed to open process pid={pid}")),
+                    ..RefreshDebug::default()
+                },
+            );
+        };
+        let (clr_snapshot, mut debug) = read_clr_probe_snapshot(&config.process_names());
         let hand = clr_snapshot
             .as_ref()
             .map(|snapshot| snapshot.hand.clone())
@@ -3065,7 +3606,7 @@ mod windows_memory {
                     }
                 })
             });
-        let enemies = clr_snapshot
+        let enemies: Vec<super::EnemyState> = clr_snapshot
             .as_ref()
             .map(|snapshot| {
                 snapshot
@@ -3096,24 +3637,58 @@ mod windows_memory {
             CloseHandle(process);
         }
 
-        Some(MemorySnapshot {
-            hand: hand.unwrap_or_default(),
-            enemies,
-            player: clr_snapshot.as_ref().and_then(|snapshot| {
-                snapshot
-                    .player
+        let derived_summary = format!(
+            "pid={pid} clr={} hand={} enemies={} player={} scene_hint={}",
+            if clr_snapshot.is_some() { "ok" } else { "none" },
+            hand.as_ref().map(|cards| cards.len()).unwrap_or(0),
+            enemies.len(),
+            if clr_snapshot
+                .as_ref()
+                .and_then(|snapshot| snapshot.player.as_ref())
+                .is_some()
+            {
+                "yes"
+            } else {
+                "no"
+            },
+            clr_snapshot
+                .as_ref()
+                .and_then(|snapshot| snapshot.scene_hint.clone())
+                .unwrap_or_else(|| "none".into())
+        );
+        debug.probe_summary = Some(match debug.probe_summary.take() {
+            Some(existing) => format!("{existing} | {derived_summary}"),
+            None => derived_summary,
+        });
+
+        (
+            Some(MemorySnapshot {
+                hand: hand.unwrap_or_default(),
+                enemies,
+                player: clr_snapshot.as_ref().and_then(|snapshot| {
+                    snapshot
+                        .player
+                        .as_ref()
+                        .map(|player| super::MemoryPlayerState {
+                            hp: player.hp,
+                            max_hp: player.max_hp,
+                            energy: player.energy,
+                        })
+                }),
+                reward_cards: clr_snapshot
                     .as_ref()
-                    .map(|player| super::MemoryPlayerState {
-                        hp: player.hp,
-                        max_hp: player.max_hp,
-                        energy: player.energy,
-                    })
+                    .map(|snapshot| snapshot.reward_cards.clone())
+                    .unwrap_or_default(),
+                scene_hint: clr_snapshot.as_ref().and_then(|snapshot| snapshot.scene_hint.clone()),
+                status,
             }),
-            status,
-        })
+            debug,
+        )
     }
 
-    fn read_clr_probe_snapshot(process_names: &[String]) -> Option<ClrProbeSnapshot> {
+    fn read_clr_probe_snapshot(
+        process_names: &[String],
+    ) -> (Option<ClrProbeSnapshot>, RefreshDebug) {
         let process_name = process_names
             .iter()
             .find_map(|name| {
@@ -3125,20 +3700,57 @@ mod windows_memory {
             })
             .unwrap_or_else(|| "SlayTheSpire2".into());
 
-        let probe_path = find_clr_probe_dll()?;
-        let output = super::Command::new("dotnet")
+        let Some(probe_path) = find_clr_probe_dll() else {
+            return (
+                None,
+                RefreshDebug {
+                    probe_summary: Some("Sts2ClrProbe.dll not found".into()),
+                    ..RefreshDebug::default()
+                },
+            );
+        };
+        let output = match super::Command::new("dotnet")
             .arg("exec")
             .arg(probe_path)
             .arg("--json")
             .arg(process_name)
             .output()
-            .ok()?;
+        {
+            Ok(output) => output,
+            Err(error) => {
+                return (
+                    None,
+                    RefreshDebug {
+                        probe_summary: Some(format!("dotnet exec failed: {error}")),
+                        ..RefreshDebug::default()
+                    },
+                )
+            }
+        };
 
-        if !output.status.success() {
-            return None;
-        }
+        let stdout = String::from_utf8_lossy(&output.stdout).trim().to_string();
+        let stderr = String::from_utf8_lossy(&output.stderr).trim().to_string();
+        let parsed = if output.status.success() {
+            serde_json::from_slice::<ClrProbeSnapshot>(&output.stdout).ok()
+        } else {
+            None
+        };
 
-        serde_json::from_slice::<ClrProbeSnapshot>(&output.stdout).ok()
+        (
+            parsed,
+            RefreshDebug {
+                probe_summary: Some(format!(
+                    "probe exit={} success={} stdout_len={} stderr_len={}",
+                    output.status.code().unwrap_or(-1),
+                    output.status.success(),
+                    stdout.len(),
+                    stderr.len()
+                )),
+                probe_stdout: (!stdout.is_empty()).then_some(stdout),
+                probe_stderr: (!stderr.is_empty()).then_some(stderr),
+                ..RefreshDebug::default()
+            },
+        )
     }
 
     fn find_clr_probe_dll() -> Option<PathBuf> {
@@ -3312,6 +3924,19 @@ mod windows_memory {
         })
     }
 
+    pub(super) fn is_target_window_foreground(window_name: &str) -> bool {
+        let wide = window_name
+            .encode_utf16()
+            .chain(std::iter::once(0))
+            .collect::<Vec<_>>();
+        let target: HWND = unsafe { FindWindowW(null(), wide.as_ptr()) };
+        if target.is_null() {
+            return false;
+        }
+
+        let foreground = unsafe { GetForegroundWindow() };
+        !foreground.is_null() && foreground == target
+    }
     pub(super) fn is_virtual_key_pressed(vkey: i32) -> bool {
         unsafe { (GetAsyncKeyState(vkey) as u16 & 0x8000) != 0 }
     }
@@ -3320,6 +3945,7 @@ mod windows_memory {
 fn main() {
     let memory_cache = Arc::new(Mutex::new(None));
     let game_state_cache = Arc::new(Mutex::new(None));
+    let debug_state = Arc::new(Mutex::new(DebugState::default()));
 
     tauri::Builder::default()
         .manage(AppState {
@@ -3328,26 +3954,43 @@ fn main() {
             locale: Mutex::new(AppLocale::EnUs),
             cached_memory: memory_cache.clone(),
             cached_game_state: game_state_cache.clone(),
+            overlay_enabled: Arc::new(Mutex::new(true)),
+            overlay_interactive: Arc::new(Mutex::new(false)),
+            debug_state: debug_state.clone(),
         })
         .setup(move |app| {
             if let Some(window) = app.get_webview_window("main") {
-                let _ = apply_window_bounds(&window);
-                let _ = window.set_ignore_cursor_events(true);
+                let _ = sync_overlay_window_state(&window, true, false);
             }
             let handle = app.handle().clone();
-            refresh_live_state_into(Some(&handle), &memory_cache, &game_state_cache, None);
+            refresh_live_state_into(
+                Some(&handle),
+                &memory_cache,
+                &game_state_cache,
+                &debug_state,
+                None,
+            );
             start_hud_event_bridge(
                 handle.clone(),
                 memory_cache.clone(),
                 game_state_cache.clone(),
+                debug_state.clone(),
+            );
+            start_save_file_watcher(
+                handle.clone(),
+                memory_cache.clone(),
+                game_state_cache.clone(),
+                debug_state.clone(),
             );
             start_overlay_hotkey_manager(handle);
+            start_overlay_window_tracker(app.handle().clone());
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
             get_snapshot,
             sync_overlay_window,
-            set_locale
+            set_locale,
+            set_overlay_interactive
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
@@ -3455,6 +4098,8 @@ mod tests {
             hand: vec!["Bash".into()],
             enemies: Vec::new(),
             player: None,
+            reward_cards: Vec::new(),
+            scene_hint: None,
             status: Some("memory(hand)".into()),
         };
 
@@ -3621,8 +4266,9 @@ mod tests {
     }
 
     #[test]
-    fn replay_phase_hint_promotes_event_scene_without_battle_state() {
+    fn replay_phase_hint_does_not_override_live_scene() {
         let mut game_state = poison_state();
+        game_state.hand.clear();
         game_state.battle.enemies.clear();
         game_state.battle.encounter_name = None;
         game_state.battle.room_type = None;
@@ -3657,7 +4303,37 @@ mod tests {
             }],
         };
 
-        assert_eq!(detect_scene(&game_state, &replay), "event");
+        assert_eq!(detect_hud_mode(&game_state, Some("event")), "choice-like");
+        assert_eq!(replay.phase_hint, "event");
+    }
+
+    #[test]
+    fn map_overlay_scene_hint_overrides_battle_truth() {
+        let mut game_state = poison_state();
+        game_state.hand = vec!["Strike".into()];
+        game_state.battle.enemies = vec![EnemyState {
+            name: "Nibbits".into(),
+            hp: 12,
+            block: Some(0),
+            intent: "Attack".into(),
+        }];
+
+        assert_eq!(detect_hud_mode(&game_state, Some("map-overlay")), "map-overlay");
+    }
+
+    #[test]
+    fn battle_truth_beats_missing_scene_hint() {
+        let mut game_state = poison_state();
+        game_state.hand = vec!["Strike".into()];
+        game_state.rewards.cards.clear();
+        game_state.battle.enemies = vec![EnemyState {
+            name: "Nibbits".into(),
+            hp: 12,
+            block: Some(0),
+            intent: "Attack".into(),
+        }];
+
+        assert_eq!(detect_hud_mode(&game_state, None), "battle-like");
     }
 
     #[test]
