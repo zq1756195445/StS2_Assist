@@ -15,7 +15,6 @@ use std::{
 };
 use tauri::{AppHandle, Emitter, Manager, PhysicalPosition, PhysicalSize, State, WebviewWindow};
 
-const TARGET_PROCESS_NAME: &str = "Slay the Spire 2";
 #[cfg(not(target_os = "windows"))]
 const CURRENT_RUN_SAVE_PATH: &str =
     "/Users/cheemtain/Library/Application Support/SlayTheSpire2/steam/76561198818693118/profile1/saves/current_run.save";
@@ -453,6 +452,7 @@ struct OverlayLayout {
     anchors: Vec<OverlayAnchor>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunSave {
     acts: Vec<RunAct>,
@@ -464,18 +464,21 @@ struct RunSave {
     visited_map_coords: Vec<RunCoord>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunRoomRef {
     event_id: Option<String>,
     room_type: Option<String>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunAct {
     rooms: Option<RunActRooms>,
     saved_map: Option<SavedMap>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunActRooms {
     ancient_id: Option<String>,
@@ -528,6 +531,7 @@ struct RunRelic {
     id: String,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunHistoryPoint {
     map_point_type: Option<String>,
@@ -535,6 +539,7 @@ struct RunHistoryPoint {
     rooms: Option<Vec<RunHistoryRoom>>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunHistoryRoom {
     model_id: Option<String>,
@@ -544,6 +549,7 @@ struct RunHistoryRoom {
     turns_taken: Option<i32>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunHistoryPlayerStat {
     ancient_choice: Option<Vec<RunAncientChoice>>,
@@ -557,6 +563,7 @@ struct RunHistoryPlayerStat {
     relic_choices: Option<Vec<RunRelicChoice>>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunAncientChoice {
     #[serde(rename = "TextKey")]
@@ -564,29 +571,34 @@ struct RunAncientChoice {
     was_chosen: Option<bool>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunCardChoice {
     card: Option<RunCard>,
     was_picked: Option<bool>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunCardTransform {
     final_card: Option<RunCard>,
     original_card: Option<RunCard>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunEventChoice {
     title: Option<RunTextRef>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunRelicChoice {
     choice: Option<String>,
     was_picked: Option<bool>,
 }
 
+#[allow(dead_code)]
 #[derive(Clone, Deserialize)]
 struct RunTextRef {
     key: Option<String>,
@@ -606,14 +618,6 @@ struct OverlayAnchor {
 #[serde(rename_all = "camelCase")]
 struct WindowMode {
     attached_to_game: bool,
-}
-
-#[derive(Clone)]
-struct Bounds {
-    x: i32,
-    y: i32,
-    width: u32,
-    height: u32,
 }
 
 #[tauri::command]
@@ -1135,6 +1139,7 @@ fn resolve_current_run_save_path() -> Option<PathBuf> {
     resolve_sts2_file_path("STS2_CURRENT_RUN_SAVE", default_current_run_save_path())
 }
 
+#[allow(dead_code)]
 fn resolve_latest_replay_path() -> Option<PathBuf> {
     resolve_sts2_file_path("STS2_LATEST_REPLAY", default_latest_replay_path())
 }
@@ -1152,6 +1157,7 @@ fn default_current_run_save_path() -> Option<PathBuf> {
 }
 
 #[cfg(target_os = "windows")]
+#[allow(dead_code)]
 fn default_latest_replay_path() -> Option<PathBuf> {
     find_windows_profile_file(&["replays", "latest.mcr"])
 }
@@ -1345,6 +1351,7 @@ fn push_hand_entry(entries: &mut Vec<String>, raw: &str) {
     entries.push(candidate.to_string());
 }
 
+#[allow(dead_code)]
 fn infer_current_encounter_name(
     act_rooms: Option<&RunActRooms>,
     current_node_type: &str,
@@ -1411,6 +1418,7 @@ fn normalize_relic_id(id: &str) -> String {
     title_case_from_token(id.rsplit('.').next().unwrap_or(id))
 }
 
+#[allow(dead_code)]
 fn normalize_encounter_id(id: &str) -> String {
     title_case_from_token(id.rsplit('.').next().unwrap_or(id))
 }
@@ -1659,6 +1667,7 @@ fn unix_timestamp_to_iso_like(timestamp: i64) -> String {
     format!("unix:{timestamp}")
 }
 
+#[allow(dead_code)]
 fn read_replay_summary() -> Option<ReplaySummary> {
     let replay_path = resolve_latest_replay_path()?;
     let bytes = fs::read(&replay_path).ok()?;
@@ -1743,12 +1752,14 @@ fn read_replay_summary() -> Option<ReplaySummary> {
     })
 }
 
+#[allow(dead_code)]
 struct ReplayHeader {
     version: String,
     git_commit: String,
     model_id_hash: u32,
 }
 
+#[allow(dead_code)]
 fn parse_replay_header(bytes: &[u8]) -> Option<ReplayHeader> {
     let mut cursor = 0usize;
     Some(ReplayHeader {
@@ -1758,6 +1769,7 @@ fn parse_replay_header(bytes: &[u8]) -> Option<ReplayHeader> {
     })
 }
 
+#[allow(dead_code)]
 fn read_prefixed_string(bytes: &[u8], cursor: &mut usize) -> Option<String> {
     let len = read_u32_le(bytes, cursor)? as usize;
     let end = cursor.checked_add(len)?;
@@ -1766,6 +1778,7 @@ fn read_prefixed_string(bytes: &[u8], cursor: &mut usize) -> Option<String> {
     String::from_utf8(raw.to_vec()).ok()
 }
 
+#[allow(dead_code)]
 fn read_u32_le(bytes: &[u8], cursor: &mut usize) -> Option<u32> {
     let end = cursor.checked_add(4)?;
     let raw = bytes.get(*cursor..end)?;
@@ -1773,6 +1786,7 @@ fn read_u32_le(bytes: &[u8], cursor: &mut usize) -> Option<u32> {
     Some(u32::from_le_bytes(raw.try_into().ok()?))
 }
 
+#[allow(dead_code)]
 fn extract_ascii_strings(bytes: &[u8], min_len: usize) -> Vec<String> {
     let mut results = Vec::new();
     let mut current = String::new();
@@ -1795,6 +1809,7 @@ fn extract_ascii_strings(bytes: &[u8], min_len: usize) -> Vec<String> {
     results
 }
 
+#[allow(dead_code)]
 fn parse_card_action(entry: &str) -> Option<ReplayAction> {
     let marker = "card: CARD.";
     let start = entry.find(marker)? + marker.len();
@@ -1825,6 +1840,7 @@ fn parse_card_action(entry: &str) -> Option<ReplayAction> {
     })
 }
 
+#[allow(dead_code)]
 fn parse_event_choice(entry: &str) -> Option<ReplayAction> {
     let marker = ".options.";
     let start = entry.find(marker)? + marker.len();
@@ -1842,6 +1858,7 @@ fn parse_event_choice(entry: &str) -> Option<ReplayAction> {
     })
 }
 
+#[allow(dead_code)]
 fn parse_phase_marker(entry: &str) -> Option<ReplayAction> {
     if !entry.contains(" phase ") {
         return None;
@@ -1854,6 +1871,7 @@ fn parse_phase_marker(entry: &str) -> Option<ReplayAction> {
     })
 }
 
+#[allow(dead_code)]
 fn normalize_phase_marker(entry: &str) -> String {
     let trimmed = entry.trim();
     let stripped = trimmed.strip_prefix("after ").unwrap_or(trimmed);
@@ -1866,6 +1884,7 @@ fn normalize_phase_marker(entry: &str) -> String {
     title_case_from_token(&normalized.replace(' ', "_"))
 }
 
+#[allow(dead_code)]
 fn parse_title_context(entry: &str) -> Option<ReplayAction> {
     if !entry.ends_with(".title") || entry.contains(".options.") || entry.contains("CARD.") {
         return None;
@@ -1883,6 +1902,7 @@ fn parse_title_context(entry: &str) -> Option<ReplayAction> {
     })
 }
 
+#[allow(dead_code)]
 fn parse_latest_replay_page(strings: &[String]) -> Option<ReplayPage> {
     let mut latest: Option<ReplayPage> = None;
 
@@ -1920,6 +1940,7 @@ fn parse_latest_replay_page(strings: &[String]) -> Option<ReplayPage> {
     latest
 }
 
+#[allow(dead_code)]
 fn read_resolved_outcome_from_save() -> Option<ResolvedOutcome> {
     let path = resolve_current_run_save_path()?;
     let raw = fs::read_to_string(path).ok()?;
@@ -2049,10 +2070,12 @@ fn read_resolved_outcome_from_save() -> Option<ResolvedOutcome> {
     })
 }
 
+#[allow(dead_code)]
 fn parse_context_title(entry: &str) -> Option<String> {
     parse_title_context(entry).map(|action| action.title)
 }
 
+#[allow(dead_code)]
 fn parse_option_for_event(entry: &str, event_key: &str) -> Option<String> {
     if !entry.contains(".options.") {
         return None;
@@ -2064,6 +2087,7 @@ fn parse_option_for_event(entry: &str, event_key: &str) -> Option<String> {
     Some(title_case_from_token(token))
 }
 
+#[allow(dead_code)]
 fn infer_choice_model(options: &[String]) -> String {
     if options.is_empty() {
         "Unknown".into()
@@ -2072,6 +2096,7 @@ fn infer_choice_model(options: &[String]) -> String {
     }
 }
 
+#[allow(dead_code)]
 fn push_unique_limited(items: &mut Vec<String>, value: String, max_len: usize) {
     if items.iter().any(|item| item == &value) {
         return;
@@ -2082,6 +2107,7 @@ fn push_unique_limited(items: &mut Vec<String>, value: String, max_len: usize) {
     }
 }
 
+#[allow(dead_code)]
 fn push_limited<T>(items: &mut Vec<T>, value: T, max_len: usize) {
     items.push(value);
     if items.len() > max_len {
@@ -2089,6 +2115,7 @@ fn push_limited<T>(items: &mut Vec<T>, value: T, max_len: usize) {
     }
 }
 
+#[allow(dead_code)]
 fn mock_replay_summary() -> ReplaySummary {
     ReplaySummary {
         source: "mock".into(),
@@ -2146,6 +2173,7 @@ fn mock_replay_summary() -> ReplaySummary {
     }
 }
 
+#[allow(dead_code)]
 fn infer_replay_phase(actions: &[ReplayAction]) -> String {
     match actions.last().map(|action| action.kind.as_str()) {
         Some("card") | Some("phase") => "battle".into(),
@@ -2154,6 +2182,7 @@ fn infer_replay_phase(actions: &[ReplayAction]) -> String {
     }
 }
 
+#[allow(dead_code)]
 fn find_latest_replay_action<'a>(
     actions: &'a [ReplayAction],
     kind: &str,
@@ -2161,6 +2190,7 @@ fn find_latest_replay_action<'a>(
     actions.iter().rev().find(|action| action.kind == kind)
 }
 
+#[allow(dead_code)]
 fn mock_states() -> Vec<GameState> {
     vec![
         GameState {
@@ -2843,60 +2873,6 @@ fn apply_window_bounds(window: &WebviewWindow) -> Result<bool, String> {
     Ok(false)
 }
 
-fn get_target_window_bounds() -> Option<Bounds> {
-    #[cfg(target_os = "windows")]
-    {
-        return windows_memory::get_target_window_bounds(TARGET_PROCESS_NAME);
-    }
-
-    #[cfg(not(target_os = "windows"))]
-    {
-        let script = format!(
-            r#"
-tell application "System Events"
-  if not (exists process "{TARGET_PROCESS_NAME}") then
-    return ""
-  end if
-  tell process "{TARGET_PROCESS_NAME}"
-    if (count of windows) is 0 then
-      return ""
-    end if
-    set {{xPos, yPos}} to position of front window
-    set {{winWidth, winHeight}} to size of front window
-    return (xPos as string) & "," & (yPos as string) & "," & (winWidth as string) & "," & (winHeight as string)
-  end tell
-end tell
-"#
-        );
-
-        let output = Command::new("osascript")
-            .arg("-e")
-            .arg(script)
-            .output()
-            .ok()?;
-        if !output.status.success() {
-            return None;
-        }
-
-        let stdout = String::from_utf8(output.stdout).ok()?;
-        let values: Vec<i32> = stdout
-            .trim()
-            .split(',')
-            .filter_map(|value| value.parse::<i32>().ok())
-            .collect();
-        if values.len() != 4 {
-            return None;
-        }
-
-        Some(Bounds {
-            x: values[0],
-            y: values[1],
-            width: values[2] as u32,
-            height: values[3] as u32,
-        })
-    }
-}
-
 fn start_overlay_hotkey_manager(app: AppHandle) {
     #[cfg(target_os = "windows")]
     thread::spawn(move || {
@@ -2985,17 +2961,16 @@ fn start_hud_event_bridge(
 
 #[cfg(target_os = "windows")]
 mod windows_memory {
-    use super::{parse_hand_blob, Bounds, MemoryBlobConfig, MemoryReaderConfig, MemorySnapshot};
+    use super::{parse_hand_blob, MemoryBlobConfig, MemoryReaderConfig, MemorySnapshot};
     use serde::Deserialize;
     use std::{
         ffi::OsString,
         mem::{size_of, zeroed},
         os::windows::ffi::OsStringExt,
         path::PathBuf,
-        ptr::null,
     };
     use windows_sys::Win32::{
-        Foundation::{CloseHandle, HANDLE, HWND, INVALID_HANDLE_VALUE, RECT},
+        Foundation::{CloseHandle, HANDLE, INVALID_HANDLE_VALUE},
         System::{
             Diagnostics::{
                 Debug::ReadProcessMemory,
@@ -3009,7 +2984,6 @@ mod windows_memory {
         },
         UI::{
             Input::KeyboardAndMouse::GetAsyncKeyState,
-            WindowsAndMessaging::{FindWindowW, GetWindowRect},
         },
     };
 
@@ -3026,7 +3000,6 @@ mod windows_memory {
     struct ClrProbeEnemy {
         name: String,
         hp: i32,
-        max_hp: Option<i32>,
         block: Option<i32>,
         intent: Option<String>,
     }
@@ -3083,7 +3056,7 @@ mod windows_memory {
                             hp: enemy.hp,
                             block: enemy.block,
                             intent: if intent == "Unknown" {
-                                "意图读取中".into()
+                                "Intent pending".into()
                             } else {
                                 intent
                             },
@@ -3288,30 +3261,6 @@ mod windows_memory {
             .to_string_lossy()
             .into_owned()
     }
-
-    pub(super) fn get_target_window_bounds(window_name: &str) -> Option<Bounds> {
-        let wide = window_name
-            .encode_utf16()
-            .chain(std::iter::once(0))
-            .collect::<Vec<_>>();
-        let hwnd: HWND = unsafe { FindWindowW(null(), wide.as_ptr()) };
-        if hwnd.is_null() {
-            return None;
-        }
-
-        let mut rect: RECT = unsafe { zeroed() };
-        if unsafe { GetWindowRect(hwnd, &mut rect) } == 0 {
-            return None;
-        }
-
-        Some(Bounds {
-            x: rect.left,
-            y: rect.top,
-            width: rect.right.saturating_sub(rect.left) as u32,
-            height: rect.bottom.saturating_sub(rect.top) as u32,
-        })
-    }
-
     pub(super) fn is_virtual_key_pressed(vkey: i32) -> bool {
         unsafe { (GetAsyncKeyState(vkey) as u16 & 0x8000) != 0 }
     }
