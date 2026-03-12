@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "vite build",
     "start": "tauri dev",
+    "hud:dev": "powershell -ExecutionPolicy Bypass -File .\\tools\\launch_hud_dev.ps1",
     "tauri:dev": "tauri dev",
     "tauri:build": "tauri build",
     "extract:sts2-localization": "node tools/extract_sts2_localization.mjs",

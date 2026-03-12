@@ -26,6 +26,18 @@ Start the HUD:
 npm start
 ```
 
+Or use the helper that closes an old HUD process before relaunching:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\tools\launch_hud_dev.ps1
+```
+
+There is also an npm shortcut:
+
+```powershell
+npm run hud:dev
+```
+
 Start the game with the log-event bridge in another terminal:
 
 ```powershell
