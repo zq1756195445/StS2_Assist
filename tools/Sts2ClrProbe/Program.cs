@@ -1,10 +1,42 @@
 using Microsoft.Diagnostics.Runtime;
 using System.Diagnostics;
 using System.Text.Json;
+using static Sts2ClrProbe.ProbeCommon;
+using static Sts2ClrProbe.ProbeDump;
+using static Sts2ClrProbe.ProbeEvent;
+using static Sts2ClrProbe.ProbeReward;
+using static Sts2ClrProbe.ProbeShop;
+using static Sts2ClrProbe.ProbeTreasure;
 
 bool jsonMode = args.Any(arg => string.Equals(arg, "--json", StringComparison.OrdinalIgnoreCase));
+bool compactJson = args.Any(arg => string.Equals(arg, "--compact", StringComparison.OrdinalIgnoreCase));
+bool includeUiCandidates = args.Any(arg => string.Equals(arg, "--with-ui-candidates", StringComparison.OrdinalIgnoreCase));
+string? dumpType = ReadOptionValue(args, "--dump-type");
+string? findTypes = ReadOptionValue(args, "--find-types");
+int dumpLimit = TryParseIntOption(args, "--dump-limit") ?? 3;
+var optionValuesToSkip = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+if (!string.IsNullOrWhiteSpace(dumpType))
+{
+    optionValuesToSkip.Add(dumpType);
+}
+if (!string.IsNullOrWhiteSpace(findTypes))
+{
+    optionValuesToSkip.Add(findTypes);
+}
+string? dumpLimitValue = ReadOptionValue(args, "--dump-limit");
+if (!string.IsNullOrWhiteSpace(dumpLimitValue))
+{
+    optionValuesToSkip.Add(dumpLimitValue);
+}
 var positionalArgs = args
-    .Where(arg => !string.Equals(arg, "--json", StringComparison.OrdinalIgnoreCase))
+    .Where(arg =>
+        !string.Equals(arg, "--json", StringComparison.OrdinalIgnoreCase)
+        && !string.Equals(arg, "--compact", StringComparison.OrdinalIgnoreCase)
+        && !string.Equals(arg, "--with-ui-candidates", StringComparison.OrdinalIgnoreCase)
+        && !string.Equals(arg, "--dump-type", StringComparison.OrdinalIgnoreCase)
+        && !string.Equals(arg, "--find-types", StringComparison.OrdinalIgnoreCase)
+        && !string.Equals(arg, "--dump-limit", StringComparison.OrdinalIgnoreCase)
+        && !optionValuesToSkip.Contains(arg))
     .ToArray();
 
 var processName = positionalArgs.Length > 0 ? positionalArgs[0] : "SlayTheSpire2";
@@ -29,18 +61,117 @@ ClrHeap heap = runtime.Heap;
 
 if (jsonMode)
 {
-    var hand = ReadHandFromHeap(heap);
-    var enemies = ReadEnemiesFromHeap(heap);
-    var player = ReadPlayerStateFromHeap(heap);
-    var payload = new
+    var combatRoot = FindCurrentCombatRoot(heap);
+    var hand = ReadHandFromHeap(heap, combatRoot);
+    var enemies = ReadEnemiesFromHeap(heap, combatRoot);
+    var player = ReadPlayerStateFromHeap(heap, combatRoot);
+    var currentRooms = ReadCurrentRooms(heap);
+    var uiCandidates = ReadUiCandidates(heap);
+    var sceneDetection = InferSceneHint(heap, hand, enemies, player, currentRooms, uiCandidates);
+    var sceneHint = sceneDetection.Scene;
+    var rewardCards = new List<string>();
+    var treasureRelics = new List<string>();
+    var shopOffers = new List<string>();
+    var eventOptions = new List<string>();
+    object? eventPage = null;
+
+    switch (sceneHint)
     {
-        process = process.ProcessName,
-        hand,
-        enemies,
-        player,
-        status = hand.Count > 0 ? "memory(clr-hand)" : "memory(clr-attached)",
+        case "reward":
+            rewardCards = ReadRewardCardsFromHeap(heap);
+            break;
+        case "treasure":
+            treasureRelics = ReadTreasureRelicsFromHeap(heap);
+            break;
+        case "shop":
+            shopOffers = ReadShopOffersFromHeap(heap);
+            break;
+        case "event":
+            eventOptions = ReadEventOptionsFromHeap(heap);
+            eventPage = ReadEventPageFromHeap(heap);
+            break;
+    }
+    var payload = new Dictionary<string, object?>
+    {
+        ["process"] = process.ProcessName,
+        ["hand"] = hand,
+        ["enemies"] = enemies,
+        ["player"] = player,
+        ["currentRooms"] = currentRooms,
+        ["rewardCards"] = rewardCards,
+        ["treasureRelics"] = treasureRelics,
+        ["shopOffers"] = shopOffers,
+        ["eventOptions"] = eventOptions,
+        ["eventPage"] = eventPage,
+        ["sceneHint"] = sceneHint,
+        ["sceneReason"] = sceneDetection.Reason,
+        ["sceneSignals"] = sceneDetection.Signals,
+        ["status"] = hand.Count > 0 ? "memory(clr-hand)" : "memory(clr-attached)",
     };
-    Console.WriteLine(JsonSerializer.Serialize(payload));
+    if (includeUiCandidates)
+    {
+        payload["uiCandidates"] = uiCandidates;
+    }
+    var jsonOptions = compactJson
+        ? new JsonSerializerOptions()
+        : new JsonSerializerOptions { WriteIndented = true };
+    Console.WriteLine(JsonSerializer.Serialize(payload, jsonOptions));
+    return 0;
+}
+
+if (!string.IsNullOrWhiteSpace(dumpType))
+{
+    Console.WriteLine($"Attached to PID {process.Id} ({process.ProcessName})");
+    Console.WriteLine($"CLR: {clr.Version}");
+    Console.WriteLine();
+    Console.WriteLine($"Focused dump for type: {dumpType}");
+    DumpFocusedType(heap, dumpType!, Math.Max(1, dumpLimit));
+    return 0;
+}
+
+if (!string.IsNullOrWhiteSpace(findTypes))
+{
+    Console.WriteLine($"Attached to PID {process.Id} ({process.ProcessName})");
+    Console.WriteLine($"CLR: {clr.Version}");
+    Console.WriteLine();
+
+    var patterns = findTypes
+        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+        .Where(value => !string.IsNullOrWhiteSpace(value))
+        .ToArray();
+
+    Console.WriteLine($"Matching types for: {string.Join(", ", patterns)}");
+    var matches = new Dictionary<string, int>(StringComparer.Ordinal);
+    foreach (ClrObject obj in heap.EnumerateObjects())
+    {
+        if (!obj.IsValid || obj.IsNull || obj.Type is null)
+        {
+            continue;
+        }
+
+        string? typeName = obj.Type.Name;
+        if (string.IsNullOrWhiteSpace(typeName))
+        {
+            continue;
+        }
+
+        if (!patterns.Any(pattern => typeName.Contains(pattern, StringComparison.OrdinalIgnoreCase)))
+        {
+            continue;
+        }
+
+        matches.TryGetValue(typeName, out int count);
+        matches[typeName] = count + 1;
+    }
+
+    foreach ((string typeName, int count) in matches
+        .OrderByDescending(entry => entry.Value)
+        .ThenBy(entry => entry.Key)
+        .Take(200))
+    {
+        Console.WriteLine($"{count,8}  {typeName}");
+    }
+
     return 0;
 }
 
@@ -233,11 +364,27 @@ DumpFocusedType(heap, "MegaCrit.Sts2.Core.Entities.Multiplayer.NetFullCombatStat
 DumpFocusedType(heap, "MegaCrit.Sts2.Core.Entities.Players.Player", limit: 8);
 DumpCombatEnemies(heap);
 DumpCombatAllies(heap);
+DumpUiCandidates(heap);
 
 return 0;
 
-static List<string> ReadHandFromHeap(ClrHeap heap)
+static List<string> ReadHandFromHeap(ClrHeap heap, ClrObject? combatRoot = null)
 {
+    if (combatRoot is not null && combatRoot.Value.IsValid && !combatRoot.Value.IsNull)
+    {
+        var fromCurrentPlayerPiles = ReadHandFromCurrentPlayerCombatState(combatRoot.Value);
+        if (fromCurrentPlayerPiles.Count > 0)
+        {
+            return fromCurrentPlayerPiles;
+        }
+
+        var fromCurrentHolders = ReadHandFromHoldersForCombatState(heap, combatRoot.Value);
+        if (fromCurrentHolders.Count > 0)
+        {
+            return fromCurrentHolders;
+        }
+    }
+
     var fromCardPile = heap.EnumerateObjects()
         .Where(obj => obj.IsValid && !obj.IsNull && obj.Type?.Name == "MegaCrit.Sts2.Core.Entities.Cards.CardPile")
         .Select(TryReadHandFromCardPile)
@@ -256,17 +403,18 @@ static List<string> ReadHandFromHeap(ClrHeap heap)
         .ToList();
 }
 
-static List<object> ReadEnemiesFromHeap(ClrHeap heap)
+static List<object> ReadEnemiesFromHeap(ClrHeap heap, ClrObject? combatRoot = null)
 {
-    var combatState = heap.EnumerateObjects()
-        .FirstOrDefault(obj => obj.IsValid && !obj.IsNull && obj.Type?.Name == "MegaCrit.Sts2.Core.Combat.CombatState");
+    var combatState = combatRoot ?? FindCurrentCombatRoot(heap);
 
-    if (!combatState.IsValid || combatState.IsNull || combatState.Type is null)
+    if (combatState is null || !combatState.Value.IsValid || combatState.Value.IsNull || combatState.Value.Type is null)
     {
         return new List<object>();
     }
 
-    var enemies = TryReadObjectField(combatState, "_enemies");
+    var root = combatState.Value;
+
+    var enemies = TryReadObjectField(root, "_enemies");
     if (enemies is null)
     {
         return new List<object>();
@@ -322,18 +470,19 @@ static List<object> ReadEnemiesFromHeap(ClrHeap heap)
     return results;
 }
 
-static object? ReadPlayerStateFromHeap(ClrHeap heap)
+static object? ReadPlayerStateFromHeap(ClrHeap heap, ClrObject? combatRoot = null)
 {
-    var combatState = heap.EnumerateObjects()
-        .FirstOrDefault(obj => obj.IsValid && !obj.IsNull && obj.Type?.Name == "MegaCrit.Sts2.Core.Combat.CombatState");
+    var combatState = combatRoot ?? FindCurrentCombatRoot(heap);
 
-    if (!combatState.IsValid || combatState.IsNull || combatState.Type is null)
+    if (combatState is null || !combatState.Value.IsValid || combatState.Value.IsNull || combatState.Value.Type is null)
     {
         return null;
     }
 
-    var ally = TryReadPrimaryAlly(combatState);
-    var player = TryReadPlayerObject(combatState);
+    var root = combatState.Value;
+
+    var ally = TryReadPrimaryAlly(root);
+    var player = TryReadPlayerObject(root);
     if (player is null && ally is not null)
     {
         player = TryReadObjectFieldByNames(ally.Value, "<Player>k__BackingField", "_player");
@@ -394,7 +543,7 @@ static object? ReadPlayerStateFromHeap(ClrHeap heap)
     {
         energy = (player is not null ? TryReadEnergyFromRelatedObjects(player.Value) : null)
             ?? (ally is not null ? TryReadEnergyFromRelatedObjects(ally.Value) : null)
-            ?? TryReadEnergyFromRelatedObjects(combatState);
+            ?? TryReadEnergyFromRelatedObjects(root);
     }
 
     if (hp is null && maxHp is null && energy is null)
@@ -410,1019 +559,668 @@ static object? ReadPlayerStateFromHeap(ClrHeap heap)
     };
 }
 
-static List<string>? TryReadHandFromCardPile(ClrObject pile)
+static object ReadUiCandidates(ClrHeap heap)
 {
-    if (pile.Type is null)
-    {
-        return null;
-    }
-
-    int? pileType = TryReadIntField(pile, "<Type>k__BackingField");
-    if (pileType != 2)
-    {
-        return null;
-    }
-
-    var cardsList = TryReadObjectField(pile, "_cards");
-    if (cardsList is null || cardsList.Value.Type is null)
-    {
-        return null;
-    }
-
-    var array = TryReadObjectField(cardsList.Value, "_items");
-    if (array is null || !array.Value.IsArray)
-    {
-        return null;
-    }
-
-    int size = TryReadIntField(cardsList.Value, "_size") ?? 0;
-    if (size <= 0)
-    {
-        return null;
-    }
-
-    List<string> cards = new();
-    try
-    {
-        ClrArray clrArray = array.Value.AsArray();
-        int count = Math.Min(size, clrArray.Length);
-        for (int i = 0; i < count; i++)
-        {
-            ClrObject item = clrArray.GetObjectValue(i);
-            if (!item.IsValid || item.IsNull || item.Type is null)
-            {
-                continue;
-            }
-
-            string? cardName = TryReadCardName(item);
-            if (!string.IsNullOrWhiteSpace(cardName))
-            {
-                cards.Add(cardName);
-            }
-        }
-    }
-    catch
-    {
-        return null;
-    }
-
-    return cards;
-}
-
-static string? TryReadHandHolderCard(ClrObject holder)
-{
-    var model = TryReadObjectField(holder, "_model");
-    return model is null ? null : TryReadCardName(model.Value);
-}
-
-static string? TryReadCardName(ClrObject card)
-{
-    string? modelEntry = TryReadModelEntry(card);
-    if (!string.IsNullOrWhiteSpace(modelEntry))
-    {
-        return NormalizeCardEntry(modelEntry);
-    }
-
-    string? typeName = card.Type?.Name;
-    if (string.IsNullOrWhiteSpace(typeName))
-    {
-        return null;
-    }
-
-    return NormalizeCardTypeName(typeName);
-}
-
-static string? TryReadCreatureName(ClrObject creature)
-{
-    var monster = TryReadObjectField(creature, "<Monster>k__BackingField")
-        ?? TryReadObjectField(creature, "_monster");
-    if (monster is not null)
-    {
-        string? modelEntry = TryReadModelEntry(monster.Value);
-        if (!string.IsNullOrWhiteSpace(modelEntry))
-        {
-            return NormalizeModelEntry(modelEntry);
-        }
-
-        string? typeName = monster.Value.Type?.Name;
-        if (!string.IsNullOrWhiteSpace(typeName))
-        {
-            return NormalizeModelTypeName(typeName);
-        }
-    }
-
-    string? creatureType = creature.Type?.Name;
-    return string.IsNullOrWhiteSpace(creatureType) ? null : NormalizeModelTypeName(creatureType);
-}
-
-static string? TryReadCreatureIntent(ClrObject creature)
-{
-    var monster = TryReadObjectField(creature, "<Monster>k__BackingField")
-        ?? TryReadObjectField(creature, "_monster");
-    if (monster is null)
-    {
-        return null;
-    }
-
-    var nextMove = TryReadObjectField(monster.Value, "<NextMove>k__BackingField");
-    if (nextMove is null)
-    {
-        var moveStateMachine = TryReadObjectField(monster.Value, "_moveStateMachine");
-        if (moveStateMachine is not null)
-        {
-            nextMove = TryReadObjectField(moveStateMachine.Value, "_currentState")
-                ?? TryReadObjectField(moveStateMachine.Value, "_initialState");
-        }
-    }
-    if (nextMove is null)
-    {
-        return null;
-    }
-
-    string? stateId = TryReadStringField(nextMove.Value, "<StateId>k__BackingField");
-    var followUpState = TryReadObjectField(nextMove.Value, "<FollowUpState>k__BackingField");
-    string? followUpStateId = followUpState is null
-        ? null
-        : TryReadStringField(followUpState.Value, "<StateId>k__BackingField");
-    string? intentKind = TryReadIntentKind(nextMove.Value);
-
-    if (string.IsNullOrWhiteSpace(intentKind) && string.IsNullOrWhiteSpace(stateId))
-    {
-        return null;
-    }
-
-    string label = string.IsNullOrWhiteSpace(intentKind) ? "Unknown" : intentKind!;
-    if (!string.IsNullOrWhiteSpace(stateId))
-    {
-        label = $"{label} ({NormalizeStateId(stateId!)})";
-    }
-
-    if (!string.IsNullOrWhiteSpace(followUpStateId))
-    {
-        label = $"{label} -> {NormalizeStateId(followUpStateId!)}";
-    }
-
-    return label;
-}
-
-static string? TryReadIntentKind(ClrObject moveState)
-{
-    var intents = TryReadObjectField(moveState, "<Intents>k__BackingField");
-    if (intents is null || !intents.Value.IsArray)
-    {
-        return null;
-    }
-
-    try
-    {
-        var array = intents.Value.AsArray();
-        if (array.Length == 0)
-        {
-            return null;
-        }
-
-        var intent = array.GetObjectValue(0);
-        string typeName = intent.Type?.Name ?? string.Empty;
-        if (typeName.Contains("SingleAttack", StringComparison.OrdinalIgnoreCase)
-            || typeName.Contains("Attack", StringComparison.OrdinalIgnoreCase))
-        {
-            return "Attack";
-        }
-
-        if (typeName.Contains("Debuff", StringComparison.OrdinalIgnoreCase))
-        {
-            return "Debuff";
-        }
-
-        if (typeName.Contains("Buff", StringComparison.OrdinalIgnoreCase))
-        {
-            return "Buff";
-        }
-
-        if (typeName.Contains("Block", StringComparison.OrdinalIgnoreCase))
-        {
-            return "Block";
-        }
-
-        return NormalizeModelTypeName(typeName).Replace(" Intent", "");
-    }
-    catch
-    {
-        return null;
-    }
-}
-
-static string? TryReadModelEntry(ClrObject obj)
-{
-    var id = TryReadObjectField(obj, "<Id>k__BackingField") ?? TryReadObjectField(obj, "_id");
-    if (id is null)
-    {
-        return null;
-    }
-
-    return TryReadStringField(id.Value, "<Entry>k__BackingField")
-        ?? TryReadStringField(id.Value, "Entry");
-}
-
-static ClrObject? TryReadObjectField(ClrObject obj, string fieldName)
-{
-    if (obj.Type is null)
-    {
-        return null;
-    }
-
-    foreach (ClrType type in EnumerateTypeHierarchy(obj.Type))
-    {
-        ClrInstanceField? field = type.Fields.FirstOrDefault(field => field.Name == fieldName && field.IsObjectReference);
-        if (field is null)
-        {
-            continue;
-        }
-
-        ulong address = field.ReadObject(obj.Address, interior: false);
-        if (address == 0)
-        {
-            return null;
-        }
-
-        return obj.Type.Heap.GetObject(address);
-    }
-
-    return null;
-}
-
-static ClrObject? TryReadObjectFieldByNames(ClrObject obj, params string[] fieldNames)
-{
-    foreach (string fieldName in fieldNames)
-    {
-        var value = TryReadObjectField(obj, fieldName);
-        if (value is not null)
-        {
-            return value;
-        }
-    }
-
-    return null;
-}
-
-static string? TryReadStringField(ClrObject obj, string fieldName)
-{
-    if (obj.Type is null)
-    {
-        return null;
-    }
-
-    foreach (ClrType type in EnumerateTypeHierarchy(obj.Type))
-    {
-        ClrInstanceField? field = type.Fields.FirstOrDefault(field =>
-            field.Name == fieldName && field.ElementType == ClrElementType.String);
-        if (field is null)
-        {
-            continue;
-        }
-
-        return field.ReadString(obj.Address, interior: false);
-    }
-
-    return null;
-}
-
-static int? TryReadIntField(ClrObject obj, string fieldName)
-{
-    if (obj.Type is null)
-    {
-        return null;
-    }
-
-    foreach (ClrType type in EnumerateTypeHierarchy(obj.Type))
-    {
-        ClrInstanceField? field = type.Fields.FirstOrDefault(field => field.Name == fieldName);
-        if (field is null || field.ElementType != ClrElementType.Int32)
-        {
-            continue;
-        }
-
-        return field.Read<int>(obj.Address, interior: false);
-    }
-
-    return null;
-}
-
-static int? TryReadIntFieldByNames(ClrObject obj, params string[] fieldNames)
-{
-    foreach (string fieldName in fieldNames)
-    {
-        int? value = TryReadIntField(obj, fieldName);
-        if (value is not null)
-        {
-            return value;
-        }
-    }
-
-    return null;
-}
-
-static ClrObject? TryReadPlayerObject(ClrObject combatState)
-{
-    var primaryAlly = TryReadPrimaryAlly(combatState);
-    if (primaryAlly is not null)
-    {
-        var playerFromAlly = TryReadObjectFieldByNames(primaryAlly.Value, "<Player>k__BackingField", "_player");
-        if (playerFromAlly is not null)
-        {
-            return playerFromAlly;
-        }
-    }
-
-    var direct = TryReadObjectFieldByNames(
-        combatState,
-        "_player",
-        "_mainPlayer",
-        "_localPlayer",
-        "_playerEntity",
-        "_hero",
-        "_character",
-        "<Player>k__BackingField",
-        "<Character>k__BackingField");
-    if (direct is not null)
-    {
-        return direct;
-    }
-
-    if (combatState.Type is null)
-    {
-        return null;
-    }
-
-    foreach (ClrType type in EnumerateTypeHierarchy(combatState.Type))
-    {
-        foreach (ClrInstanceField field in type.Fields.Where(field => field.IsObjectReference))
-        {
-            string name = field.Name;
-            if (!name.Contains("player", StringComparison.OrdinalIgnoreCase)
-                && !name.Contains("hero", StringComparison.OrdinalIgnoreCase)
-                && !name.Contains("character", StringComparison.OrdinalIgnoreCase))
-            {
-                continue;
-            }
-
-            var candidate = TryReadObjectField(combatState, name);
-            if (candidate is null || !candidate.Value.IsValid || candidate.Value.IsNull)
-            {
-                continue;
-            }
-
-            if (LooksLikeCreature(candidate.Value))
-            {
-                return candidate;
-            }
-        }
-    }
-
-    return null;
-}
-
-static ClrObject? TryReadPrimaryAlly(ClrObject combatState)
-{
-    var allies = TryReadObjectField(combatState, "_allies");
-    if (allies is null || allies.Value.Type is null)
-    {
-        return null;
-    }
-
-    int size = TryReadIntField(allies.Value, "_size") ?? 0;
-    if (size <= 0)
-    {
-        return null;
-    }
-
-    var array = TryReadObjectField(allies.Value, "_items");
-    if (array is null || !array.Value.IsArray)
-    {
-        return null;
-    }
-
-    try
-    {
-        var clrArray = array.Value.AsArray();
-        for (int i = 0; i < Math.Min(size, clrArray.Length); i++)
-        {
-            var ally = clrArray.GetObjectValue(i);
-            if (!ally.IsValid || ally.IsNull || ally.Type is null)
-            {
-                continue;
-            }
-
-            if (LooksLikeCreature(ally))
-            {
-                return ally;
-            }
-        }
-    }
-    catch
-    {
-        return null;
-    }
-
-    return null;
-}
-
-static int? TryReadEnergyFromRelatedObjects(ClrObject obj)
-{
-    if (obj.Type is null)
-    {
-        return null;
-    }
-
-    foreach (ClrType type in EnumerateTypeHierarchy(obj.Type))
-    {
-        foreach (ClrInstanceField field in type.Fields.Where(field => field.IsObjectReference))
-        {
-            string name = field.Name;
-            if (!name.Contains("energy", StringComparison.OrdinalIgnoreCase)
-                && !name.Contains("mana", StringComparison.OrdinalIgnoreCase)
-                && !name.Contains("resource", StringComparison.OrdinalIgnoreCase))
-            {
-                continue;
-            }
-
-            var related = TryReadObjectField(obj, name);
-            if (related is null || !related.Value.IsValid || related.Value.IsNull)
-            {
-                continue;
-            }
-
-            int? value = TryReadIntFieldByNames(
-                related.Value,
-                "_currentEnergy",
-                "<CurrentEnergy>k__BackingField",
-                "_energy",
-                "<Energy>k__BackingField",
-                "_currentMana",
-                "<CurrentMana>k__BackingField",
-                "_mana",
-                "<Mana>k__BackingField",
-                "_value",
-                "<Value>k__BackingField",
-                "_current",
-                "<Current>k__BackingField");
-            if (value is not null)
-            {
-                return value;
-            }
-        }
-    }
-
-    return null;
-}
-
-static bool LooksLikeCreature(ClrObject obj)
-{
-    return TryReadIntFieldByNames(
-            obj,
-            "_currentHp",
-            "<CurrentHp>k__BackingField",
-            "_hp",
-            "<Hp>k__BackingField")
-        is not null;
-}
-
-static string NormalizeCardEntry(string entry)
-{
-    string token = entry.Trim();
-    if (token.StartsWith("CARD.", StringComparison.OrdinalIgnoreCase))
-    {
-        token = token["CARD.".Length..];
-    }
-
-    token = token
-        .Replace("_IRONCLAD", "", StringComparison.OrdinalIgnoreCase)
-        .Replace("_SILENT", "", StringComparison.OrdinalIgnoreCase)
-        .Replace("_DEFECT", "", StringComparison.OrdinalIgnoreCase)
-        .Replace("_WATCHER", "", StringComparison.OrdinalIgnoreCase);
-
-    return ToTitleWords(token);
-}
-
-static string NormalizeCardTypeName(string typeName)
-{
-    string token = typeName[(typeName.LastIndexOf('.') + 1)..];
-    foreach (string suffix in new[] { "Ironclad", "Silent", "Defect", "Watcher" })
-    {
-        if (token.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
-        {
-            token = token[..^suffix.Length];
-            break;
-        }
-    }
-
-    List<char> chars = new();
-    for (int i = 0; i < token.Length; i++)
-    {
-        char current = token[i];
-        if (i > 0 && char.IsUpper(current) && char.IsLower(token[i - 1]))
-        {
-            chars.Add(' ');
-        }
-        chars.Add(current);
-    }
-
-    return new string(chars.ToArray()).Trim();
-}
-
-static string NormalizeModelEntry(string entry)
-{
-    string token = entry.Trim();
-    int dotIndex = token.LastIndexOf('.');
-    if (dotIndex >= 0 && dotIndex < token.Length - 1)
-    {
-        token = token[(dotIndex + 1)..];
-    }
-
-    return ToTitleWords(token);
-}
-
-static string NormalizeModelTypeName(string typeName)
-{
-    string token = typeName[(typeName.LastIndexOf('.') + 1)..];
-    return NormalizeCardTypeName(token);
-}
-
-static string NormalizeStateId(string stateId)
-{
-    string token = stateId.Trim();
-    if (token.EndsWith("_MOVE", StringComparison.OrdinalIgnoreCase))
-    {
-        token = token[..^"_MOVE".Length];
-    }
-
-    return ToTitleWords(token);
-}
-
-static string ToTitleWords(string token)
-{
-    return string.Join(" ",
-        token.Split('_', StringSplitOptions.RemoveEmptyEntries)
-            .Select(part => char.ToUpperInvariant(part[0]) + part[1..].ToLowerInvariant()));
-}
-
-static void DumpObject(ClrObject obj, string indent)
-{
-    if (obj.Type is null)
-    {
-        return;
-    }
-
-    HashSet<ulong> visited = new();
-    DumpObjectRecursive(obj, indent, 0, visited);
-}
-
-static void DumpObjectRecursive(ClrObject obj, string indent, int depth, HashSet<ulong> visited)
-{
-    if (obj.Type is null || !visited.Add(obj.Address))
-    {
-        return;
-    }
-
-    HashSet<string> printedFields = new(StringComparer.Ordinal);
-    foreach (ClrType type in EnumerateTypeHierarchy(obj.Type).Reverse())
-    {
-        foreach (ClrInstanceField field in type.Fields)
-        {
-            if (!printedFields.Add(field.Name))
-            {
-                continue;
-            }
-
-            try
-            {
-                string fieldType = field.Type?.Name ?? field.ElementType.ToString();
-                if (field.ElementType == ClrElementType.String)
-                {
-                    string? value = field.ReadString(obj.Address, interior: false);
-                    if (!string.IsNullOrWhiteSpace(value))
-                    {
-                        Console.WriteLine($"{indent}{field.Name} [{fieldType}] = {value}");
-                    }
-                    continue;
-                }
-
-                if (field.IsObjectReference)
-                {
-                    ulong address = field.ReadObject(obj.Address, interior: false);
-                    if (address == 0)
-                    {
-                        continue;
-                    }
-
-                    ClrObject child = obj.Type.Heap.GetObject(address);
-                    string childType = child.Type?.Name ?? "<unknown>";
-                    Console.WriteLine($"{indent}{field.Name} [{fieldType}] -> 0x{address:X} ({childType})");
-
-                    if (child.IsArray)
-                    {
-                        DumpArray(child, indent + "  ", maxElements: 8);
-                    }
-
-                    if (depth < 1 && ShouldRecurseInto(childType))
-                    {
-                        DumpObjectRecursive(child, indent + "  ", depth + 1, visited);
-                    }
-                    continue;
-                }
-
-                string? scalar = ReadScalar(field, obj.Address);
-                if (!string.IsNullOrWhiteSpace(scalar))
-                {
-                    Console.WriteLine($"{indent}{field.Name} [{fieldType}] = {scalar}");
-                }
-            }
-            catch
-            {
-                // Skip fields we cannot decode generically.
-            }
-        }
-    }
-}
-
-static IEnumerable<ClrType> EnumerateTypeHierarchy(ClrType type)
-{
-    for (ClrType? current = type; current is not null; current = current.BaseType)
-    {
-        yield return current;
-    }
-}
-
-static void DumpFocusedType(ClrHeap heap, string targetTypeName, int limit)
-{
-    var matches = heap.EnumerateObjects()
-        .Where(obj => obj.IsValid && !obj.IsNull && obj.Type?.Name == targetTypeName)
-        .Take(limit)
-        .ToList();
-
-    if (matches.Count == 0)
-    {
-        return;
-    }
-
-    Console.WriteLine();
-    Console.WriteLine(targetTypeName);
-    foreach (ClrObject obj in matches)
-    {
-        Console.WriteLine($"  0x{obj.Address:X}");
-        DumpFocusedObject(obj, indent: "    ", depth: 0, maxDepth: 2, new HashSet<ulong>());
-    }
-}
-
-static void DumpFocusedObject(ClrObject obj, string indent, int depth, int maxDepth, HashSet<ulong> visited)
-{
-    if (obj.Type is null || !visited.Add(obj.Address))
-    {
-        return;
-    }
-
-    if (obj.IsArray)
-    {
-        DumpArray(obj, indent, maxElements: 8);
-        return;
-    }
-
-    HashSet<string> printedFields = new(StringComparer.Ordinal);
-    foreach (ClrType type in EnumerateTypeHierarchy(obj.Type).Reverse())
-    {
-        foreach (ClrInstanceField field in type.Fields)
-        {
-            if (!printedFields.Add(field.Name))
-            {
-                continue;
-            }
-
-            try
-            {
-                string fieldType = field.Type?.Name ?? field.ElementType.ToString();
-                if (field.ElementType == ClrElementType.String)
-                {
-                    string? value = field.ReadString(obj.Address, interior: false);
-                    if (!string.IsNullOrWhiteSpace(value))
-                    {
-                        Console.WriteLine($"{indent}{field.Name} [{fieldType}] = {value}");
-                    }
-
-                    continue;
-                }
-
-                if (field.IsObjectReference)
-                {
-                    ulong address = field.ReadObject(obj.Address, interior: false);
-                    if (address == 0)
-                    {
-                        continue;
-                    }
-
-                    ClrObject child = obj.Type.Heap.GetObject(address);
-                    string childType = child.Type?.Name ?? "<unknown>";
-                    Console.WriteLine($"{indent}{field.Name} [{fieldType}] -> 0x{address:X} ({childType})");
-
-                    if (child.IsArray)
-                    {
-                        DumpArray(child, indent + "  ", maxElements: 8);
-                    }
-
-                    if (depth < maxDepth && ShouldFocusRecurseInto(childType))
-                    {
-                        DumpFocusedObject(child, indent + "  ", depth + 1, maxDepth, visited);
-                    }
-
-                    continue;
-                }
-
-                string? scalar = ReadScalar(field, obj.Address);
-                if (!string.IsNullOrWhiteSpace(scalar) && scalar != "0" && scalar != "False")
-                {
-                    Console.WriteLine($"{indent}{field.Name} [{fieldType}] = {scalar}");
-                }
-            }
-            catch
-            {
-                // Skip fields we cannot decode generically.
-            }
-        }
-    }
-}
-
-static void DumpArray(ClrObject obj, string indent, int maxElements)
-{
-    try
-    {
-        ClrArray array = obj.AsArray();
-        Console.WriteLine($"{indent}<array length={array.Length}>");
-        int count = Math.Min(array.Length, maxElements);
-        for (int i = 0; i < count; i++)
-        {
-            ClrObject item = array.GetObjectValue(i);
-            if (!item.IsValid || item.IsNull)
-            {
-                continue;
-            }
-
-            string itemType = item.Type?.Name ?? "<unknown>";
-            if (item.Type?.IsString == true)
-            {
-                string value = item.AsString();
-                Console.WriteLine($"{indent}  [{i}] \"{value}\"");
-            }
-            else
-            {
-                Console.WriteLine($"{indent}  [{i}] 0x{item.Address:X} ({itemType})");
-            }
-        }
-    }
-    catch
-    {
-        // Not all references can be decoded as arrays safely.
-    }
-}
-
-static void DumpCombatEnemies(ClrHeap heap)
-{
-    var combatState = heap.EnumerateObjects()
-        .FirstOrDefault(obj => obj.IsValid && !obj.IsNull && obj.Type?.Name == "MegaCrit.Sts2.Core.Combat.CombatState");
-
-    if (!combatState.IsValid || combatState.IsNull || combatState.Type is null)
-    {
-        return;
-    }
-
-    var enemies = TryReadObjectField(combatState, "_enemies");
-    if (enemies is null)
-    {
-        return;
-    }
-
-    Console.WriteLine();
-    Console.WriteLine("Combat enemies");
-    Console.WriteLine($"  list: 0x{enemies.Value.Address:X} ({enemies.Value.Type?.Name ?? "<unknown>"})");
-
-    int size = TryReadIntField(enemies.Value, "_size") ?? 0;
-    Console.WriteLine($"  size: {size}");
-
-    var array = TryReadObjectField(enemies.Value, "_items");
-    if (array is null || !array.Value.IsArray)
-    {
-        return;
-    }
-
-    try
-    {
-        var clrArray = array.Value.AsArray();
-        for (int i = 0; i < Math.Min(size, clrArray.Length); i++)
-        {
-            var enemy = clrArray.GetObjectValue(i);
-            if (!enemy.IsValid || enemy.IsNull || enemy.Type is null)
-            {
-                continue;
-            }
-
-            Console.WriteLine($"  [{i}] 0x{enemy.Address:X} {enemy.Type.Name}");
-            DumpFocusedObject(enemy, "    ", depth: 0, maxDepth: 2, new HashSet<ulong>());
-
-            var monster = TryReadObjectField(enemy, "<Monster>k__BackingField")
-                ?? TryReadObjectField(enemy, "_monster");
-            if (monster is not null)
-            {
-                Console.WriteLine($"    Monster model: 0x{monster.Value.Address:X} {monster.Value.Type?.Name}");
-                DumpIntentFields(monster.Value, "      ");
-                DumpFocusedObject(monster.Value, "      ", depth: 0, maxDepth: 2, new HashSet<ulong>());
-            }
-        }
-    }
-    catch
-    {
-        // Best-effort diagnostic only.
-    }
-}
-
-static void DumpCombatAllies(ClrHeap heap)
-{
-    var combatState = heap.EnumerateObjects()
-        .FirstOrDefault(obj => obj.IsValid && !obj.IsNull && obj.Type?.Name == "MegaCrit.Sts2.Core.Combat.CombatState");
-
-    if (!combatState.IsValid || combatState.IsNull || combatState.Type is null)
-    {
-        return;
-    }
-
-    var allies = TryReadObjectField(combatState, "_allies");
-    if (allies is null)
-    {
-        return;
-    }
-
-    Console.WriteLine();
-    Console.WriteLine("Combat allies");
-    Console.WriteLine($"  list: 0x{allies.Value.Address:X} ({allies.Value.Type?.Name ?? "<unknown>"})");
-
-    int size = TryReadIntField(allies.Value, "_size") ?? 0;
-    Console.WriteLine($"  size: {size}");
-
-    var array = TryReadObjectField(allies.Value, "_items");
-    if (array is null || !array.Value.IsArray)
-    {
-        return;
-    }
-
-    try
-    {
-        var clrArray = array.Value.AsArray();
-        for (int i = 0; i < Math.Min(size, clrArray.Length); i++)
-        {
-            var ally = clrArray.GetObjectValue(i);
-            if (!ally.IsValid || ally.IsNull || ally.Type is null)
-            {
-                continue;
-            }
-
-            Console.WriteLine($"  [{i}] 0x{ally.Address:X} {ally.Type.Name}");
-            DumpFocusedObject(ally, "    ", depth: 0, maxDepth: 2, new HashSet<ulong>());
-        }
-    }
-    catch
-    {
-        // Best-effort diagnostic only.
-    }
-}
-
-static void DumpIntentFields(ClrObject obj, string indent)
-{
-    if (obj.Type is null)
-    {
-        return;
-    }
-
-    HashSet<string> printedFields = new(StringComparer.Ordinal);
-    foreach (ClrType type in EnumerateTypeHierarchy(obj.Type).Reverse())
-    {
-        foreach (ClrInstanceField field in type.Fields)
-        {
-            if (string.IsNullOrWhiteSpace(field.Name) || !printedFields.Add(field.Name))
-            {
-                continue;
-            }
-
-            if (!field.Name.Contains("intent", StringComparison.OrdinalIgnoreCase)
-                && !field.Name.Contains("move", StringComparison.OrdinalIgnoreCase))
-            {
-                continue;
-            }
-
-            try
-            {
-                string fieldType = field.Type?.Name ?? field.ElementType.ToString();
-                if (field.IsObjectReference)
-                {
-                    ulong address = field.ReadObject(obj.Address, interior: false);
-                    if (address == 0)
-                    {
-                        continue;
-                    }
-
-                    ClrObject child = obj.Type.Heap.GetObject(address);
-                    Console.WriteLine($"{indent}{field.Name} [{fieldType}] -> 0x{address:X} ({child.Type?.Name ?? "<unknown>"})");
-                    if (child.IsArray)
-                    {
-                        DumpArray(child, indent + "  ", maxElements: 8);
-                        if (field.Name.Contains("intent", StringComparison.OrdinalIgnoreCase))
-                        {
-                            DumpArrayObjects(child, indent + "  ", maxElements: 4, maxDepth: 2);
-                        }
-                    }
-                }
-                else
-                {
-                    string? scalar = ReadScalar(field, obj.Address);
-                    if (!string.IsNullOrWhiteSpace(scalar))
-                    {
-                        Console.WriteLine($"{indent}{field.Name} [{fieldType}] = {scalar}");
-                    }
-                }
-            }
-            catch
-            {
-                // Best-effort diagnostic only.
-            }
-        }
-    }
-}
-
-static void DumpArrayObjects(ClrObject obj, string indent, int maxElements, int maxDepth)
-{
-    try
-    {
-        ClrArray array = obj.AsArray();
-        int count = Math.Min(array.Length, maxElements);
-        for (int i = 0; i < count; i++)
-        {
-            ClrObject item = array.GetObjectValue(i);
-            if (!item.IsValid || item.IsNull || item.Type is null)
-            {
-                continue;
-            }
-
-            Console.WriteLine($"{indent}[obj {i}] 0x{item.Address:X} {item.Type.Name}");
-            DumpFocusedObject(item, indent + "  ", depth: 0, maxDepth, new HashSet<ulong>());
-        }
-    }
-    catch
-    {
-        // Best-effort diagnostic only.
-    }
-}
-
-static bool ShouldRecurseInto(string typeName)
-{
-    return typeName.Contains("ModelId", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("LocString", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("SerializableCard", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("Combat", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("Card", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("Holder", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("Pile", StringComparison.OrdinalIgnoreCase);
-}
-
-static bool ShouldFocusRecurseInto(string typeName)
-{
-    return typeName.Contains("ModelId", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("LocString", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("SerializableCard", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("CardState", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("CardPile", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("Monster", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("Intent", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("Move", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("NCard", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("Holder", StringComparison.OrdinalIgnoreCase)
-        || typeName.Contains("List<", StringComparison.OrdinalIgnoreCase)
-        || typeName.EndsWith("[]", StringComparison.OrdinalIgnoreCase);
-}
-
-static string? ReadScalar(ClrInstanceField field, ulong address)
-{
-    return field.ElementType switch
-    {
-        ClrElementType.Boolean => field.Read<bool>(address, interior: false).ToString(),
-        ClrElementType.Char => field.Read<char>(address, interior: false).ToString(),
-        ClrElementType.Int8 => field.Read<sbyte>(address, interior: false).ToString(),
-        ClrElementType.UInt8 => field.Read<byte>(address, interior: false).ToString(),
-        ClrElementType.Int16 => field.Read<short>(address, interior: false).ToString(),
-        ClrElementType.UInt16 => field.Read<ushort>(address, interior: false).ToString(),
-        ClrElementType.Int32 => field.Read<int>(address, interior: false).ToString(),
-        ClrElementType.UInt32 => field.Read<uint>(address, interior: false).ToString(),
-        ClrElementType.Int64 => field.Read<long>(address, interior: false).ToString(),
-        ClrElementType.UInt64 => field.Read<ulong>(address, interior: false).ToString(),
-        ClrElementType.Float => field.Read<float>(address, interior: false).ToString(),
-        ClrElementType.Double => field.Read<double>(address, interior: false).ToString(),
-        ClrElementType.NativeInt => field.Read<nint>(address, interior: false).ToString(),
-        ClrElementType.NativeUInt => field.Read<nuint>(address, interior: false).ToString(),
-        _ => null,
+    var candidates = ScanUiCandidates(heap);
+    return new
+    {
+        combat = candidates.Where(candidate => candidate.Scene == "combat").Take(8).Select(ToUiCandidatePayload).ToList(),
+        reward = candidates.Where(candidate => candidate.Scene == "reward").Take(8).Select(ToUiCandidatePayload).ToList(),
+        rest = candidates.Where(candidate => candidate.Scene == "rest").Take(8).Select(ToUiCandidatePayload).ToList(),
+        shop = candidates.Where(candidate => candidate.Scene == "shop").Take(8).Select(ToUiCandidatePayload).ToList(),
+        eventScene = candidates.Where(candidate => candidate.Scene == "event").Take(8).Select(ToUiCandidatePayload).ToList(),
+        map = candidates.Where(candidate => candidate.Scene == "map").Take(8).Select(ToUiCandidatePayload).ToList(),
     };
 }
+
+static List<object> ReadCurrentRooms(ClrHeap heap)
+{
+    foreach (ClrObject obj in heap.EnumerateObjects())
+    {
+        if (!obj.IsValid || obj.IsNull || obj.Type?.Name != "MegaCrit.Sts2.Core.Runs.RunState")
+        {
+            continue;
+        }
+
+        var currentRooms = TryReadObjectField(obj, "_currentRooms");
+        if (currentRooms is null || !currentRooms.Value.IsValid || currentRooms.Value.IsNull)
+        {
+            return new List<object>();
+        }
+
+        return ReadObjectsFromList(currentRooms)
+            .Select(room => new
+            {
+                address = room.Address,
+                typeName = room.Type?.Name ?? string.Empty,
+            })
+            .Cast<object>()
+            .ToList();
+    }
+
+    return new List<object>();
+}
+
+static SceneDetectionResult InferSceneHint(
+    ClrHeap heap,
+    List<string> hand,
+    List<object> enemies,
+    object? player,
+    List<object> currentRooms,
+    object uiCandidates)
+{
+    var roomsJson = JsonSerializer.SerializeToElement(currentRooms);
+    bool IsActiveUiObject(ClrObject obj, bool requireEnabled = false)
+    {
+        bool? isDisposed = TryReadBoolFieldByNames(
+            obj,
+            "_disposed",
+            "<Disposed>k__BackingField",
+            "_isDisposed");
+        if (isDisposed == true)
+        {
+            return false;
+        }
+
+        bool? isOpen = TryReadBoolFieldByNames(
+            obj,
+            "<IsOpen>k__BackingField",
+            "_isOpen");
+        if (isOpen == false)
+        {
+            return false;
+        }
+
+        if (requireEnabled)
+        {
+            bool? isEnabled = TryReadBoolFieldByNames(
+                obj,
+                "_isEnabled",
+                "<IsEnabled>k__BackingField",
+                "_enabled");
+            if (isEnabled == false)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool HasActiveHeapType(string exactTypeName, bool requireEnabled = false)
+    {
+        foreach (ClrObject obj in heap.EnumerateObjects())
+        {
+            if (!obj.IsValid || obj.IsNull || obj.Type?.Name != exactTypeName)
+            {
+                continue;
+            }
+
+            if (IsActiveUiObject(obj, requireEnabled))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    bool hasActiveRewardScreen = HasActiveHeapType("MegaCrit.Sts2.Core.Nodes.Screens.NRewardsScreen")
+        || HasActiveHeapType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardRewardSelectionScreen")
+        || HasActiveHeapType("MegaCrit.Sts2.Core.Nodes.Screens.CardSelection.NCardRewardAlternativeButton", requireEnabled: true)
+        || HasActiveHeapType("MegaCrit.Sts2.Core.Nodes.Rewards.NRewardButton", requireEnabled: true);
+    string? currentRoomScene = InferSceneFromCurrentRooms(roomsJson);
+    bool hasActiveEventPage = HasActiveEventPage(heap);
+    bool hasBattleState = hand.Count > 0 || enemies.Count > 0;
+    bool hasPlayerState = player is not null;
+    bool hasMapOverlay = HasActiveHeapType("MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapScreen")
+        || HasActiveHeapType("MegaCrit.Sts2.Core.Nodes.Screens.Map.NMapOverlay");
+
+    var signals = new Dictionary<string, object?>
+    {
+        ["hasMapOverlay"] = hasMapOverlay,
+        ["hasActiveRewardScreen"] = hasActiveRewardScreen,
+        ["hasActiveEventPage"] = hasActiveEventPage,
+        ["hasBattleState"] = hasBattleState,
+        ["hasPlayerState"] = hasPlayerState,
+        ["currentRoomScene"] = currentRoomScene,
+        ["currentRoomCount"] = currentRooms.Count,
+        ["handCount"] = hand.Count,
+        ["enemyCount"] = enemies.Count,
+    };
+
+    if (hasMapOverlay)
+    {
+        return new SceneDetectionResult("map-overlay", "map-overlay", signals);
+    }
+
+    if (hasActiveRewardScreen)
+    {
+        return new SceneDetectionResult("reward", "reward-screen", signals);
+    }
+
+    if (hasActiveEventPage)
+    {
+        return new SceneDetectionResult("event", "event-page", signals);
+    }
+
+    if (hasBattleState)
+    {
+        return new SceneDetectionResult("battle", "battle-state", signals);
+    }
+
+    if (!string.IsNullOrWhiteSpace(currentRoomScene))
+    {
+        return new SceneDetectionResult(currentRoomScene!, "current-rooms", signals);
+    }
+
+    if (hasPlayerState)
+    {
+        return new SceneDetectionResult("battle", "player-state", signals);
+    }
+
+    return new SceneDetectionResult("unknown", "no-signal", signals);
+}
+
+static string? InferSceneFromCurrentRooms(JsonElement roomsJson)
+{
+    if (roomsJson.ValueKind != JsonValueKind.Array)
+    {
+        return null;
+    }
+
+    bool hasCombat = false;
+    bool hasReward = false;
+    bool hasShop = false;
+    bool hasTreasure = false;
+    bool hasEvent = false;
+    bool hasRest = false;
+
+    foreach (JsonElement item in roomsJson.EnumerateArray())
+    {
+        if (!item.TryGetProperty("typeName", out JsonElement typeNameElement))
+        {
+            continue;
+        }
+
+        string? typeName = typeNameElement.GetString();
+        if (string.IsNullOrWhiteSpace(typeName))
+        {
+            continue;
+        }
+
+        if (typeName.Contains("CombatRoom", StringComparison.OrdinalIgnoreCase))
+        {
+            hasCombat = true;
+            continue;
+        }
+
+        if (typeName.Contains("EventRoom", StringComparison.OrdinalIgnoreCase))
+        {
+            hasEvent = true;
+            continue;
+        }
+
+        if (typeName.Contains("TreasureRoom", StringComparison.OrdinalIgnoreCase))
+        {
+            hasTreasure = true;
+            continue;
+        }
+
+        if (typeName.Contains("Merchant", StringComparison.OrdinalIgnoreCase)
+            || typeName.Contains("Shop", StringComparison.OrdinalIgnoreCase))
+        {
+            hasShop = true;
+            continue;
+        }
+
+        if (typeName.Contains("RestSite", StringComparison.OrdinalIgnoreCase)
+            || typeName.Contains("Campfire", StringComparison.OrdinalIgnoreCase)
+            || typeName.Contains("Bonfire", StringComparison.OrdinalIgnoreCase))
+        {
+            hasRest = true;
+            continue;
+        }
+
+        if (typeName.Contains("Reward", StringComparison.OrdinalIgnoreCase))
+        {
+            hasReward = true;
+        }
+    }
+
+    if (hasCombat)
+    {
+        return "battle";
+    }
+
+    if (hasReward)
+    {
+        return "reward";
+    }
+
+    if (hasShop)
+    {
+        return "shop";
+    }
+
+    if (hasTreasure)
+    {
+        return "treasure";
+    }
+
+    if (hasEvent)
+    {
+        return "event";
+    }
+
+    if (hasRest)
+    {
+        return "rest";
+    }
+
+    return null;
+}
+
+static ClrObject? FindCurrentCombatRoot(ClrHeap heap)
+{
+    Dictionary<ulong, (ClrObject CombatState, int Score)> candidates = new();
+
+    void AddCandidate(ClrObject combatState, int score, string reason)
+    {
+        if (!combatState.IsValid || combatState.IsNull || combatState.Type?.Name != "MegaCrit.Sts2.Core.Combat.CombatState")
+        {
+            return;
+        }
+
+        if (!candidates.TryGetValue(combatState.Address, out var existing))
+        {
+            existing = (combatState, 0);
+        }
+
+        existing.Score += score;
+        candidates[combatState.Address] = existing;
+    }
+
+    foreach (ClrObject obj in heap.EnumerateObjects())
+    {
+        if (!obj.IsValid || obj.IsNull || obj.Type is null)
+        {
+            continue;
+        }
+
+        string? typeName = obj.Type.Name;
+        if (string.IsNullOrWhiteSpace(typeName))
+        {
+            continue;
+        }
+
+        if (typeName == "MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder")
+        {
+            var handNode = TryReadObjectField(obj, "_hand");
+            var combatState = handNode is not null ? TryReadObjectField(handNode.Value, "_combatState") : null;
+            if (combatState is not null)
+            {
+                AddCandidate(combatState.Value, 120, "hand-holder");
+            }
+        }
+        else if (typeName == "MegaCrit.Sts2.Core.Nodes.Combat.NPlayerHand")
+        {
+            var combatState = TryReadObjectField(obj, "_combatState");
+            if (combatState is not null)
+            {
+                int mode = TryReadIntField(obj, "_currentMode") ?? 0;
+                AddCandidate(combatState.Value, mode == 1 ? 90 : 60, "player-hand");
+            }
+        }
+        else if (typeName == "MegaCrit.Sts2.Core.Nodes.Combat.NDrawPileButton"
+            || typeName == "MegaCrit.Sts2.Core.Nodes.Combat.NDiscardPileButton")
+        {
+            var combatState = TryReadObjectField(obj, "_combatState");
+            if (combatState is not null)
+            {
+                AddCandidate(combatState.Value, 35, typeName.EndsWith("NDrawPileButton", StringComparison.Ordinal) ? "draw-pile" : "discard-pile");
+            }
+        }
+        else if (typeName == "MegaCrit.Sts2.Core.Combat.CombatState")
+        {
+            AddCandidate(obj, ScoreCombatState(obj), "combat-state");
+        }
+    }
+
+    return candidates.Values
+        .OrderByDescending(candidate => candidate.Score)
+        .ThenByDescending(candidate => candidate.CombatState.Address)
+        .Select(candidate => (ClrObject?)candidate.CombatState)
+        .FirstOrDefault();
+}
+
+static int ScoreCombatState(ClrObject combatState)
+{
+    int score = 0;
+
+    var allies = ReadCreaturesFromList(TryReadObjectField(combatState, "_allies"));
+    var enemies = ReadCreaturesFromList(TryReadObjectField(combatState, "_enemies"));
+    int liveAllies = allies.Count(creature => (TryReadIntFieldByNames(creature, "_currentHp", "<CurrentHp>k__BackingField", "_hp", "<Hp>k__BackingField") ?? 0) > 0);
+    int liveEnemies = enemies.Count(creature => (TryReadIntFieldByNames(creature, "_currentHp", "<CurrentHp>k__BackingField", "_hp", "<Hp>k__BackingField") ?? 0) > 0);
+
+    score += liveAllies * 40;
+    score += liveEnemies * 50;
+    score += allies.Count * 10;
+    score += enemies.Count * 15;
+
+    var player = TryReadPlayerObject(combatState);
+    if (player is not null)
+    {
+        score += 35;
+        if (TryReadIntFieldByNames(player.Value, "_currentHp", "<CurrentHp>k__BackingField", "_hp", "<Hp>k__BackingField") is int playerHp && playerHp > 0)
+        {
+            score += 25;
+        }
+
+        var playerCombatState = TryReadObjectFieldByNames(
+            player.Value,
+            "<PlayerCombatState>k__BackingField",
+            "_playerCombatState",
+            "_combatState");
+        if (playerCombatState is not null && TryReadIntFieldByNames(playerCombatState.Value, "_energy", "<Energy>k__BackingField", "_currentEnergy", "<CurrentEnergy>k__BackingField") is not null)
+        {
+            score += 20;
+        }
+    }
+
+    return score;
+}
+
+static List<string> ReadHandFromHoldersForCombatState(ClrHeap heap, ClrObject combatState)
+{
+    List<(int Order, string Name)> cards = new();
+
+    foreach (ClrObject holder in heap.EnumerateObjects())
+    {
+        if (!holder.IsValid || holder.IsNull || holder.Type?.Name != "MegaCrit.Sts2.Core.Nodes.Cards.Holders.NHandCardHolder")
+        {
+            continue;
+        }
+
+        var handNode = TryReadObjectField(holder, "_hand");
+        var holderCombatState = handNode is not null ? TryReadObjectField(handNode.Value, "_combatState") : null;
+        if (holderCombatState is null || holderCombatState.Value.Address != combatState.Address)
+        {
+            continue;
+        }
+
+        string? cardName = TryReadHandHolderCard(holder);
+        if (string.IsNullOrWhiteSpace(cardName))
+        {
+            continue;
+        }
+
+        int order = TryReadIntField(holder, "_holderIndex")
+            ?? TryReadIntField(holder, "_handIndex")
+            ?? TryReadIntField(holder, "_index")
+            ?? cards.Count;
+        cards.Add((order, cardName!));
+    }
+
+    return cards
+        .OrderBy(card => card.Order)
+        .ThenBy(card => card.Name, StringComparer.Ordinal)
+        .Select(card => card.Name)
+        .ToList();
+}
+
+static List<string> ReadHandFromCurrentPlayerCombatState(ClrObject combatState)
+{
+    var player = TryReadPlayerObject(combatState);
+    if (player is null || !player.Value.IsValid || player.Value.IsNull)
+    {
+        return new List<string>();
+    }
+
+    var playerCombatState = TryReadObjectFieldByNames(
+        player.Value,
+        "<PlayerCombatState>k__BackingField",
+        "_playerCombatState",
+        "_combatState");
+    if (playerCombatState is null || !playerCombatState.Value.IsValid || playerCombatState.Value.IsNull)
+    {
+        return new List<string>();
+    }
+
+    var handPile = TryReadObjectFieldByNames(
+        playerCombatState.Value,
+        "<Hand>k__BackingField",
+        "_hand");
+    if (handPile is null)
+    {
+        var pileObjects = ReadObjectsFromList(TryReadObjectField(playerCombatState.Value, "_piles"));
+        var pileCandidate = pileObjects
+            .FirstOrDefault(pile => TryReadIntField(pile, "<Type>k__BackingField") == 2);
+        if (pileCandidate.IsValid && !pileCandidate.IsNull)
+        {
+            handPile = pileCandidate;
+        }
+    }
+
+    if (handPile is null || !handPile.Value.IsValid || handPile.Value.IsNull)
+    {
+        return new List<string>();
+    }
+
+    var cards = TryReadHandFromCardPile(handPile.Value);
+    return cards ?? new List<string>();
+}
+
+static void DumpUiCandidates(ClrHeap heap)
+{
+    var candidates = ScanUiCandidates(heap);
+    if (candidates.Count == 0)
+    {
+        return;
+    }
+
+    Console.WriteLine();
+    Console.WriteLine("UI scene candidates");
+    foreach (var group in candidates.GroupBy(candidate => candidate.Scene))
+    {
+        Console.WriteLine($"  {group.Key}");
+        foreach (var candidate in group.Take(8))
+        {
+            string flags = candidate.Flags.Count == 0
+                ? "-"
+                : string.Join(", ", candidate.Flags.Select(pair => $"{pair.Key}={pair.Value}"));
+            Console.WriteLine($"    0x{candidate.Address:X} {candidate.TypeName} [{flags}]");
+        }
+    }
+}
+
+static List<(string Scene, string TypeName, ulong Address, Dictionary<string, string> Flags)> ScanUiCandidates(ClrHeap heap)
+{
+    var sceneKeywords = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["combat"] = new[] { "combat", "battle", "room" },
+        ["reward"] = new[] { "reward", "cardreward", "loot", "treasure" },
+        ["rest"] = new[] { "rest", "campfire", "bonfire" },
+        ["shop"] = new[] { "shop", "merchant", "store" },
+        ["event"] = new[] { "event", "ancient", "page", "choice" },
+        ["map"] = new[] { "map", "nodepath", "pathselect", "overlay" },
+    };
+    var results = new List<(string Scene, string TypeName, ulong Address, Dictionary<string, string> Flags)>();
+    var seen = new HashSet<string>(StringComparer.Ordinal);
+
+    foreach (ClrObject obj in heap.EnumerateObjects())
+    {
+        if (!obj.IsValid || obj.IsNull || obj.Type is null)
+        {
+            continue;
+        }
+
+        string? typeName = obj.Type.Name;
+        if (string.IsNullOrWhiteSpace(typeName))
+        {
+            continue;
+        }
+
+        string? scene = MatchUiScene(typeName, sceneKeywords);
+        if (scene is null)
+        {
+            continue;
+        }
+
+        var flags = ReadUiFlags(obj);
+        if (flags.Count == 0
+            && !typeName.Contains("Screen", StringComparison.OrdinalIgnoreCase)
+            && !typeName.Contains("Overlay", StringComparison.OrdinalIgnoreCase)
+            && !typeName.Contains("Room", StringComparison.OrdinalIgnoreCase))
+        {
+            continue;
+        }
+
+        string dedupeKey = $"{scene}|{typeName}|{string.Join("|", flags.Select(pair => $"{pair.Key}:{pair.Value}"))}";
+        if (!seen.Add(dedupeKey))
+        {
+            continue;
+        }
+
+        results.Add((scene, typeName, obj.Address, flags));
+    }
+
+    return results
+        .OrderBy(candidate => candidate.Scene)
+        .ThenByDescending(candidate => candidate.Flags.Count)
+        .ThenBy(candidate => candidate.TypeName)
+        .ToList();
+}
+
+static object ToUiCandidatePayload(
+    (string Scene, string TypeName, ulong Address, Dictionary<string, string> Flags) candidate)
+{
+    return new
+    {
+        scene = candidate.Scene,
+        typeName = candidate.TypeName,
+        address = candidate.Address,
+        flags = candidate.Flags,
+    };
+}
+
+static string? MatchUiScene(
+    string typeName,
+    Dictionary<string, string[]> sceneKeywords)
+{
+    foreach (var (scene, keywords) in sceneKeywords)
+    {
+        if (keywords.Any(keyword => typeName.Contains(keyword, StringComparison.OrdinalIgnoreCase)))
+        {
+            return scene;
+        }
+    }
+
+    return null;
+}
+
+static Dictionary<string, string> ReadUiFlags(ClrObject obj)
+{
+    var interestingFlags = new[]
+    {
+        "active",
+        "visible",
+        "open",
+        "opened",
+        "enabled",
+        "show",
+        "showing",
+        "hidden",
+        "closed",
+        "current",
+        "selected",
+        "interactable",
+    };
+    var flags = new Dictionary<string, string>(StringComparer.Ordinal);
+    if (obj.Type is null)
+    {
+        return flags;
+    }
+
+    foreach (ClrType type in EnumerateTypeHierarchy(obj.Type))
+    {
+        foreach (ClrInstanceField field in type.Fields)
+        {
+            if (string.IsNullOrWhiteSpace(field.Name))
+            {
+                continue;
+            }
+
+            string fieldName = field.Name;
+            if (!interestingFlags.Any(flag => fieldName.Contains(flag, StringComparison.OrdinalIgnoreCase)))
+            {
+                continue;
+            }
+
+            try
+            {
+                if (field.ElementType == ClrElementType.Boolean)
+                {
+                    bool value = field.Read<bool>(obj.Address, interior: false);
+                    if (value || fieldName.Contains("hidden", StringComparison.OrdinalIgnoreCase))
+                    {
+                        flags[fieldName] = value.ToString();
+                    }
+                    continue;
+                }
+
+                if (field.ElementType == ClrElementType.Int32)
+                {
+                    int value = field.Read<int>(obj.Address, interior: false);
+                    if (value != 0)
+                    {
+                        flags[fieldName] = value.ToString();
+                    }
+                    continue;
+                }
+
+                if (field.ElementType == ClrElementType.String)
+                {
+                    string? value = field.ReadString(obj.Address, interior: false);
+                    if (!string.IsNullOrWhiteSpace(value))
+                    {
+                        flags[fieldName] = value;
+                    }
+                }
+            }
+            catch
+            {
+                // Best-effort probe only.
+            }
+        }
+    }
+
+    return flags;
+}
+
+static string? ReadOptionValue(string[] args, string optionName)
+{
+    for (int i = 0; i < args.Length - 1; i++)
+    {
+        if (string.Equals(args[i], optionName, StringComparison.OrdinalIgnoreCase))
+        {
+            return args[i + 1];
+        }
+    }
+
+    return null;
+}
+
+static int? TryParseIntOption(string[] args, string optionName)
+{
+    string? value = ReadOptionValue(args, optionName);
+    if (string.IsNullOrWhiteSpace(value))
+    {
+        return null;
+    }
+
+    return int.TryParse(value, out int parsed) ? parsed : null;
+}
+
+internal sealed record SceneDetectionResult(string Scene, string Reason, Dictionary<string, object?> Signals);
+
