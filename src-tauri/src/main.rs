@@ -211,6 +211,8 @@ struct AppState {
     locale: Mutex<AppLocale>,
     cached_memory: Arc<Mutex<Option<MemorySnapshot>>>,
     cached_game_state: Arc<Mutex<Option<GameState>>>,
+    overlay_enabled: Arc<Mutex<bool>>,
+    overlay_interactive: Arc<Mutex<bool>>,
 }
 
 #[derive(Clone, Default)]
@@ -667,9 +669,23 @@ fn emit_snapshot_update(app: &AppHandle) {
     }
 }
 
+fn emit_locale_update(app: &AppHandle, locale: AppLocale) {
+    if let Some(window) = app.get_webview_window("main") {
+        let _ = window.emit("locale-changed", &locale);
+    }
+}
+
 #[tauri::command]
-fn sync_overlay_window(window: WebviewWindow) -> Result<WindowMode, String> {
-    let attached = apply_window_bounds(&window)?;
+fn sync_overlay_window(window: WebviewWindow, state: State<AppState>) -> Result<WindowMode, String> {
+    let enabled = *state
+        .overlay_enabled
+        .lock()
+        .map_err(|_| "overlay enabled lock poisoned")?;
+    let interactive = *state
+        .overlay_interactive
+        .lock()
+        .map_err(|_| "overlay interactive lock poisoned")?;
+    let attached = sync_overlay_window_state(&window, enabled, interactive)?;
     Ok(WindowMode {
         attached_to_game: attached,
     })
@@ -679,6 +695,28 @@ fn sync_overlay_window(window: WebviewWindow) -> Result<WindowMode, String> {
 fn set_locale(locale: AppLocale, state: State<AppState>) -> Result<(), String> {
     let mut current = state.locale.lock().map_err(|_| "locale lock poisoned")?;
     *current = locale;
+    Ok(())
+}
+
+#[tauri::command]
+fn set_overlay_interactive(
+    interactive: bool,
+    window: WebviewWindow,
+    state: State<AppState>,
+) -> Result<(), String> {
+    {
+        let mut current = state
+            .overlay_interactive
+            .lock()
+            .map_err(|_| "overlay interactive lock poisoned")?;
+        *current = interactive;
+    }
+
+    let enabled = *state
+        .overlay_enabled
+        .lock()
+        .map_err(|_| "overlay enabled lock poisoned")?;
+    let _ = sync_overlay_window_state(&window, enabled, interactive);
     Ok(())
 }
 
@@ -2873,29 +2911,78 @@ fn apply_window_bounds(window: &WebviewWindow) -> Result<bool, String> {
     Ok(false)
 }
 
+fn sync_overlay_window_state(
+    window: &WebviewWindow,
+    enabled: bool,
+    interactive: bool,
+) -> Result<bool, String> {
+    if !enabled {
+        let _ = window.hide();
+        return Ok(false);
+    }
+
+    let attached = apply_window_bounds(window)?;
+    let _ = window.set_ignore_cursor_events(!interactive);
+    let _ = window.show();
+    Ok(attached)
+}
+
 fn start_overlay_hotkey_manager(app: AppHandle) {
     #[cfg(target_os = "windows")]
     thread::spawn(move || {
+        let mut f6_was_down = false;
+        let mut f7_was_down = false;
         let mut f8_was_down = false;
         let mut f10_was_down = false;
 
         loop {
+            let f6_down = windows_memory::is_virtual_key_pressed(0x75);
+            let f7_down = windows_memory::is_virtual_key_pressed(0x76);
             let f8_down = windows_memory::is_virtual_key_pressed(0x77);
             let f10_down = windows_memory::is_virtual_key_pressed(0x79);
 
+            if f6_down && !f6_was_down {
+                if let Some(window) = app.get_webview_window("main") {
+                    let _ = window.emit("history-toggle-requested", ());
+                }
+            }
+
+            if f7_down && !f7_was_down {
+                let locale = {
+                    let state = app.state::<AppState>();
+                    let mut current = match state.locale.lock() {
+                        Ok(current) => current,
+                        Err(_) => continue,
+                    };
+                    *current = match *current {
+                        AppLocale::EnUs => AppLocale::ZhCn,
+                        AppLocale::ZhCn => AppLocale::EnUs,
+                    };
+                    *current
+                };
+
+                emit_locale_update(&app, locale);
+                emit_snapshot_update(&app);
+            }
+
             if f8_down && !f8_was_down {
                 if let Some(window) = app.get_webview_window("main") {
-                    match window.is_visible() {
-                        Ok(true) => {
-                            let _ = window.hide();
-                        }
-                        Ok(false) => {
-                            let _ = window.show();
-                            let _ = apply_window_bounds(&window);
-                            let _ = window.set_ignore_cursor_events(true);
-                        }
-                        Err(_) => {}
-                    }
+                    let enabled = {
+                        let state = app.state::<AppState>();
+                        let mut enabled = match state.overlay_enabled.lock() {
+                            Ok(enabled) => enabled,
+                            Err(_) => continue,
+                        };
+                        *enabled = !*enabled;
+                        *enabled
+                    };
+                    let interactive = app
+                        .state::<AppState>()
+                        .overlay_interactive
+                        .lock()
+                        .map(|value| *value)
+                        .unwrap_or(false);
+                    let _ = sync_overlay_window_state(&window, enabled, interactive);
                 }
             }
 
@@ -2904,6 +2991,8 @@ fn start_overlay_hotkey_manager(app: AppHandle) {
                 break;
             }
 
+            f6_was_down = f6_down;
+            f7_was_down = f7_down;
             f8_was_down = f8_down;
             f10_was_down = f10_down;
             thread::sleep(Duration::from_millis(60));
@@ -3277,11 +3366,12 @@ fn main() {
             locale: Mutex::new(AppLocale::EnUs),
             cached_memory: memory_cache.clone(),
             cached_game_state: game_state_cache.clone(),
+            overlay_enabled: Arc::new(Mutex::new(true)),
+            overlay_interactive: Arc::new(Mutex::new(false)),
         })
         .setup(move |app| {
             if let Some(window) = app.get_webview_window("main") {
-                let _ = apply_window_bounds(&window);
-                let _ = window.set_ignore_cursor_events(true);
+                let _ = sync_overlay_window_state(&window, true, false);
             }
             let handle = app.handle().clone();
             refresh_live_state_into(Some(&handle), &memory_cache, &game_state_cache, None);
@@ -3296,7 +3386,8 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             get_snapshot,
             sync_overlay_window,
-            set_locale
+            set_locale,
+            set_overlay_interactive
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
