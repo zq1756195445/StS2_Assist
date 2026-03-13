@@ -27,6 +27,7 @@ const CURRENT_RUN_SAVE_PATH: &str =
 const LATEST_REPLAY_PATH: &str =
     "/Users/cheemtain/Library/Application Support/SlayTheSpire2/steam/76561198818693118/profile1/replays/latest.mcr";
 const HUD_EVENT_BRIDGE_ADDR: &str = "127.0.0.1:43125";
+const HUD_RESIDENT_REFRESH_MS: u64 = 500;
 
 #[derive(Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -1344,14 +1345,19 @@ fn refresh_live_state_into(
     if let Ok(mut debug) = debug_state.lock() {
         debug.last_refresh_source = Some(source_override.unwrap_or("startup").to_string());
         debug.last_memory_summary = Some(format!(
-            "hand={} enemies={} player={} status={}",
+            "hand={} enemies={} rewards={} player={} scene={} status={}",
             memory.as_ref().map(|m| m.hand.len()).unwrap_or(0),
             memory.as_ref().map(|m| m.enemies.len()).unwrap_or(0),
+            memory.as_ref().map(|m| m.reward_cards.len()).unwrap_or(0),
             memory
                 .as_ref()
                 .and_then(|m| m.player.as_ref())
                 .map(|_| "yes")
                 .unwrap_or("no"),
+            memory
+                .as_ref()
+                .and_then(|m| m.scene_hint.clone())
+                .unwrap_or_else(|| "none".into()),
             memory
                 .as_ref()
                 .and_then(|m| m.status.clone())
@@ -3016,6 +3022,25 @@ fn apply_window_bounds(window: &WebviewWindow) -> Result<bool, String> {
     Ok(false)
 }
 
+fn start_resident_refresh_loop(
+    app: AppHandle,
+    memory_cache: Arc<Mutex<Option<MemorySnapshot>>>,
+    game_state_cache: Arc<Mutex<Option<GameState>>>,
+    debug_state: Arc<Mutex<DebugState>>,
+) {
+    #[cfg(target_os = "windows")]
+    thread::spawn(move || loop {
+        thread::sleep(Duration::from_millis(HUD_RESIDENT_REFRESH_MS));
+        refresh_live_state_into(
+            Some(&app),
+            &memory_cache,
+            &game_state_cache,
+            &debug_state,
+            Some("resident-poll"),
+        );
+    });
+}
+
 fn sync_overlay_window_state(
     window: &WebviewWindow,
     enabled: bool,
@@ -3558,6 +3583,12 @@ fn main() {
                 None,
             );
             start_hud_event_bridge(
+                handle.clone(),
+                memory_cache.clone(),
+                game_state_cache.clone(),
+                debug_state.clone(),
+            );
+            start_resident_refresh_loop(
                 handle.clone(),
                 memory_cache.clone(),
                 game_state_cache.clone(),
