@@ -1,5 +1,10 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod debug_state;
+
+use debug_state::{
+    format_refresh_source_label, print_debug_blob, push_debug_entry, DebugState, RefreshDebug,
+};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::HashMap,
@@ -213,6 +218,7 @@ struct AppState {
     cached_game_state: Arc<Mutex<Option<GameState>>>,
     overlay_enabled: Arc<Mutex<bool>>,
     overlay_interactive: Arc<Mutex<bool>>,
+    debug_state: Arc<Mutex<DebugState>>,
 }
 
 #[derive(Clone, Default)]
@@ -274,6 +280,7 @@ struct Snapshot {
     overlay: OverlayLayout,
     replay: ReplaySummary,
     source: String,
+    debug: DebugState,
 }
 
 #[derive(Clone, Serialize)]
@@ -639,6 +646,11 @@ fn snapshot_from_state(state: &AppState) -> Result<Snapshot, String> {
         .lock()
         .map_err(|_| "game state cache lock poisoned")?
         .clone();
+    let debug = state
+        .debug_state
+        .lock()
+        .map_err(|_| "debug state lock poisoned")?
+        .clone();
     let replay = empty_replay_summary();
     let game_state =
         cached_game_state.unwrap_or_else(|| empty_live_game_state(cached_memory.as_ref()));
@@ -656,6 +668,7 @@ fn snapshot_from_state(state: &AppState) -> Result<Snapshot, String> {
         overlay,
         replay,
         source,
+        debug,
     })
 }
 
@@ -1256,16 +1269,30 @@ fn default_latest_replay_path() -> Option<PathBuf> {
     path.exists().then_some(path)
 }
 
-fn read_memory_snapshot() -> Option<MemorySnapshot> {
+fn read_memory_snapshot() -> (Option<MemorySnapshot>, RefreshDebug) {
     #[cfg(target_os = "windows")]
     {
-        let config = MemoryReaderConfig::load()?;
+        let Some(config) = MemoryReaderConfig::load() else {
+            return (
+                None,
+                RefreshDebug {
+                    probe_summary: Some("memory-reader config missing".into()),
+                    ..RefreshDebug::default()
+                },
+            );
+        };
         return windows_memory::read_memory_snapshot(&config);
     }
 
     #[cfg(not(target_os = "windows"))]
     {
-        None
+        (
+            None,
+            RefreshDebug {
+                probe_summary: Some("memory reader unsupported on this platform".into()),
+                ..RefreshDebug::default()
+            },
+        )
     }
 }
 
@@ -1273,9 +1300,17 @@ fn refresh_live_state_into(
     app: Option<&AppHandle>,
     memory_cache: &Arc<Mutex<Option<MemorySnapshot>>>,
     game_state_cache: &Arc<Mutex<Option<GameState>>>,
+    debug_state: &Arc<Mutex<DebugState>>,
     source_override: Option<&str>,
 ) {
-    let memory = read_memory_snapshot().map(|mut snapshot| {
+    push_debug_entry(
+        debug_state,
+        "refresh",
+        format!("start {}", format_refresh_source_label(source_override)),
+    );
+
+    let (memory_raw, mut refresh_debug) = read_memory_snapshot();
+    let memory = memory_raw.map(|mut snapshot| {
         if let Some(source) = source_override {
             snapshot.status = Some(source.to_string());
         }
@@ -1290,7 +1325,58 @@ fn refresh_live_state_into(
         .or_else(|| Some(empty_live_game_state(memory.as_ref())));
 
     if let Ok(mut current) = game_state_cache.lock() {
-        *current = next_game_state;
+        *current = next_game_state.clone();
+    }
+
+    if let Ok(mut debug) = debug_state.lock() {
+        debug.last_refresh_source = Some(source_override.unwrap_or("startup").to_string());
+        debug.last_memory_summary = Some(format!(
+            "hand={} enemies={} player={} status={}",
+            memory.as_ref().map(|m| m.hand.len()).unwrap_or(0),
+            memory.as_ref().map(|m| m.enemies.len()).unwrap_or(0),
+            memory
+                .as_ref()
+                .and_then(|m| m.player.as_ref())
+                .map(|_| "yes")
+                .unwrap_or("no"),
+            memory
+                .as_ref()
+                .and_then(|m| m.status.clone())
+                .unwrap_or_else(|| "none".into())
+        ));
+        debug.last_game_state_summary = Some(format!(
+            "hand={} enemies={} rewards={} node={} source={}",
+            next_game_state.as_ref().map(|s| s.hand.len()).unwrap_or(0),
+            next_game_state
+                .as_ref()
+                .map(|s| s.battle.enemies.len())
+                .unwrap_or(0),
+            next_game_state
+                .as_ref()
+                .map(|s| s.rewards.cards.len())
+                .unwrap_or(0),
+            next_game_state
+                .as_ref()
+                .map(|s| s.map.current_node.clone())
+                .unwrap_or_else(|| "none".into()),
+            next_game_state
+                .as_ref()
+                .map(|s| s.source.clone())
+                .unwrap_or_else(|| "none".into())
+        ));
+        debug.last_merge_summary = refresh_debug.merge_summary.clone();
+        debug.last_probe_summary = refresh_debug.probe_summary.clone();
+        debug.last_probe_stdout = refresh_debug.probe_stdout.clone();
+        debug.last_probe_stderr = refresh_debug.probe_stderr.clone();
+    }
+
+    if let Some(summary) = refresh_debug.probe_summary.take() {
+        push_debug_entry(debug_state, "probe", summary);
+    }
+    print_debug_blob("probe", "stdout", &refresh_debug.probe_stdout);
+    print_debug_blob("probe", "stderr", &refresh_debug.probe_stderr);
+    if let Some(summary) = refresh_debug.merge_summary.take() {
+        push_debug_entry(debug_state, "merge", summary);
     }
 
     if let Some(app) = app {
@@ -3004,6 +3090,7 @@ fn start_hud_event_bridge(
     app: AppHandle,
     memory_cache: Arc<Mutex<Option<MemorySnapshot>>>,
     game_state_cache: Arc<Mutex<Option<GameState>>>,
+    debug_state: Arc<Mutex<DebugState>>,
 ) {
     #[cfg(target_os = "windows")]
     thread::spawn(move || {
@@ -3041,6 +3128,7 @@ fn start_hud_event_bridge(
                     Some(&app),
                     &memory_cache,
                     &game_state_cache,
+                    &debug_state,
                     Some(&source),
                 );
             }
@@ -3050,7 +3138,7 @@ fn start_hud_event_bridge(
 
 #[cfg(target_os = "windows")]
 mod windows_memory {
-    use super::{parse_hand_blob, MemoryBlobConfig, MemoryReaderConfig, MemorySnapshot};
+    use super::{parse_hand_blob, MemoryBlobConfig, MemoryReaderConfig, MemorySnapshot, RefreshDebug};
     use serde::Deserialize;
     use std::{
         ffi::OsString,
@@ -3101,10 +3189,28 @@ mod windows_memory {
         energy: Option<i32>,
     }
 
-    pub(super) fn read_memory_snapshot(config: &MemoryReaderConfig) -> Option<MemorySnapshot> {
-        let pid = find_process_id(&config.process_names())?;
-        let process = open_process(pid)?;
-        let clr_snapshot = read_clr_probe_snapshot(&config.process_names());
+    pub(super) fn read_memory_snapshot(
+        config: &MemoryReaderConfig,
+    ) -> (Option<MemorySnapshot>, RefreshDebug) {
+        let Some(pid) = find_process_id(&config.process_names()) else {
+            return (
+                None,
+                RefreshDebug {
+                    probe_summary: Some("target process not found".into()),
+                    ..RefreshDebug::default()
+                },
+            );
+        };
+        let Some(process) = open_process(pid) else {
+            return (
+                None,
+                RefreshDebug {
+                    probe_summary: Some(format!("failed to open process pid={pid}")),
+                    ..RefreshDebug::default()
+                },
+            );
+        };
+        let (clr_snapshot, debug) = read_clr_probe_snapshot(&config.process_names());
         let hand = clr_snapshot
             .as_ref()
             .map(|snapshot| snapshot.hand.clone())
@@ -3158,24 +3264,27 @@ mod windows_memory {
             CloseHandle(process);
         }
 
-        Some(MemorySnapshot {
-            hand: hand.unwrap_or_default(),
-            enemies,
-            player: clr_snapshot.as_ref().and_then(|snapshot| {
-                snapshot
-                    .player
-                    .as_ref()
-                    .map(|player| super::MemoryPlayerState {
-                        hp: player.hp,
-                        max_hp: player.max_hp,
-                        energy: player.energy,
-                    })
+        (
+            Some(MemorySnapshot {
+                hand: hand.unwrap_or_default(),
+                enemies,
+                player: clr_snapshot.as_ref().and_then(|snapshot| {
+                    snapshot
+                        .player
+                        .as_ref()
+                        .map(|player| super::MemoryPlayerState {
+                            hp: player.hp,
+                            max_hp: player.max_hp,
+                            energy: player.energy,
+                        })
+                }),
+                status,
             }),
-            status,
-        })
+            debug,
+        )
     }
 
-    fn read_clr_probe_snapshot(process_names: &[String]) -> Option<ClrProbeSnapshot> {
+    fn read_clr_probe_snapshot(process_names: &[String]) -> (Option<ClrProbeSnapshot>, RefreshDebug) {
         let process_name = process_names
             .iter()
             .find_map(|name| {
@@ -3187,20 +3296,57 @@ mod windows_memory {
             })
             .unwrap_or_else(|| "SlayTheSpire2".into());
 
-        let probe_path = find_clr_probe_dll()?;
-        let output = super::Command::new("dotnet")
+        let Some(probe_path) = find_clr_probe_dll() else {
+            return (
+                None,
+                RefreshDebug {
+                    probe_summary: Some("Sts2ClrProbe.dll not found".into()),
+                    ..RefreshDebug::default()
+                },
+            );
+        };
+        let output = match super::Command::new("dotnet")
             .arg("exec")
             .arg(probe_path)
             .arg("--json")
             .arg(process_name)
             .output()
-            .ok()?;
+        {
+            Ok(output) => output,
+            Err(error) => {
+                return (
+                    None,
+                    RefreshDebug {
+                        probe_summary: Some(format!("dotnet exec failed: {error}")),
+                        ..RefreshDebug::default()
+                    },
+                );
+            }
+        };
 
-        if !output.status.success() {
-            return None;
-        }
+        let stdout = String::from_utf8_lossy(&output.stdout).trim().to_string();
+        let stderr = String::from_utf8_lossy(&output.stderr).trim().to_string();
+        let parsed = if output.status.success() {
+            serde_json::from_slice::<ClrProbeSnapshot>(&output.stdout).ok()
+        } else {
+            None
+        };
 
-        serde_json::from_slice::<ClrProbeSnapshot>(&output.stdout).ok()
+        (
+            parsed,
+            RefreshDebug {
+                probe_summary: Some(format!(
+                    "probe exit={} success={} stdout_len={} stderr_len={}",
+                    output.status.code().unwrap_or(-1),
+                    output.status.success(),
+                    stdout.len(),
+                    stderr.len()
+                )),
+                probe_stdout: (!stdout.is_empty()).then_some(stdout),
+                probe_stderr: (!stderr.is_empty()).then_some(stderr),
+                ..RefreshDebug::default()
+            },
+        )
     }
 
     fn find_clr_probe_dll() -> Option<PathBuf> {
@@ -3358,6 +3504,7 @@ mod windows_memory {
 fn main() {
     let memory_cache = Arc::new(Mutex::new(None));
     let game_state_cache = Arc::new(Mutex::new(None));
+    let debug_state = Arc::new(Mutex::new(DebugState::default()));
 
     tauri::Builder::default()
         .manage(AppState {
@@ -3368,17 +3515,25 @@ fn main() {
             cached_game_state: game_state_cache.clone(),
             overlay_enabled: Arc::new(Mutex::new(true)),
             overlay_interactive: Arc::new(Mutex::new(false)),
+            debug_state: debug_state.clone(),
         })
         .setup(move |app| {
             if let Some(window) = app.get_webview_window("main") {
                 let _ = sync_overlay_window_state(&window, true, false);
             }
             let handle = app.handle().clone();
-            refresh_live_state_into(Some(&handle), &memory_cache, &game_state_cache, None);
+            refresh_live_state_into(
+                Some(&handle),
+                &memory_cache,
+                &game_state_cache,
+                &debug_state,
+                None,
+            );
             start_hud_event_bridge(
                 handle.clone(),
                 memory_cache.clone(),
                 game_state_cache.clone(),
+                debug_state.clone(),
             );
             start_overlay_hotkey_manager(handle);
             Ok(())
