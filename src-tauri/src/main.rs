@@ -226,6 +226,8 @@ struct MemorySnapshot {
     hand: Vec<String>,
     enemies: Vec<EnemyState>,
     player: Option<MemoryPlayerState>,
+    reward_cards: Vec<String>,
+    scene_hint: Option<String>,
     status: Option<String>,
 }
 
@@ -656,7 +658,13 @@ fn snapshot_from_state(state: &AppState) -> Result<Snapshot, String> {
         cached_game_state.unwrap_or_else(|| empty_live_game_state(cached_memory.as_ref()));
     let recommendations = generate_recommendations(&game_state, &state.database, locale);
     let recommendations = localize_recommendations(&recommendations, locale, &state.localization);
-    let overlay = build_overlay_layout_v2(&game_state, &recommendations, &replay, locale);
+    let overlay = build_overlay_layout_v2(
+        &game_state,
+        &recommendations,
+        &replay,
+        cached_memory.as_ref().and_then(|memory| memory.scene_hint.as_deref()),
+        locale,
+    );
     let game_state = localize_game_state(&game_state, locale, &state.localization);
     let replay = localize_replay_summary(&replay, locale, &state.localization);
     let source = localize_source(&game_state.source, locale, &state.localization);
@@ -810,7 +818,12 @@ fn read_live_game_state(cached_memory: Option<&MemorySnapshot>) -> Option<GameSt
             current_node: normalize_node_type(&current_node),
             upcoming_nodes,
         },
-        rewards: RewardState { cards: Vec::new() },
+        rewards: RewardState {
+            cards: memory
+                .as_ref()
+                .map(|snapshot| snapshot.reward_cards.clone())
+                .unwrap_or_default(),
+        },
         source: compose_live_source(memory.as_ref()),
     })
 }
@@ -2779,7 +2792,7 @@ fn build_overlay_layout(
 ) -> OverlayLayout {
     let enemy = game_state.battle.enemies.first();
     let top_reward = recommendations.card_rewards.first();
-    let scene = detect_scene(game_state, replay);
+    let scene = detect_scene(game_state, replay, None);
     let battle_title = enemy
         .map(|entry| format!("{} 意图", entry.name))
         .or_else(|| {
@@ -2856,7 +2869,12 @@ fn build_overlay_layout(
     }
 }
 
-fn detect_scene(game_state: &GameState, replay: &ReplaySummary) -> String {
+fn detect_scene(game_state: &GameState, replay: &ReplaySummary, scene_hint: Option<&str>) -> String {
+    if let Some(scene_hint) = scene_hint {
+        if !scene_hint.is_empty() && scene_hint != "unknown" {
+            return scene_hint.to_string();
+        }
+    }
     if !game_state.rewards.cards.is_empty() {
         return "reward".into();
     }
@@ -2873,11 +2891,12 @@ fn build_overlay_layout_v2(
     game_state: &GameState,
     recommendations: &Recommendations,
     replay: &ReplaySummary,
+    scene_hint: Option<&str>,
     locale: AppLocale,
 ) -> OverlayLayout {
     let enemy = game_state.battle.enemies.first();
     let top_reward = recommendations.card_rewards.first();
-    let scene = detect_scene(game_state, replay);
+    let scene = detect_scene(game_state, replay, scene_hint);
     let battle_title = enemy
         .map(|entry| localized_battle_title(locale, &entry.name))
         .or_else(|| {
@@ -3169,6 +3188,8 @@ mod windows_memory {
         hand: Vec<String>,
         enemies: Vec<ClrProbeEnemy>,
         player: Option<ClrProbePlayer>,
+        reward_cards: Vec<String>,
+        scene_hint: Option<String>,
         status: Option<String>,
     }
 
@@ -3278,6 +3299,13 @@ mod windows_memory {
                             energy: player.energy,
                         })
                 }),
+                reward_cards: clr_snapshot
+                    .as_ref()
+                    .map(|snapshot| snapshot.reward_cards.clone())
+                    .unwrap_or_default(),
+                scene_hint: clr_snapshot
+                    .as_ref()
+                    .and_then(|snapshot| snapshot.scene_hint.clone()),
                 status,
             }),
             debug,
@@ -3852,7 +3880,7 @@ mod tests {
             }],
         };
 
-        assert_eq!(detect_scene(&game_state, &replay), "event");
+        assert_eq!(detect_scene(&game_state, &replay, None), "event");
     }
 
     #[test]

@@ -9,15 +9,57 @@ param(
 $ErrorActionPreference = "Stop"
 
 function Find-DefaultGameExe {
-  $candidates = @(
-    "C:\Program Files (x86)\Steam\steamapps\common",
-    "C:\Program Files\Steam\steamapps\common",
-    (Join-Path ${env:ProgramFiles(x86)} "Steam\steamapps\common"),
-    (Join-Path $env:ProgramFiles "Steam\steamapps\common")
+  $registrySteamPath = (Get-ItemProperty 'HKCU:\Software\Valve\Steam' -ErrorAction SilentlyContinue).SteamPath
+  $steamRoots = @(
+    $registrySteamPath,
+    (Join-Path ${env:ProgramFiles(x86)} "Steam"),
+    (Join-Path $env:ProgramFiles "Steam"),
+    "C:\Program Files (x86)\Steam",
+    "C:\Program Files\Steam"
   ) | Where-Object { $_ -and (Test-Path $_) } | Select-Object -Unique
 
-  foreach ($root in $candidates) {
-    $match = Get-ChildItem $root -Recurse -Filter "SlayTheSpire2.exe" -ErrorAction SilentlyContinue |
+  $libraryAppsRoots = New-Object System.Collections.Generic.List[string]
+  foreach ($steamRoot in $steamRoots) {
+    $defaultSteamApps = Join-Path $steamRoot "steamapps"
+    if (Test-Path $defaultSteamApps) {
+      $libraryAppsRoots.Add($defaultSteamApps)
+    }
+
+    $libraryFile = Join-Path $defaultSteamApps "libraryfolders.vdf"
+    if (-not (Test-Path $libraryFile)) {
+      continue
+    }
+
+    try {
+      $content = Get-Content $libraryFile -Raw -ErrorAction Stop
+      $matches = [regex]::Matches($content, '"path"\s+"([^"]+)"')
+      foreach ($match in $matches) {
+        $libraryPath = $match.Groups[1].Value -replace "\\\\", "\"
+        if ([string]::IsNullOrWhiteSpace($libraryPath)) {
+          continue
+        }
+
+        $steamAppsPath = Join-Path $libraryPath "steamapps"
+        if (Test-Path $steamAppsPath) {
+          $libraryAppsRoots.Add($steamAppsPath)
+        }
+      }
+    }
+    catch {
+      Write-Warning "Failed to read Steam libraryfolders from $libraryFile : $($_.Exception.Message)"
+    }
+  }
+
+  $libraryAppsRoots = $libraryAppsRoots | Select-Object -Unique
+  foreach ($steamAppsRoot in $libraryAppsRoots) {
+    $directCandidate = Join-Path $steamAppsRoot "common\Slay the Spire 2\SlayTheSpire2.exe"
+    if (Test-Path $directCandidate) {
+      return $directCandidate
+    }
+  }
+
+  foreach ($steamAppsRoot in $libraryAppsRoots) {
+    $match = Get-ChildItem $steamAppsRoot -Recurse -Filter "SlayTheSpire2.exe" -ErrorAction SilentlyContinue |
       Select-Object -First 1 -ExpandProperty FullName
     if ($match) {
       return $match
